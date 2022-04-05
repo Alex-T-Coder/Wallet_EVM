@@ -1,0 +1,41 @@
+{
+  "name": "@dojima-wallet/eth-protocols",
+  "version": "0.0.1-alpha.1",
+  "description": "allows to interact with famous protocols like curve, uniswap, sushiswap and withdraw funds from protocols to lock in dojima contract to swap tokens between different blockchains.",
+  "keywords": [
+    "protocol",
+    "swap",
+    "bridge",
+    "dojima",
+    "sushiswap"
+  ],
+  "author": "bhaagiKenpachi <bhagath.reddy@dojima.network>",
+  "homepage": "https://github.com/dojimanetwork/wallet-js#readme",
+  "license": "ISC",
+  "module": "dist/index.js",
+  "main": "dist/index.js",
+  "types": "dist/lib/index.d.ts",
+  "directories": {
+    "dist": "dist",
+    "src": "lib"
+  },
+  "files": [
+    "lib",
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dojimanetwork/wallet-js.git"
+  },
+  "scripts": {
+    "build_rm:ylck": "rm -rf dist/ node_modules/ yarn.lock && yarn && webpack --config ../../webpack/webpack.config.js",
+    "build_rm:nm": "rm -rf dist/ node_modules/ && yarn && webpack --config ../../webpack/webpack.config.js",
+    "build": "webpack --config ../../webpack/webpack.config.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/dojimanetwork/wallet-js/issues"
+  }
+}
