@@ -1,0 +1,44 @@
+{
+  "name": "@dojima-wallet/solana-protocols",
+  "version": "0.0.1-alpha.1",
+  "description": "interaction with solana programs to lock, unlock, send solana, solana program library tokens send to dojima chain or other layer1 blockchains",
+  "keywords": [
+    "solana",
+    "spl",
+    "dojima",
+    "bridge",
+    "program"
+  ],
+  "author": "bhaagiKenpachi <bhagath.reddy@dojima.network>",
+  "homepage": "https://github.com/dojimanetwork/wallet-js#readme",
+  "license": "ISC",
+  "module": "dist/index.js",
+  "main": "dist/index.js",
+  "types": "dist/lib/index.d.ts",
+  "directories": {
+    "dist": "dist",
+    "src": "lib"
+  },
+  "files": [
+    "lib",
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dojimanetwork/wallet-js.git"
+  },
+  "scripts": {
+    "build_rm:ylck": "rm -rf dist/ node_modules/ yarn.lock && yarn && webpack --config ../../webpack/webpack.config.js",
+    "build_rm:nm": "rm -rf dist/ node_modules/ && yarn && webpack --config ../../webpack/webpack.config.js",
+    "build": "webpack --config ../../webpack/webpack.config.js"
+  },
+  "bugs": {
+    "url": "https://github.com/dojimanetwork/wallet-js/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@dojima-wallet/connection": "^0.0.1-alpha.12"
+  }
+}
