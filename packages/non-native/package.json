@@ -1,6 +1,6 @@
 {
   "name": "@dojima-wallet/non-native",
-  "version": "0.0.1-alphlha.5",
+  "version": "0.0.1-alpha.7",
   "description": "package for non-native tokens functionality",
   "keywords": [
     "balance",
