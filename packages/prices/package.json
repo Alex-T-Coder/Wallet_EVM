@@ -38,6 +38,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@dojima-wallet/types": "^0.0.1-alpha.4"
+    "@dojima-wallet/types": "^0.0.1-alpha.4",
+    "moment": "^2.29.2"
   }
 }
