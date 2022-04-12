@@ -10,6 +10,7 @@ Below are the list of packages available:
 - @dojima-wallet/transfer
 - @dojima-wallet/non-native
 - @dojima-wallet/history-tx
+- @dojima-wallet/prices
 
 ## Description
 
@@ -38,3 +39,15 @@ This package is used for querying non-native token functionalities for multiple 
 ## History-tx package
 
 This package is used for retreiving history transactions for user of supported blockchains like ethereum, binance, solana, polkadot, arweave.
+
+## Prices
+
+This package is used for retreiving current price, timeline statistics of token for layer1 blockchains.
+
+## Eth-protocols
+
+This package is used for interacting with dojima smart contract which interacts with ethereum famous protocols such as Aave, Compound, Curve, Uniswap, Shushiswap e.t.c
+
+## Solana-protocols
+
+This package is used for interacting with dojima solana programs which interacts with solana famous protocols such as orca, radyium e.t.c
