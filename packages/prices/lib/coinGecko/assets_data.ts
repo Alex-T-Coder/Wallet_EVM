@@ -2,7 +2,6 @@ import axios from "axios";
 import moment from "moment";
 import { CurrencyList, DisplayOrderList } from "./utils/lists";
 import {
-  AssetIds,
   AssetsCurrentMarketDataResult,
   DayPriceData,
   DayPriceDataResult,
