@@ -1,12 +1,12 @@
 {
-  "name": "@dojima-wallet/non-native",
-  "version": "0.0.1-alpha.7",
-  "description": "package for non-native tokens functionality",
+  "name": "@dojima-wallet/prices",
+  "version": "0.0.1-alpha.4",
+  "description": "prices for various crypto assets",
   "keywords": [
-    "balance",
-    "send",
-    "tokens",
-    "transaction"
+    "liveprices",
+    "last24hrdata",
+    "history",
+    "marketvalues"
   ],
   "module": "dist/index.js",
   "main": "dist/index.js",
@@ -38,7 +38,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@dojima-wallet/account": "^0.0.1-alpha.11",
-    "web3-utils": "1.7.1"
+    "@dojima-wallet/types": "^0.0.1-alpha.4",
+    "moment": "^2.29.2"
   }
 }
