@@ -37,5 +37,10 @@
   },
   "bugs": {
     "url": "https://github.com/dojimanetwork/wallet-js/issues"
+  },
+  "dependencies": {
+    "@dojima-wallet/account": "^0.0.1-alpha.11",
+    "@dojima-wallet/non-native": "^0.0.1-alpha.7",
+    "web3-utils": "1.7.1"
   }
 }
