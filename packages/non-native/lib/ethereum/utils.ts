@@ -5,12 +5,12 @@ export const contractData: {
     decimal: number;
   };
 } = {
-  "binance usd": {
+  "binance-usd": {
     contractAddress: "0x4Fabb145d64652a948d72533023f6E7A623C7C53",
     tokenSymbol: "BUSD",
     decimal: 18,
   },
-  bnb: {
+  binancecoin: {
     contractAddress: "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
     tokenSymbol: "BNB",
     decimal: 18,
@@ -20,7 +20,7 @@ export const contractData: {
     tokenSymbol: "LINK",
     decimal: 18,
   },
-  cronos: {
+  "crypto-com-chain": {
     contractAddress: "0xA0b73E1Ff0B80914AB6fe0444E65848C4C34450b",
     tokenSymbol: "CRO",
     decimal: 8,
@@ -35,17 +35,17 @@ export const contractData: {
     tokenSymbol: "FTM",
     decimal: 18,
   },
-  "maker dao": {
+  maker: {
     contractAddress: "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
     tokenSymbol: "MKR",
     decimal: 18,
   },
-  matic: {
+  "matic-network": {
     contractAddress: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
     tokenSymbol: "MATIC",
     decimal: 18,
   },
-  "shiba inu": {
+  "shiba-inu": {
     contractAddress: "0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE",
     tokenSymbol: "SHIB",
     decimal: 18,
@@ -60,27 +60,27 @@ export const contractData: {
     tokenSymbol: "UNI",
     decimal: 18,
   },
-  "usd coin": {
+  "usd-coin": {
     contractAddress: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     tokenSymbol: "USDC",
     decimal: 6,
   },
-  "ve chain": {
+  vechain: {
     contractAddress: "0xD850942eF8811f2A866692A623011bDE52a462C1",
     tokenSymbol: "VEN",
     decimal: 18,
   },
-  "wrapped bitcoin": {
+  "wrapped-bitcoin": {
     contractAddress: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
     tokenSymbol: "WBTC",
     decimal: 8,
   },
-  terra: {
+  "terra-luna": {
     contractAddress: "0xd2877702675e6cEb975b4A1dFf9fb7BAF4C91ea9",
     tokenSymbol: "LUNA",
     decimal: 18,
   },
-  "wrapped ust": {
+  "wrapped-ust": {
     contractAddress: "0xa47c8bf37f92aBed4A126BDA807A7b7498661acD",
     tokenSymbol: "UST",
     decimal: 18,
@@ -88,22 +88,22 @@ export const contractData: {
 };
 
 export type tokenList =
-  | "binance usd"
-  | "bnb"
+  | "binance-usd"
+  | "binancecoin"
   | "chainlink"
-  | "cronos"
+  | "crypto-com-chain"
   | "dai"
   | "fantom"
-  | "maker dao"
-  | "matic"
-  | "shiba inu"
+  | "maker"
+  | "matic-network"
+  | "shiba-inu"
   | "tether"
   | "uniswap"
-  | "usd coin"
-  | "ve chain"
-  | "wrapped bitcoin"
-  | "terra"
-  | "wrapped ust";
+  | "usd-coin"
+  | "vechain"
+  | "wrapped-bitcoin"
+  | "terra-luna"
+  | "wrapped-ust";
 
 export type tokenSymbolList =
   | "BUSD"
