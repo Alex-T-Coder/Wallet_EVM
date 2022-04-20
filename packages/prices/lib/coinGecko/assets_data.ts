@@ -1,5 +1,6 @@
 import axios from "axios";
 import moment from "moment";
+import { AssetsIdList } from "./utils/assetIds";
 import { CurrencyList, DisplayOrderList } from "./utils/lists";
 import {
   AssetsCurrentMarketDataResult,
@@ -10,6 +11,14 @@ import {
   PriceHistoryDataByDaysResult,
   PriceHistoryResult,
 } from "./utils/types";
+
+interface CurrentMarketDataOptions {
+  assets?: Array<AssetsIdList>;
+  resCurrency?: CurrencyList;
+  sortOrder?: DisplayOrderList;
+  valuesPerPage?: number;
+  page?: number;
+}
 
 export default class CoinGecko {
   api: string;
@@ -47,34 +56,32 @@ export default class CoinGecko {
   // 'resCurrency' - target currency of market data (usd, eur, jpy, etc.)
   // 'sortOrder' - Order of result display . Default 'market_cap_desc'
   // 'valuesPerPage' - Total results per page: 1 - 250
-  async getAssestsCurrentMarketData(
-    assets?: string,
-    resCurrency?: CurrencyList,
-    sortOrder?: DisplayOrderList,
-    valuesPerPage?: number,
-    page?: number
-  ) {
+  async getAssestsCurrentMarketData(options?: CurrentMarketDataOptions) {
     let requestApi = `${this.api}/coins/markets`;
-    if (resCurrency) {
-      requestApi += `?vs_currency=${resCurrency}`;
+    if (options !== undefined && options.resCurrency) {
+      requestApi += `?vs_currency=${options.resCurrency}`;
     } else {
       requestApi += `?vs_currency=usd`;
     }
-    if (assets) {
-      requestApi += `&ids=${assets}`;
+    if (options !== undefined && options.assets) {
+      let assetString = "";
+      if (options.assets.length >= 1) {
+        assetString = options.assets.join(",");
+      }
+      requestApi += `&ids=${assetString}`;
     }
-    if (sortOrder) {
-      requestApi += `&order=${sortOrder}`;
+    if (options !== undefined && options.sortOrder) {
+      requestApi += `&order=${options.sortOrder}`;
     } else {
       requestApi += `&order=market_cap_desc`;
     }
-    if (valuesPerPage) {
-      requestApi += `&per_page=${valuesPerPage}`;
+    if (options !== undefined && options.valuesPerPage) {
+      requestApi += `&per_page=${options.valuesPerPage}`;
     } else {
       requestApi += `&per_page=250`;
     }
-    if (page) {
-      requestApi += `&page=${page}`;
+    if (options !== undefined && options.page) {
+      requestApi += `&page=${options.page}`;
     } else {
       requestApi += `&page=1`;
     }
@@ -128,7 +135,7 @@ export default class CoinGecko {
   // Get historical data (name, price, market, stats) at a given date for a coin
   // By default made use of 'usd' as return value
   // 'date' input should be of format 'DD-MM-YYYY'
-  async getAssetHistoryPriceByDate(asset: string, date: string) {
+  async getAssetHistoryPriceByDate(asset: AssetsIdList, date: string) {
     let requestApi = `${this.api}/coins/${asset}/history?date=${date}`;
     try {
       let response = await axios.get(requestApi);
@@ -156,7 +163,7 @@ export default class CoinGecko {
   // Minutely data will be used for duration within 1 day,
   // Hourly data will be used for duration between 1 day and 10 days,
   // Daily data will be used for duration above 10 days.
-  async getAssetHistoryPriceByNoOfDays(asset: string, noOfDays: number) {
+  async getAssetHistoryPriceByNoOfDays(asset: AssetsIdList, noOfDays: number) {
     let requestApi = `${this.api}/coins/${asset}/market_chart?vs_currency=usd`;
     if (noOfDays > 10) {
       requestApi += `&days=${noOfDays}&interval=daily`;
@@ -217,7 +224,7 @@ export default class CoinGecko {
   // 1 - 90 days from query time = hourly data
   // above 90 days from query time = daily data (00:00 UTC)
   async getAssetHistoryPriceByDateRange(
-    asset: string,
+    asset: AssetsIdList,
     fromDate: string,
     thruDate: string,
     resCurrency?: CurrencyList
