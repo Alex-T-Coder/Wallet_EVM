@@ -7,7 +7,7 @@ import idl from "./idl.json";
 
 //Deployed solana program
 const programId = new web3.PublicKey(idl.metadata.address);
-const opts = {
+const opts: web3.ConfirmOptions = {
   preflightCommitment: "processed",
 };
 
@@ -36,7 +36,6 @@ export default class SolanaProtocols extends SolanaAccount {
     const provider = new anchor.Provider(
       this._connection,
       new anchor.Wallet(fromKeyPair),
-      // @ts-ignore
       opts
     );
     const program = new anchor.Program(IDL, programId, provider);
