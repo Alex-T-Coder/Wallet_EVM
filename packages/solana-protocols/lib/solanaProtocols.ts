@@ -17,18 +17,19 @@ export default class SolanaProtocols extends SolanaAccount {
   }
 
   async transferNativeToken(
-    toAddress: string,
+    toAddr: string,
     amount: number,
-    sourceBlockchain: string,
-    destinationBlockchain: string,
-    tokenTransferred: string,
-    fromKeyPair: web3.Keypair //Need to add this in solana accounts package.
+    srcChain: string,
+    dstChain: string,
+    token: string,
+    fromKeyPair: web3.Keypair //TODO: Need to add this in solana accounts package.
   ): Promise<String> {
+    const fromAddr = await this.getAddress();
     //Get account address
-    const fromPubKey = new web3.PublicKey(await this.getAddress());
+    const fromPubKey = new web3.PublicKey(fromAddr);
 
-    //Convert to address to Publickey
-    const toPubKey = new web3.PublicKey(toAddress);
+    //Convert toAddress to Publickey
+    const toPubKey = new web3.PublicKey(toAddr);
 
     const toAmount = amount * Math.pow(10, 9);
     // console.log('To Amount : ' , toAmount);
@@ -43,9 +44,9 @@ export default class SolanaProtocols extends SolanaAccount {
     // Add transaction for the required amount
     let rawTx = await program.rpc.transferNativeTokens(
       new anchor.BN(toAmount),
-      sourceBlockchain,
-      destinationBlockchain,
-      tokenTransferred,
+      srcChain,
+      dstChain,
+      token,
       {
         accounts: {
           from: fromPubKey,
