@@ -1,6 +1,6 @@
 import AssetsData, { Last24HrResult, LatestPricesResult } from "./binance";
-import CoinGecko from "./coinGecko/assets_data";
-import { CurrencyList, DisplayOrderList } from "./coinGecko/utils/lists";
+import CoinGecko, { CurrencyList, DisplayOrderList } from "./coinGecko";
+import CryptoCompare, { DataObject } from "./cryptoCompare";
 
 export {
   AssetsData,
@@ -9,4 +9,6 @@ export {
   CoinGecko,
   CurrencyList,
   DisplayOrderList,
+  CryptoCompare,
+  DataObject,
 };
