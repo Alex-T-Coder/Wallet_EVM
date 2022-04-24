@@ -9,7 +9,7 @@ import * as splToken from "@solana/spl-token";
 
 //Deployed solana program
 const programId = new web3.PublicKey(idl.metadata.address);
-const opts = {
+const opts: web3.ConfirmOptions = {
   preflightCommitment: "processed",
 };
 
@@ -19,26 +19,27 @@ export default class SolanaProtocols extends SolanaAccount {
   }
 
   async transferNativeToken(
-    toAddress: string,
+    toAddr: string,
     amount: number,
-    sourceBlockchain: string,
-    destinationBlockchain: string,
-    tokenTransferred: string,
-    fromWallet: web3.Keypair //Need to add this in solana accounts package.
+    srcChain: string,
+    dstChain: string,
+    token: string,
+    fromKeyPair: web3.Keypair //TODO: Need to add this in solana accounts package.
   ): Promise<String> {
+    const fromAddr = await this.getAddress();
     //Get account address
-    const fromPubKey = new web3.PublicKey(await this.getAddress());
+    const fromPubKey = new web3.PublicKey(fromAddr);
 
-    //Convert to address to Publickey
-    const toPubKey = new web3.PublicKey(toAddress);
+    //Convert toAddress to Publickey
+    const toPubKey = new web3.PublicKey(toAddr);
 
     const toAmount = amount * Math.pow(10, 9);
     // console.log('To Amount : ' , toAmount);
 
     const provider = new anchor.Provider(
       this._connection,
-      new anchor.Wallet(fromWallet),
       // @ts-ignore
+      new anchor.Wallet(fromKeyPair),
       opts
     );
     const program = new anchor.Program(IDL, programId, provider);
@@ -46,16 +47,16 @@ export default class SolanaProtocols extends SolanaAccount {
     // Add transaction for the required amount
     let rawTx = await program.rpc.transferNativeTokens(
       new anchor.BN(toAmount),
-      sourceBlockchain,
-      destinationBlockchain,
-      tokenTransferred,
+      srcChain,
+      dstChain,
+      token,
       {
         accounts: {
           from: fromPubKey,
           to: toPubKey,
           systemProgram: web3.SystemProgram.programId,
         },
-        signers: [fromWallet],
+        signers: [fromKeyPair],
       }
     );
 
@@ -64,13 +65,13 @@ export default class SolanaProtocols extends SolanaAccount {
   }
 
   async transferNonNativeToken(
-    fromWallet: web3.Keypair,
-    mint: web3.PublicKey,
     toAddress: string,
+    mint: web3.PublicKey,
     amount: number,
-    sourceBlockchain: string,
-    destinationBlockchain: string,
-    tokenTransferred: string
+    srcChain: string,
+    dstChain: string,
+    token: string,
+    fromKeyPair: web3.Keypair
   ): Promise<String> {
     //Convert to address to Publickey
     const toPubKey = new web3.PublicKey(toAddress);
@@ -81,21 +82,21 @@ export default class SolanaProtocols extends SolanaAccount {
     //Create a token account for the payer wallet
     const fromTokenAccount = await getOrCreateAssociatedTokenAccount(
       this._connection,
-      fromWallet,
+      fromKeyPair,
       mint,
-      fromWallet.publicKey
+      fromKeyPair.publicKey
     );
 
     const toTokenAccount = await getOrCreateAssociatedTokenAccount(
       this._connection,
-      fromWallet,
+      fromKeyPair,
       mint,
       toPubKey
     );
 
     const provider = new anchor.Provider(
       this._connection,
-      new anchor.Wallet(fromWallet),
+      new anchor.Wallet(fromKeyPair),
       // @ts-ignore
       opts
     );
@@ -104,9 +105,9 @@ export default class SolanaProtocols extends SolanaAccount {
     // Add transaction for the required amount
     const rawTx = await program.rpc.transferNonNativeTokens(
       new anchor.BN(amount),
-      sourceBlockchain,
-      destinationBlockchain,
-      tokenTransferred,
+      srcChain,
+      dstChain,
+      token,
       {
         accounts: {
           from: fromPubKey,
@@ -115,7 +116,7 @@ export default class SolanaProtocols extends SolanaAccount {
           mint: mint,
           tokenProgram: splToken.TOKEN_PROGRAM_ID,
         },
-        signers: [fromWallet],
+        signers: [fromKeyPair],
       }
     );
 
