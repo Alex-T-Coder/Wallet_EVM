@@ -4,6 +4,8 @@ import * as web3 from "@solana/web3.js";
 import * as anchor from "@project-serum/anchor";
 import { IDL } from "./dojima";
 import idl from "./idl.json";
+import { getOrCreateAssociatedTokenAccount } from "@solana/spl-token";
+import * as splToken from "@solana/spl-token";
 
 //Deployed solana program
 const programId = new web3.PublicKey(idl.metadata.address);
@@ -36,6 +38,7 @@ export default class SolanaProtocols extends SolanaAccount {
 
     const provider = new anchor.Provider(
       this._connection,
+      // @ts-ignore
       new anchor.Wallet(fromKeyPair),
       opts
     );
@@ -52,6 +55,66 @@ export default class SolanaProtocols extends SolanaAccount {
           from: fromPubKey,
           to: toPubKey,
           systemProgram: web3.SystemProgram.programId,
+        },
+        signers: [fromKeyPair],
+      }
+    );
+
+    await this._connection.confirmTransaction(rawTx);
+    return rawTx;
+  }
+
+  async transferNonNativeToken(
+    toAddress: string,
+    mint: web3.PublicKey,
+    amount: number,
+    srcChain: string,
+    dstChain: string,
+    token: string,
+    fromKeyPair: web3.Keypair
+  ): Promise<String> {
+    //Convert to address to Publickey
+    const toPubKey = new web3.PublicKey(toAddress);
+
+    //Get account address
+    const fromPubKey = new web3.PublicKey(await this.getAddress());
+
+    //Create a token account for the payer wallet
+    const fromTokenAccount = await getOrCreateAssociatedTokenAccount(
+      this._connection,
+      fromKeyPair,
+      mint,
+      fromKeyPair.publicKey
+    );
+
+    const toTokenAccount = await getOrCreateAssociatedTokenAccount(
+      this._connection,
+      fromKeyPair,
+      mint,
+      toPubKey
+    );
+
+    const provider = new anchor.Provider(
+      this._connection,
+      new anchor.Wallet(fromKeyPair),
+      // @ts-ignore
+      opts
+    );
+    const program = new anchor.Program(IDL, programId, provider);
+
+    // Add transaction for the required amount
+    const rawTx = await program.rpc.transferNonNativeTokens(
+      new anchor.BN(amount),
+      srcChain,
+      dstChain,
+      token,
+      {
+        accounts: {
+          from: fromPubKey,
+          fromTokenAccount: fromTokenAccount.address,
+          toTokenAccount: toTokenAccount.address,
+          mint: mint,
+          tokenProgram: splToken.TOKEN_PROGRAM_ID,
         },
         signers: [fromKeyPair],
       }
