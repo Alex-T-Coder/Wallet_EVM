@@ -85,6 +85,21 @@ export const contractData: {
     tokenSymbol: "UST",
     decimal: 18,
   },
+  COMPOUND_ETH: {
+    contractAddress: "0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5",
+    tokenSymbol: "cETH",
+    decimal: 8,
+  },
+  COMPOUND_DAI: {
+    contractAddress: "0x5d3a536e4d6dbd6114cc1ead35777bab948e3643",
+    tokenSymbol: "cDAI",
+    decimal: 8,
+  },
+  AAVE_ETH: {
+    contractAddress: "0x030bA81f1c18d280636F32af80b9AAd02Cf0854e",
+    tokenSymbol: "aWETH",
+    decimal: 18,
+  },
 };
 
 export type tokenList =
@@ -121,7 +136,10 @@ export type tokenSymbolList =
   | "VEN"
   | "WBTC"
   | "LUNA"
-  | "UST";
+  | "UST"
+  | "aWETH"
+  | "cDAI"
+  | "cETH";
 
 export const minABI = [
   {
