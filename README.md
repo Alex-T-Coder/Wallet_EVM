@@ -11,6 +11,8 @@ Below are the list of packages available:
 - @dojima-wallet/non-native
 - @dojima-wallet/history-tx
 - @dojima-wallet/prices
+- @dojima-wallet/eth-protocols
+- @dojima-wallet/solana-protocols
 
 ## Description
 
