@@ -65,7 +65,7 @@ export default class SolanaProtocols extends SolanaAccount {
   }
 
   async transferNonNativeToken(
-    toAddress: string,
+    toAddr: string,
     mint: web3.PublicKey,
     amount: number,
     srcChain: string,
@@ -74,20 +74,20 @@ export default class SolanaProtocols extends SolanaAccount {
     fromKeyPair: web3.Keypair
   ): Promise<String> {
     //Convert to address to Publickey
-    const toPubKey = new web3.PublicKey(toAddress);
+    const toPubKey = new web3.PublicKey(toAddr);
 
     //Get account address
     const fromPubKey = new web3.PublicKey(await this.getAddress());
 
     //Create a token account for the payer wallet
-    const fromTokenAccount = await getOrCreateAssociatedTokenAccount(
+    const fromTokenAcc = await getOrCreateAssociatedTokenAccount(
       this._connection,
       fromKeyPair,
       mint,
       fromKeyPair.publicKey
     );
 
-    const toTokenAccount = await getOrCreateAssociatedTokenAccount(
+    const toTokenAcc = await getOrCreateAssociatedTokenAccount(
       this._connection,
       fromKeyPair,
       mint,
@@ -97,7 +97,6 @@ export default class SolanaProtocols extends SolanaAccount {
     const provider = new anchor.Provider(
       this._connection,
       new anchor.Wallet(fromKeyPair),
-      // @ts-ignore
       opts
     );
     const program = new anchor.Program(IDL, programId, provider);
@@ -111,8 +110,8 @@ export default class SolanaProtocols extends SolanaAccount {
       {
         accounts: {
           from: fromPubKey,
-          fromTokenAccount: fromTokenAccount.address,
-          toTokenAccount: toTokenAccount.address,
+          fromTokenAccount: fromTokenAcc.address,
+          toTokenAccount: toTokenAcc.address,
           mint: mint,
           tokenProgram: splToken.TOKEN_PROGRAM_ID,
         },
