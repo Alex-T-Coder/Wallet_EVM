@@ -274,7 +274,7 @@ export default class CoinGecko {
             total_volume: totalVolumeResult,
           },
         ];
-        console.log(finalResult);
+        // console.log(finalResult);
         return finalResult;
       } else {
         console.log("Error retrieving data from API");

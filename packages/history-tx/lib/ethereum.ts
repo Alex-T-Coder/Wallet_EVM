@@ -60,7 +60,7 @@ export default class EthereumTransactions extends EthereumAccount {
       let response: TransactionHistoryResult = (await axios.get(requestUrl))
         .data;
       let result: EthTxDetailsResult[] = response.result;
-      console.log(result);
+      // console.log(result);
       return {
         txs: (result || []).map((res) => ({
           blockNumber: Number(res.blockNumber),
@@ -84,7 +84,7 @@ export default class EthereumTransactions extends EthereumAccount {
         })),
       };
     } catch (error) {
-      return new Error(error.message);
+      throw new Error(error.message);
     }
   }
 
@@ -137,7 +137,7 @@ export default class EthereumTransactions extends EthereumAccount {
         s: result.s,
       };
     } catch (error) {
-      return new Error(error.message);
+      throw new Error(error.message);
     }
   }
 }
