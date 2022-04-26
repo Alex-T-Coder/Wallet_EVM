@@ -13,6 +13,7 @@ Below are the list of packages available:
 - @dojima-wallet/prices
 - @dojima-wallet/eth-protocols
 - @dojima-wallet/solana-protocols
+- @dojima-wallet/utils
 
 ## Description
 
@@ -53,3 +54,7 @@ This package is used for interacting with dojima smart contract which interacts 
 ## Solana-protocols
 
 This package is used for interacting with dojima solana programs which interacts with solana famous protocols such as orca, radyium e.t.c
+
+## Utils
+
+This package contains utilities which requrired for other dojima wallet packages.
