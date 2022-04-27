@@ -14,6 +14,7 @@ Below are the list of packages available:
 - @dojima-wallet/eth-protocols
 - @dojima-wallet/solana-protocols
 - @dojima-wallet/utils
+- @dojima-wallet/security
 
 ## Description
 
@@ -58,3 +59,7 @@ This package is used for interacting with dojima solana programs which interacts
 ## Utils
 
 This package contains utilities which requrired for other dojima wallet packages.
+
+## Security
+
+This package helps in encode/decode the user seed data from local-storage.
