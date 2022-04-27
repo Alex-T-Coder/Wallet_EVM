@@ -91,44 +91,51 @@ export default class CoinGecko {
       if (response.status == 200) {
         let result: AssetsCurrentMarketDataResult[] = response.data;
         let finalResult: AssetsCurrentMarketDataResult[] = [];
-        (result || []).map((res) => {
-          const values = {
-            id: res.id,
-            symbol: res.symbol,
-            name: res.name,
-            image: res.image,
-            current_price: res.current_price,
-            market_cap: res.market_cap,
-            market_cap_rank: res.market_cap_rank,
-            fully_diluted_valuation: res.fully_diluted_valuation,
-            total_volume: res.total_volume,
-            high_24h: res.high_24h,
-            low_24h: res.low_24h,
-            price_change_24h: res.price_change_24h,
-            price_change_percentage_24h: res.price_change_percentage_24h,
-            market_cap_change_24h: res.market_cap_change_24h,
-            market_cap_change_percentage_24h:
-              res.market_cap_change_percentage_24h,
-            circulating_supply: res.circulating_supply,
-            total_supply: res.total_supply,
-            max_supply: res.max_supply,
-            ath: res.ath,
-            ath_change_percentage: res.ath_change_percentage,
-            ath_date: this.convertISOtoUTC(res.ath_date),
-            atl: res.atl,
-            atl_change_percentage: res.atl_change_percentage,
-            atl_date: this.convertISOtoUTC(res.atl_date),
-            roi: res.roi,
-            last_updated: this.convertISOtoUTC(res.last_updated),
-          };
-          finalResult.push(values);
-        });
+        if (result !== (null || undefined)) {
+          result.map((res) => {
+            const values = {
+              id: res.id,
+              symbol: res.symbol,
+              name: res.name,
+              image: res.image,
+              current_price: res.current_price,
+              market_cap: res.market_cap,
+              market_cap_rank: res.market_cap_rank,
+              fully_diluted_valuation: res.fully_diluted_valuation,
+              total_volume: res.total_volume,
+              high_24h: res.high_24h,
+              low_24h: res.low_24h,
+              price_change_24h: res.price_change_24h,
+              price_change_percentage_24h: res.price_change_percentage_24h,
+              market_cap_change_24h: res.market_cap_change_24h,
+              market_cap_change_percentage_24h:
+                res.market_cap_change_percentage_24h,
+              circulating_supply: res.circulating_supply,
+              total_supply: res.total_supply,
+              max_supply: res.max_supply,
+              ath: res.ath,
+              ath_change_percentage: res.ath_change_percentage,
+              ath_date: this.convertISOtoUTC(res.ath_date),
+              atl: res.atl,
+              atl_change_percentage: res.atl_change_percentage,
+              atl_date: this.convertISOtoUTC(res.atl_date),
+              roi: res.roi,
+              last_updated: this.convertISOtoUTC(res.last_updated),
+            };
+            finalResult.push(values);
+          });
+        }
         return finalResult;
       } else {
-        console.log("Error retrieving data from API");
+        console.log("Data is empty or unable to retrieve data");
       }
     } catch (error) {
-      console.log("Unexpected error", error);
+      if (error instanceof Error) {
+        // ✅ TypeScript knows err is Error
+        throw new Error(error.message);
+      } else {
+        console.log("Unexpected error", error);
+      }
     }
   }
 
@@ -142,7 +149,10 @@ export default class CoinGecko {
       if (response.status == 200) {
         let result: PriceHistoryDataByDate = response.data;
         let finalResult: PriceHistoryResult[] = [];
-        if (result.market_data !== null) {
+        if (
+          result !== (null || undefined) &&
+          result.market_data !== (null || undefined)
+        ) {
           const data = {
             current_price: result.market_data.current_price.usd,
             market_cap: result.market_data.market_cap.usd,
@@ -152,10 +162,15 @@ export default class CoinGecko {
         }
         return finalResult;
       } else {
-        console.log("Error retrieving data from API");
+        console.log("Data is empty or unable to retrieve data");
       }
     } catch (error) {
-      console.log("Unexpected error", error);
+      if (error instanceof Error) {
+        // ✅ TypeScript knows err is Error
+        throw new Error(error.message);
+      } else {
+        console.log("Unexpected error", error);
+      }
     }
   }
 
@@ -178,29 +193,37 @@ export default class CoinGecko {
       if (response.status == 200) {
         let result: PriceHistoryDataByDays = response.data;
         let pricesResult: DayPriceDataResult[] = [];
-        (result.prices || []).map((res: DayPriceData) => {
-          const data = {
-            date: this.convertTimestampToDate(res[0]),
-            price: res[1],
-          };
-          pricesResult.push(data);
-        });
         let marketCapResult: DayPriceDataResult[] = [];
-        (result.market_caps || []).map((res: DayPriceData) => {
-          const data = {
-            date: this.convertTimestampToDate(res[0]),
-            price: res[1],
-          };
-          marketCapResult.push(data);
-        });
         let totalVolumeResult: DayPriceDataResult[] = [];
-        (result.total_volumes || []).map((res: DayPriceData) => {
-          const data = {
-            date: this.convertTimestampToDate(res[0]),
-            price: res[1],
-          };
-          totalVolumeResult.push(data);
-        });
+        if (result !== (null || undefined)) {
+          if (result.prices !== (null || undefined)) {
+            result.prices.map((res: DayPriceData) => {
+              const data = {
+                date: this.convertTimestampToDate(res[0]),
+                price: res[1],
+              };
+              pricesResult.push(data);
+            });
+          }
+          if (result.market_caps !== (null || undefined)) {
+            result.market_caps.map((res: DayPriceData) => {
+              const data = {
+                date: this.convertTimestampToDate(res[0]),
+                price: res[1],
+              };
+              marketCapResult.push(data);
+            });
+          }
+          if (result.total_volumes !== (null || undefined)) {
+            result.total_volumes.map((res: DayPriceData) => {
+              const data = {
+                date: this.convertTimestampToDate(res[0]),
+                price: res[1],
+              };
+              totalVolumeResult.push(data);
+            });
+          }
+        }
         let finalResult: PriceHistoryDataByDaysResult[] = [];
         finalResult = [
           {
@@ -211,10 +234,15 @@ export default class CoinGecko {
         ];
         return finalResult;
       } else {
-        console.log("Error retrieving data from API");
+        console.log("Data is empty or unable to retrieve data");
       }
     } catch (error) {
-      console.log("Unexpected error", error);
+      if (error instanceof Error) {
+        // ✅ TypeScript knows err is Error
+        throw new Error(error.message);
+      } else {
+        console.log("Unexpected error", error);
+      }
     }
   }
 
@@ -243,29 +271,37 @@ export default class CoinGecko {
       if (response.status == 200) {
         let result: PriceHistoryDataByDays = response.data;
         let pricesResult: DayPriceDataResult[] = [];
-        (result.prices || []).map((res: DayPriceData) => {
-          const data = {
-            date: this.convertTimestampToDate(res[0]),
-            price: res[1],
-          };
-          pricesResult.push(data);
-        });
         let marketCapResult: DayPriceDataResult[] = [];
-        (result.market_caps || []).map((res: DayPriceData) => {
-          const data = {
-            date: this.convertTimestampToDate(res[0]),
-            price: res[1],
-          };
-          marketCapResult.push(data);
-        });
         let totalVolumeResult: DayPriceDataResult[] = [];
-        (result.total_volumes || []).map((res: DayPriceData) => {
-          const data = {
-            date: this.convertTimestampToDate(res[0]),
-            price: res[1],
-          };
-          totalVolumeResult.push(data);
-        });
+        if (result !== (null || undefined)) {
+          if (result.prices !== (null || undefined)) {
+            result.prices.map((res: DayPriceData) => {
+              const data = {
+                date: this.convertTimestampToDate(res[0]),
+                price: res[1],
+              };
+              pricesResult.push(data);
+            });
+          }
+          if (result.market_caps !== (null || undefined)) {
+            result.market_caps.map((res: DayPriceData) => {
+              const data = {
+                date: this.convertTimestampToDate(res[0]),
+                price: res[1],
+              };
+              marketCapResult.push(data);
+            });
+          }
+          if (result.total_volumes !== (null || undefined)) {
+            result.total_volumes.map((res: DayPriceData) => {
+              const data = {
+                date: this.convertTimestampToDate(res[0]),
+                price: res[1],
+              };
+              totalVolumeResult.push(data);
+            });
+          }
+        }
         let finalResult: PriceHistoryDataByDaysResult[] = [];
         finalResult = [
           {
@@ -277,10 +313,15 @@ export default class CoinGecko {
         // console.log(finalResult);
         return finalResult;
       } else {
-        console.log("Error retrieving data from API");
+        console.log("Data is empty or unable to retrieve data");
       }
     } catch (error) {
-      console.log("Unexpected error", error);
+      if (error instanceof Error) {
+        // ✅ TypeScript knows err is Error
+        throw new Error(error.message);
+      } else {
+        console.log("Unexpected error", error);
+      }
     }
   }
 }

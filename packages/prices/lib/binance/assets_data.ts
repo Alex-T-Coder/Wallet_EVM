@@ -17,15 +17,17 @@ export default class AssetsData extends BinanceClient {
       let response = await axios.get(requestApi);
       let result: LatestPricesResult[] = response.data;
       let finalResult: LatestPricesResult[] = [];
-      (result || []).map((res) => {
-        if (res.symbol.endsWith("USDT")) {
-          const data = {
-            symbol: res.symbol.slice(0, res.symbol.lastIndexOf("USDT")),
-            price: res.price,
-          };
-          finalResult.push(data);
-        }
-      });
+      if (result !== (null || undefined)) {
+        result.map((res) => {
+          if (res.symbol.endsWith("USDT")) {
+            const data = {
+              symbol: res.symbol.slice(0, res.symbol.lastIndexOf("USDT")),
+              price: res.price,
+            };
+            finalResult.push(data);
+          }
+        });
+      }
       return finalResult;
     } catch (error) {
       if (error instanceof Error) {
@@ -49,34 +51,36 @@ export default class AssetsData extends BinanceClient {
       let response = await axios.get(requestApi);
       let result: Last24HrResult[] = response.data;
       let finalResult: Last24HrResult[] = [];
-      (result || []).map((res) => {
-        if (res.symbol.endsWith("USDT")) {
-          const data = {
-            symbol: res.symbol.slice(0, res.symbol.lastIndexOf("USDT")),
-            priceChange: res.priceChange,
-            priceChangePercent: res.priceChangePercent,
-            weightedAvgPrice: res.weightedAvgPrice,
-            prevClosePrice: res.prevClosePrice,
-            lastPrice: res.lastPrice,
-            lastQty: res.lastQty,
-            bidPrice: res.bidPrice,
-            bidQty: res.bidQty,
-            askPrice: res.askPrice,
-            askQty: res.askQty,
-            openPrice: res.openPrice,
-            highPrice: res.highPrice,
-            lowPrice: res.lowPrice,
-            volume: res.volume,
-            quoteVolume: res.quoteVolume,
-            openTime: this.convertTimestampToDate(res.openTime as number),
-            closeTime: this.convertTimestampToDate(res.closeTime as number),
-            firstId: res.firstId,
-            lastId: res.lastId,
-            count: res.count,
-          };
-          finalResult.push(data);
-        }
-      });
+      if (result !== (null || undefined)) {
+        result.map((res) => {
+          if (res.symbol.endsWith("USDT")) {
+            const data = {
+              symbol: res.symbol.slice(0, res.symbol.lastIndexOf("USDT")),
+              priceChange: res.priceChange,
+              priceChangePercent: res.priceChangePercent,
+              weightedAvgPrice: res.weightedAvgPrice,
+              prevClosePrice: res.prevClosePrice,
+              lastPrice: res.lastPrice,
+              lastQty: res.lastQty,
+              bidPrice: res.bidPrice,
+              bidQty: res.bidQty,
+              askPrice: res.askPrice,
+              askQty: res.askQty,
+              openPrice: res.openPrice,
+              highPrice: res.highPrice,
+              lowPrice: res.lowPrice,
+              volume: res.volume,
+              quoteVolume: res.quoteVolume,
+              openTime: this.convertTimestampToDate(res.openTime as number),
+              closeTime: this.convertTimestampToDate(res.closeTime as number),
+              firstId: res.firstId,
+              lastId: res.lastId,
+              count: res.count,
+            };
+            finalResult.push(data);
+          }
+        });
+      }
       return finalResult;
     } catch (error) {
       if (error instanceof Error) {

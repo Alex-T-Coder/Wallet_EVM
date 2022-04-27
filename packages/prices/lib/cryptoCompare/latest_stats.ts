@@ -30,15 +30,24 @@ export default class CryptoCompare {
     try {
       let response = await axios.get(requestApi);
       let result: ResponseObject = response.data;
-      let data = result.Data;
-      let resStr = "";
-      for (let id in data) {
-        // resStr += ', ' + data[id].Symbol + ' : ' + data[id].CoinName;
-        resStr += '| "' + data[id].Symbol + '"';
+      if (result !== (null || undefined)) {
+        let data = result.Data;
+        let resStr = "";
+        for (let id in data) {
+          // resStr += ', ' + data[id].Symbol + ' : ' + data[id].CoinName;
+          resStr += '| "' + data[id].Symbol + '"';
+        }
+        return resStr;
+      } else {
+        console.log("Data is empty or unable to retrieve data");
       }
-      return resStr;
     } catch (error) {
-      console.log("Error retrieving data from API");
+      if (error instanceof Error) {
+        // ✅ TypeScript knows err is Error
+        throw new Error(error.message);
+      } else {
+        console.log("Unexpected error", error);
+      }
     }
   }
 
@@ -47,19 +56,28 @@ export default class CryptoCompare {
     try {
       let response = await axios.get(requestApi);
       let result: LatestDataResult = response.data;
-      if (result.Response === "Success") {
-        return result.Data;
-      } else if (
-        result.Response === "Error" &&
-        (result.Message.includes("does not exist") ||
-          result.Message.includes("not currently available"))
-      ) {
-        return "Data not available";
+      if (result !== (null || undefined)) {
+        if (result.Response === "Success") {
+          return result.Data;
+        } else if (
+          result.Response === "Error" &&
+          (result.Message.includes("does not exist") ||
+            result.Message.includes("not currently available"))
+        ) {
+          return "Data not available";
+        } else {
+          console.log("Error - response is not success");
+        }
       } else {
-        console.log("Error response: Not success");
+        console.log("Data is empty or unable to retrieve data");
       }
     } catch (error) {
-      console.log("Error retrieving data from API");
+      if (error instanceof Error) {
+        // ✅ TypeScript knows err is Error
+        throw new Error(error.message);
+      } else {
+        console.log("Unexpected error", error);
+      }
     }
   }
 }
