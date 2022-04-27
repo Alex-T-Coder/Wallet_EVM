@@ -13,7 +13,10 @@ export default class SolanaTransactions extends SolanaAccount {
       let txData = await this._connection.getTransaction(hash, {
         commitment: state ? state : "confirmed",
       });
-      if (txData !== null && txData.meta !== null) {
+      if (
+        txData !== (null || undefined) &&
+        txData.meta !== (null || undefined)
+      ) {
         let amount = txData.meta.postBalances[1] - txData.meta.preBalances[1];
         return {
           timeStamp: new Date(Number(txData.blockTime) * 1000),
@@ -27,7 +30,7 @@ export default class SolanaTransactions extends SolanaAccount {
           instructionData: txData.transaction.message.instructions[0].data,
         };
       } else {
-        console.log("Unable to retrieve data");
+        console.log("Data is empty or unable to retrieve data");
       }
     } catch (error) {
       if (error instanceof Error) {

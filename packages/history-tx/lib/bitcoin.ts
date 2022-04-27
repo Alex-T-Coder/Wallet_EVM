@@ -24,7 +24,12 @@ export default class BitcoinTransactions extends BitcoinClient {
       return transactions;
     } catch (error) {
       //   console.log("No transactions found");
-      throw new Error(error.message);
+      if (error instanceof Error) {
+        // ✅ TypeScript knows err is Error
+        throw new Error(error.message);
+      } else {
+        console.log("Unexpected error", error);
+      }
     }
   }
 
@@ -34,7 +39,12 @@ export default class BitcoinTransactions extends BitcoinClient {
       //   console.log(txData);
       return txData;
     } catch (error) {
-      throw new Error(error.message);
+      if (error instanceof Error) {
+        // ✅ TypeScript knows err is Error
+        throw new Error(error.message);
+      } else {
+        console.log("Unexpected error", error);
+      }
     }
   }
 }

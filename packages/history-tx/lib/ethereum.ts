@@ -61,30 +61,39 @@ export default class EthereumTransactions extends EthereumAccount {
         .data;
       let result: EthTxDetailsResult[] = response.result;
       // console.log(result);
-      return {
-        txs: (result || []).map((res) => ({
-          blockNumber: Number(res.blockNumber),
-          timeStamp: new Date(Number(res.timeStamp) * 1000),
-          hash: res.hash,
-          nonce: Number(res.nonce),
-          blockHash: res.blockHash,
-          transactionIndex: Number(res.transactionIndex),
-          from: res.from,
-          to: res.to,
-          value: Number(res.value) / Math.pow(10, 18),
-          gas: res.gas,
-          gasPrice: Number(res.gasPrice) / Math.pow(10, 18),
-          isError: res.isError,
-          txreceipt_status: res.txreceipt_status,
-          input: res.input,
-          contractAddress: res.contractAddress,
-          cumulativeGasUsed: res.cumulativeGasUsed,
-          gasUsed: res.gasUsed,
-          confirmations: Number(res.confirmations),
-        })),
-      };
+      if (result !== (null || undefined)) {
+        return {
+          txs: result.map((res) => ({
+            blockNumber: Number(res.blockNumber),
+            timeStamp: new Date(Number(res.timeStamp) * 1000),
+            hash: res.hash,
+            nonce: Number(res.nonce),
+            blockHash: res.blockHash,
+            transactionIndex: Number(res.transactionIndex),
+            from: res.from,
+            to: res.to,
+            value: Number(res.value) / Math.pow(10, 18),
+            gas: res.gas,
+            gasPrice: Number(res.gasPrice) / Math.pow(10, 18),
+            isError: res.isError,
+            txreceipt_status: res.txreceipt_status,
+            input: res.input,
+            contractAddress: res.contractAddress,
+            cumulativeGasUsed: res.cumulativeGasUsed,
+            gasUsed: res.gasUsed,
+            confirmations: Number(res.confirmations),
+          })),
+        };
+      } else {
+        console.log("Data is empty or unable to retrieve data");
+      }
     } catch (error) {
-      throw new Error(error.message);
+      if (error instanceof Error) {
+        // ✅ TypeScript knows err is Error
+        throw new Error(error.message);
+      } else {
+        console.log("Unexpected error", error);
+      }
     }
   }
 
@@ -114,30 +123,40 @@ export default class EthereumTransactions extends EthereumAccount {
         await axios.get(requestUrl)
       ).data;
       let result: EthTxHashDataResult = response.result;
-      return {
-        blockHash: result.blockHash,
-        blockNumber: this.convertHexToInt(this.remove0x(result.blockNumber)),
-        from: this.remove0x(result.from),
-        gas: this.convertHexToInt(this.remove0x(result.gas)),
-        gasPrice:
-          this.convertHexToInt(this.remove0x(result.gasPrice)) /
-          Math.pow(10, 18),
-        hash: result.hash,
-        input: this.remove0x(result.input),
-        nonce: this.convertHexToInt(this.remove0x(result.nonce)),
-        to: this.remove0x(result.to),
-        transactionIndex: this.convertHexToInt(
-          this.remove0x(result.transactionIndex)
-        ),
-        value:
-          this.convertHexToInt(this.remove0x(result.value)) / Math.pow(10, 18),
-        type: this.remove0x(result.type),
-        v: result.v,
-        r: result.r,
-        s: result.s,
-      };
+      if (result !== (null || undefined)) {
+        return {
+          blockHash: result.blockHash,
+          blockNumber: this.convertHexToInt(this.remove0x(result.blockNumber)),
+          from: this.remove0x(result.from),
+          gas: this.convertHexToInt(this.remove0x(result.gas)),
+          gasPrice:
+            this.convertHexToInt(this.remove0x(result.gasPrice)) /
+            Math.pow(10, 18),
+          hash: result.hash,
+          input: this.remove0x(result.input),
+          nonce: this.convertHexToInt(this.remove0x(result.nonce)),
+          to: this.remove0x(result.to),
+          transactionIndex: this.convertHexToInt(
+            this.remove0x(result.transactionIndex)
+          ),
+          value:
+            this.convertHexToInt(this.remove0x(result.value)) /
+            Math.pow(10, 18),
+          type: this.remove0x(result.type),
+          v: result.v,
+          r: result.r,
+          s: result.s,
+        };
+      } else {
+        console.log("Data is empty or unable to retrieve data");
+      }
     } catch (error) {
-      throw new Error(error.message);
+      if (error instanceof Error) {
+        // ✅ TypeScript knows err is Error
+        throw new Error(error.message);
+      } else {
+        console.log("Unexpected error", error);
+      }
     }
   }
 }
