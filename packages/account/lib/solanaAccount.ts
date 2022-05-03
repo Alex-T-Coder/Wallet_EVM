@@ -1,7 +1,7 @@
 import nacl from "tweetnacl";
 import * as bip39 from "bip39";
 import * as bip32 from "bip32";
-import { Account } from "@solana/web3.js";
+import { Account, Keypair } from "@solana/web3.js";
 import { derivePath } from "ed25519-hd-key";
 import { SolanaConnection } from "@dojima-wallet/connection";
 import { NetworkType } from "@dojima-wallet/types";
@@ -88,9 +88,10 @@ export default class SolanaAccount extends SolanaConnection {
     return accounts;
   }
 
-  async getKeypair(): Promise<Account> {
+  async getKeypair(): Promise<Keypair> {
     const account = await this.solAcc();
-    const keypair = account[0];
+    const key = account[0];
+    const keypair = Keypair.fromSecretKey(key.secretKey);
     return keypair;
   }
 

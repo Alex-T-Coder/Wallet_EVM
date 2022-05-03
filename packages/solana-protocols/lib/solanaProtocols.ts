@@ -38,7 +38,6 @@ export default class SolanaProtocols extends SolanaAccount {
 
     const provider = new anchor.Provider(
       this._connection,
-      // @ts-ignore
       new anchor.Wallet(fromKeyPair),
       opts
     );
