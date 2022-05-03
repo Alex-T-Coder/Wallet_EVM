@@ -9,6 +9,7 @@ import {
   TxHistoryParams,
 } from "./utils/types";
 import axios from "axios";
+import moment from "moment";
 
 export default class EthereumTransactions extends EthereumAccount {
   _api: string;
@@ -19,6 +20,33 @@ export default class EthereumTransactions extends EthereumAccount {
     } else if (network === "testnet") {
       this._api = "https://api-ropsten.etherscan.io/api";
     }
+  }
+
+  convertDateToTimestamp(date: string) {
+    const timestamp = moment(date).format("X"); // lowercase 'x' for timestamp in milliseconds
+    return Number(timestamp);
+  }
+
+  convertTimestampToDate(timestamp: number) {
+    const date = moment(timestamp).toDate().toUTCString();
+    return date;
+  }
+
+  convertISOtoUTC(date: string) {
+    const utcDate = new Date(date).toUTCString();
+    return utcDate;
+  }
+
+  remove0x(string: string) {
+    if (string.startsWith("0x")) {
+      const removed0xString = string.substring(2);
+      return removed0xString;
+    }
+  }
+
+  convertHexToInt(hexValue: string) {
+    const intValue = parseInt(hexValue, 16);
+    return intValue;
   }
 
   async getTransactionsHistory(params: TxHistoryParams) {
@@ -57,56 +85,46 @@ export default class EthereumTransactions extends EthereumAccount {
     }
 
     try {
-      let response: TransactionHistoryResult = (await axios.get(requestUrl))
-        .data;
-      let result: EthTxDetailsResult[] = response.result;
-      // console.log(result);
-      if (result !== (null || undefined)) {
-        return {
-          txs: result.map((res) => ({
-            blockNumber: Number(res.blockNumber),
-            timeStamp: new Date(Number(res.timeStamp) * 1000),
-            hash: res.hash,
-            nonce: Number(res.nonce),
-            blockHash: res.blockHash,
-            transactionIndex: Number(res.transactionIndex),
-            from: res.from,
-            to: res.to,
-            value: Number(res.value) / Math.pow(10, 18),
-            gas: res.gas,
-            gasPrice: Number(res.gasPrice) / Math.pow(10, 18),
-            isError: res.isError,
-            txreceipt_status: res.txreceipt_status,
-            input: res.input,
-            contractAddress: res.contractAddress,
-            cumulativeGasUsed: res.cumulativeGasUsed,
-            gasUsed: res.gasUsed,
-            confirmations: Number(res.confirmations),
-          })),
-        };
+      let response: TransactionHistoryResult = await (
+        await axios.get(requestUrl)
+      ).data;
+      if (response.status === "1") {
+        let result: EthTxDetailsResult[] = response.result;
+        if (result !== (null || undefined)) {
+          console.log(params.address);
+          return {
+            txs: result.map((res) => ({
+              block: Number(res.blockNumber),
+              date: moment(
+                this.convertISOtoUTC(
+                  this.convertTimestampToDate(Number(res.timeStamp) * 1000)
+                )
+              ).format("DD/MM/YYYY"),
+              time: moment(
+                this.convertISOtoUTC(
+                  this.convertTimestampToDate(Number(res.timeStamp) * 1000)
+                )
+              ).format("HH:mm:ss"),
+              transaction_hash: res.hash,
+              contract_address: res.contractAddress,
+              value: Number(res.value) / Math.pow(10, 18),
+              gas_price: (Number(res.gasPrice) / Math.pow(10, 18)).toFixed(9),
+              from: res.from,
+              transaction_type:
+                res.from === params.address.toLowerCase()
+                  ? "Send | ETH"
+                  : "Receive | ETH",
+            })),
+          };
+        } else {
+          return null;
+        }
       } else {
-        console.log("Data is empty or unable to retrieve data");
+        return null;
       }
     } catch (error) {
-      if (error instanceof Error) {
-        // ✅ TypeScript knows err is Error
-        throw new Error(error.message);
-      } else {
-        console.log("Unexpected error", error);
-      }
+      throw new Error("Something went wrong");
     }
-  }
-
-  remove0x(string: string) {
-    if (string.startsWith("0x")) {
-      const removed0xString = string.substring(2);
-      return removed0xString;
-    }
-  }
-
-  convertHexToInt(hexValue: string) {
-    const intValue = parseInt(hexValue, 16);
-    return intValue;
   }
 
   async getTransactionData(params: TxHashDataParams) {
@@ -124,23 +142,70 @@ export default class EthereumTransactions extends EthereumAccount {
       ).data;
       let result: EthTxHashDataResult = response.result;
       if (result !== (null || undefined)) {
+        let etherGasPrice = Number(
+          this.convertHexToInt(this.remove0x(result.gasPrice as string)) /
+            Math.pow(10, 18)
+        ).toFixed(18);
+        let gweiGasPrice = Number(
+          Number(etherGasPrice) * Math.pow(10, 9)
+        ).toFixed(9);
+        let type = this.remove0x(result.type);
+        return {
+          block: this.convertHexToInt(
+            this.remove0x(result.blockNumber as string)
+          ),
+          from: this.remove0x(result.from),
+          to: this.remove0x(result.to),
+          gas: this.convertHexToInt(this.remove0x(result.gas as string)),
+          gas_price: `${etherGasPrice} Ether (${gweiGasPrice} Gwei)`,
+          transaction_hash: result.hash,
+          value:
+            this.convertHexToInt(this.remove0x(result.value as string)) /
+            Math.pow(10, 18),
+          status:
+            type === "0" ? "Success" : type === "1" ? "Pending" : "Failed",
+        };
+      } else {
+        return null;
+      }
+    } catch (error) {
+      throw new Error("Something went wrong");
+    }
+  }
+  async getDetailTransactionData(params: TxHashDataParams) {
+    let requestUrl = `${this._api}?module=proxy&action=eth_getTransactionByHash`;
+    if (params.hash) {
+      requestUrl += `&txhash=${params.hash}`;
+    }
+    if (params.apiKey) {
+      requestUrl += `&api=${params.apiKey}`;
+    }
+
+    try {
+      let response: TransactionHashDataResult = await (
+        await axios.get(requestUrl)
+      ).data;
+      let result: EthTxHashDataResult = response.result;
+      if (result !== (null || undefined)) {
         return {
           blockHash: result.blockHash,
-          blockNumber: this.convertHexToInt(this.remove0x(result.blockNumber)),
+          blockNumber: this.convertHexToInt(
+            this.remove0x(result.blockNumber as string)
+          ),
           from: this.remove0x(result.from),
-          gas: this.convertHexToInt(this.remove0x(result.gas)),
+          gas: this.convertHexToInt(this.remove0x(result.gas as string)),
           gasPrice:
-            this.convertHexToInt(this.remove0x(result.gasPrice)) /
+            this.convertHexToInt(this.remove0x(result.gasPrice as string)) /
             Math.pow(10, 18),
           hash: result.hash,
           input: this.remove0x(result.input),
-          nonce: this.convertHexToInt(this.remove0x(result.nonce)),
+          nonce: this.convertHexToInt(this.remove0x(result.nonce as string)),
           to: this.remove0x(result.to),
           transactionIndex: this.convertHexToInt(
-            this.remove0x(result.transactionIndex)
+            this.remove0x(result.transactionIndex as string)
           ),
           value:
-            this.convertHexToInt(this.remove0x(result.value)) /
+            this.convertHexToInt(this.remove0x(result.value as string)) /
             Math.pow(10, 18),
           type: this.remove0x(result.type),
           v: result.v,
@@ -148,15 +213,10 @@ export default class EthereumTransactions extends EthereumAccount {
           s: result.s,
         };
       } else {
-        console.log("Data is empty or unable to retrieve data");
+        return null;
       }
     } catch (error) {
-      if (error instanceof Error) {
-        // ✅ TypeScript knows err is Error
-        throw new Error(error.message);
-      } else {
-        console.log("Unexpected error", error);
-      }
+      throw new Error("Something went wrong");
     }
   }
 }

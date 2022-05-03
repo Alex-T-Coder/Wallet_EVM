@@ -10,6 +10,60 @@ export type ActionType =
   | "getminedblocks"
   | "eth_getTransactionByHash";
 
+export type BtcTxHistoryParams = {
+  address: string;
+  startIndex?: number;
+  limit?: number;
+};
+
+export type BtcTxHistoryBlockObject = {
+  height: number;
+  position: number;
+};
+
+export type BtcTxHistoryResult = {
+  txid: string;
+  block: BtcTxHistoryBlockObject;
+};
+
+export type BtcTxDataInputObject = {
+  coinbase: boolean;
+  txid: string;
+  output: number;
+  sigscript: string;
+  sequence: number;
+  pkscript: string;
+  value: number;
+  address: string;
+  witness: [];
+};
+
+export type BtcTxDataOutputObject = {
+  address: string;
+  pkscript: string;
+  value: number;
+  spent: boolean;
+  spender: {
+    txid: string;
+    input: number;
+  } | null;
+};
+
+export type BtcTxDataResult = {
+  txid: string;
+  size: number;
+  version: number;
+  locktime: number;
+  fee: number;
+  inputs: BtcTxDataInputObject[];
+  outputs: BtcTxDataOutputObject[];
+  block: BtcTxHistoryBlockObject;
+  deleted: boolean;
+  time: number;
+  rbf: boolean;
+  weight: number;
+};
+
 export type TxHistoryParams = {
   apiKey: string;
   address: string;
