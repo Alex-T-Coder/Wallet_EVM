@@ -38,7 +38,7 @@
   "dependencies": {
     "@dojima-wallet/account": "^0.0.1-alpha.12",
     "@dojima-wallet/types": "^0.0.1-alpha.4",
-    "@solana/web3.js": "^1.35.1",
+    "@solana/web3.js": "^1.41.4",
     "@xchainjs/xchain-bitcoin": "^0.18.0-alpha.2",
     "@xchainjs/xchain-client": "^0.11.1",
     "@xchainjs/xchain-crypto": "^0.2.6",
