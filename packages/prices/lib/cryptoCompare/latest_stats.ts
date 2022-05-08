@@ -59,7 +59,7 @@ export default class CryptoCompare {
           (result.Message.includes("does not exist") ||
             result.Message.includes("not currently available"))
         ) {
-          return "Data not available";
+          return null;
         } else {
           return null;
         }
