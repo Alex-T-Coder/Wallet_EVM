@@ -4,6 +4,7 @@ import { AssetsIdList } from "./utils/assetIds";
 import { CurrencyList, DisplayOrderList } from "./utils/lists";
 import {
   AssetsCurrentMarketDataResult,
+  AssetsDetailedCurrentMarketDataResult,
   DayPriceData,
   DayPriceDataResult,
   PriceHistoryDataByDate,
@@ -56,7 +57,9 @@ export default class CoinGecko {
   // 'resCurrency' - target currency of market data (usd, eur, jpy, etc.)
   // 'sortOrder' - Order of result display . Default 'market_cap_desc'
   // 'valuesPerPage' - Total results per page: 1 - 250
-  async getAssestsCurrentMarketData(options?: CurrentMarketDataOptions) {
+  async getDetailedAssestsCurrentMarketData(
+    options?: CurrentMarketDataOptions
+  ) {
     let requestApi = `${this.api}/coins/markets`;
     if (options !== undefined && options.resCurrency) {
       requestApi += `?vs_currency=${options.resCurrency}`;
@@ -64,11 +67,7 @@ export default class CoinGecko {
       requestApi += `?vs_currency=usd`;
     }
     if (options !== undefined && options.assets) {
-      let assetString = "";
-      if (options.assets.length >= 1) {
-        assetString = options.assets.join(",");
-      }
-      requestApi += `&ids=${assetString}`;
+      requestApi += `&ids=${options.assets}`;
     }
     if (options !== undefined && options.sortOrder) {
       requestApi += `&order=${options.sortOrder}`;
@@ -89,9 +88,9 @@ export default class CoinGecko {
     try {
       let response = await axios.get(requestApi);
       if (response.status == 200) {
-        let result: AssetsCurrentMarketDataResult[] = response.data;
-        let finalResult: AssetsCurrentMarketDataResult[] = [];
+        let result: AssetsDetailedCurrentMarketDataResult[] = response.data;
         if (result !== (null || undefined)) {
+          let finalResult: AssetsDetailedCurrentMarketDataResult[] = [];
           result.map((res) => {
             const values = {
               id: res.id,
@@ -124,18 +123,72 @@ export default class CoinGecko {
             };
             finalResult.push(values);
           });
+          return finalResult;
+        } else {
+          return null;
         }
-        return finalResult;
       } else {
-        console.log("Data is empty or unable to retrieve data");
+        return null;
       }
     } catch (error) {
-      if (error instanceof Error) {
-        // ✅ TypeScript knows err is Error
-        throw new Error(error.message);
+      throw new Error("Something went wrong");
+    }
+  }
+
+  async getAssestsCurrentMarketData(options?: CurrentMarketDataOptions) {
+    let requestApi = `${this.api}/coins/markets`;
+    if (options !== undefined && options.resCurrency) {
+      requestApi += `?vs_currency=${options.resCurrency}`;
+    } else {
+      requestApi += `?vs_currency=usd`;
+    }
+    if (options !== undefined && options.assets) {
+      requestApi += `&ids=${options.assets}`;
+    }
+    if (options !== undefined && options.sortOrder) {
+      requestApi += `&order=${options.sortOrder}`;
+    } else {
+      requestApi += `&order=market_cap_desc`;
+    }
+    if (options !== undefined && options.valuesPerPage) {
+      requestApi += `&per_page=${options.valuesPerPage}`;
+    } else {
+      requestApi += `&per_page=250`;
+    }
+    if (options !== undefined && options.page) {
+      requestApi += `&page=${options.page}`;
+    } else {
+      requestApi += `&page=1`;
+    }
+
+    try {
+      let response = await axios.get(requestApi);
+      if (response.status == 200) {
+        let result: AssetsDetailedCurrentMarketDataResult = response.data[0];
+        if (result !== (null || undefined)) {
+          const finalResult: AssetsCurrentMarketDataResult = {
+            current_price: result.current_price,
+            market_cap: result.market_cap,
+            total_volume: result.total_volume,
+            circulating_supply: result.circulating_supply,
+            total_supply: result.total_supply,
+            max_supply: result.max_supply,
+            ath: result.ath,
+            ath_change_percentage: result.ath_change_percentage,
+            ath_date: this.convertISOtoUTC(result.ath_date),
+            atl: result.atl,
+            atl_change_percentage: result.atl_change_percentage,
+            atl_date: this.convertISOtoUTC(result.atl_date),
+          };
+          return finalResult;
+        } else {
+          return null;
+        }
       } else {
-        console.log("Unexpected error", error);
+        return null;
       }
+    } catch (error) {
+      throw new Error("Something went wrong");
     }
   }
 
@@ -162,15 +215,10 @@ export default class CoinGecko {
         }
         return finalResult;
       } else {
-        console.log("Data is empty or unable to retrieve data");
+        return null;
       }
     } catch (error) {
-      if (error instanceof Error) {
-        // ✅ TypeScript knows err is Error
-        throw new Error(error.message);
-      } else {
-        console.log("Unexpected error", error);
-      }
+      throw new Error("Something went wrong");
     }
   }
 
@@ -234,15 +282,10 @@ export default class CoinGecko {
         ];
         return finalResult;
       } else {
-        console.log("Data is empty or unable to retrieve data");
+        return null;
       }
     } catch (error) {
-      if (error instanceof Error) {
-        // ✅ TypeScript knows err is Error
-        throw new Error(error.message);
-      } else {
-        console.log("Unexpected error", error);
-      }
+      throw new Error("Something went wrong");
     }
   }
 
@@ -313,15 +356,10 @@ export default class CoinGecko {
         // console.log(finalResult);
         return finalResult;
       } else {
-        console.log("Data is empty or unable to retrieve data");
+        return null;
       }
     } catch (error) {
-      if (error instanceof Error) {
-        // ✅ TypeScript knows err is Error
-        throw new Error(error.message);
-      } else {
-        console.log("Unexpected error", error);
-      }
+      throw new Error("Something went wrong");
     }
   }
 }

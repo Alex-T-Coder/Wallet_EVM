@@ -39,15 +39,10 @@ export default class CryptoCompare {
         }
         return resStr;
       } else {
-        console.log("Data is empty or unable to retrieve data");
+        return null;
       }
     } catch (error) {
-      if (error instanceof Error) {
-        // ✅ TypeScript knows err is Error
-        throw new Error(error.message);
-      } else {
-        console.log("Unexpected error", error);
-      }
+      throw new Error("Something went wrong");
     }
   }
 
@@ -66,18 +61,13 @@ export default class CryptoCompare {
         ) {
           return "Data not available";
         } else {
-          console.log("Error - response is not success");
+          return null;
         }
       } else {
-        console.log("Data is empty or unable to retrieve data");
+        return null;
       }
     } catch (error) {
-      if (error instanceof Error) {
-        // ✅ TypeScript knows err is Error
-        throw new Error(error.message);
-      } else {
-        console.log("Unexpected error", error);
-      }
+      throw new Error("Something went wrong");
     }
   }
 }

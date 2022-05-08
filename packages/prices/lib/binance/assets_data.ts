@@ -30,12 +30,7 @@ export default class AssetsData extends BinanceClient {
       }
       return finalResult;
     } catch (error) {
-      if (error instanceof Error) {
-        // ✅ TypeScript knows err is Error
-        throw new Error(error.message);
-      } else {
-        console.log("Unexpected error", error);
-      }
+      throw new Error("Something went wrong");
     }
   }
 
@@ -83,12 +78,7 @@ export default class AssetsData extends BinanceClient {
       }
       return finalResult;
     } catch (error) {
-      if (error instanceof Error) {
-        // ✅ TypeScript knows err is Error
-        throw new Error(error.message);
-      } else {
-        console.log("Unexpected error", error);
-      }
+      throw new Error("Something went wrong");
     }
   }
 }

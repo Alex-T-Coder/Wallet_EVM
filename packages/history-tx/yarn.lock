@@ -9,14 +9,14 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@dojima-wallet/account@^0.0.1-alpha.12":
-  version "0.0.1-alpha.12"
-  resolved "https://registry.yarnpkg.com/@dojima-wallet/account/-/account-0.0.1-alpha.12.tgz#d78529b0109513ea8538a579c38f65680fed6131"
-  integrity sha512-eFuF7G7JZZuftDdnrNDrxybpUIzTF+sFUjMOlGijRvpVNRd8jr5MbeMRS/WHMmuPyOcHROSwn8XOCbvEXsp6Ag==
+"@dojima-wallet/account@^0.0.1-alpha.13":
+  version "0.0.1-alpha.13"
+  resolved "https://registry.yarnpkg.com/@dojima-wallet/account/-/account-0.0.1-alpha.13.tgz#a2eb2d3c91676c9229cc58e6e2db64b54b2fe286"
+  integrity sha512-ExJ1E4RIz5FACDakWwQKMTtapbIYlU4D3pg8m7OhXl52m4sMMCAkXlAWYlzd3iGeNZqZJWVUiWeeGyPlYBhFyQ==
   dependencies:
-    "@dojima-wallet/connection" "^0.0.1-alpha.12"
+    "@dojima-wallet/connection" "^0.0.1-alpha.13"
     "@dojima-wallet/types" "^0.0.1-alpha.4"
-    "@solana/web3.js" "^1.34.0"
+    "@solana/web3.js" "^1.41.4"
     "@xchainjs/xchain-crypto" "^0.2.6"
     arweave "^1.10.23"
     arweave-mnemonic-keys "^0.0.9"
@@ -27,13 +27,13 @@
     ethereumjs-wallet "^1.0.2"
     tiny-secp256k1 "^2.2.0"
 
-"@dojima-wallet/connection@^0.0.1-alpha.12":
-  version "0.0.1-alpha.12"
-  resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.12.tgz#17b468018a25562af8e880c3df1385d1ff7f3ee2"
-  integrity sha512-lXiBuF/J/tmTKUjv5rP3gbfpXkIgsj8Hget5YpDjglQLSXdW3ClDk3QLFKba4Zjwc3WFOL9vhPnNRhZ9lXsNnA==
+"@dojima-wallet/connection@^0.0.1-alpha.13":
+  version "0.0.1-alpha.13"
+  resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.13.tgz#4e75204ebf13b4b4f595c330a55418ef0eac6c26"
+  integrity sha512-OAXes2Sy/zPFcsihQ0jOcx++k+WoVQv5UenTCHQJa7RiOrsN7LXuCG0dJo3cqavxWcoRLWlJ6sfrcEWuQGB5jA==
   dependencies:
     "@dojima-wallet/types" "^0.0.1-alpha.4"
-    "@solana/web3.js" "^1.36.0"
+    "@solana/web3.js" "^1.41.4"
     "@xchainjs/xchain-bitcoin" "^0.18.0-alpha.2"
     "@xchainjs/xchain-client" "^0.11.1"
     "@xchainjs/xchain-crypto" "^0.2.6"
@@ -331,7 +331,7 @@
   dependencies:
     buffer "~6.0.3"
 
-"@solana/web3.js@^1.32.0", "@solana/web3.js@^1.34.0", "@solana/web3.js@^1.36.0":
+"@solana/web3.js@^1.32.0", "@solana/web3.js@^1.41.4":
   version "1.41.4"
   resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.41.4.tgz#595aa29a4a61c181b8c8f5cf0bbef80b4739cfab"
   integrity sha512-2/mjqUcGsBkLEvKxA+rWFE1vODBycAMa62r3wm3Uzb6nmsXQQNTotB+6YoeLQmF0mxVoy8ZA+/QENzBkGkPzSg==
