@@ -44,6 +44,7 @@
     "@dojima-wallet/types": "^0.0.1-alpha.4",
     "arweave": "^1.10.23",
     "axios": "^0.26.1",
+    "lodash": "^4.17.21",
     "moment": "^2.29.3"
   }
 }

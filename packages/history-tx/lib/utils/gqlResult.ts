@@ -63,3 +63,29 @@ export default interface GQLResultInterface {
     transactions: GQLTransactionsResultInterface;
   };
 }
+
+export interface ArTxDataResult {
+  timestamp: number;
+  outer: {
+    transaction_hash: string;
+    block: string;
+    from: string;
+    to: string;
+    value: string;
+    gas_price: string;
+    date: string;
+    time: string;
+  };
+  inner: {
+    transaction_hash: string;
+    block: string;
+    from: string;
+    to: string;
+    value: string;
+    gas_price: string;
+    date: string;
+    time: string;
+    signature: string;
+    block_hash: string;
+  };
+}
