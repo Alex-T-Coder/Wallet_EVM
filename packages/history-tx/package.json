@@ -1,6 +1,6 @@
 {
   "name": "@dojima-wallet/history-tx",
-  "version": "0.0.1-alpha.15",
+  "version": "0.0.1-alpha.16",
   "description": "Retrieve transactions history using address and transaction data based on hash",
   "keywords": [
     "history",
