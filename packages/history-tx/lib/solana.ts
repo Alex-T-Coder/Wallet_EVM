@@ -131,7 +131,9 @@ export default class SolanaTransactions extends SolanaAccount {
           })),
         };
       } else {
-        return null;
+        return {
+          txs: [],
+        };
       }
     } catch (error) {
       throw new Error("Something went wrong");

@@ -117,7 +117,9 @@ export default class EthereumTransactions extends EthereumAccount {
             })),
           };
         } else {
-          return null;
+          return {
+            txs: [],
+          };
         }
       } else {
         return null;
