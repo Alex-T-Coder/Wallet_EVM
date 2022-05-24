@@ -1,6 +1,6 @@
 {
   "name": "@dojima-wallet/security",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "description": "generate encrypted data and decrypt the same data with password",
   "keywords": [
     "keystore",
