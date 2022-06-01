@@ -1,6 +1,6 @@
 {
   "name": "@dojima-wallet/prices",
-  "version": "0.0.1-alpha.10",
+  "version": "0.0.1-alpha.11",
   "description": "prices for various crypto assets",
   "keywords": [
     "liveprices",
