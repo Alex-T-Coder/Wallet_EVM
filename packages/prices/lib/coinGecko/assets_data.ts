@@ -13,7 +13,7 @@ import {
   PriceHistoryResult,
 } from "./utils/types";
 
-interface CurrentMarketDataOptions {
+export interface CurrentMarketDataOptions {
   assets?: string;
   resCurrency?: CurrencyList;
   sortOrder?: DisplayOrderList;
