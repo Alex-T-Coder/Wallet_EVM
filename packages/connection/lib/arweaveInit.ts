@@ -2,12 +2,10 @@ import Arweave from "arweave";
 import { NetworkType } from "@dojima-wallet/types";
 
 export default class ArweaveInitialise {
-  _mnemonic: string;
   _network: NetworkType;
   public _arweave: Arweave;
 
-  constructor(mnemonic: string, network: NetworkType) {
-    this._mnemonic = mnemonic;
+  constructor(network: NetworkType) {
     this._network = network;
     if (this._network === "testnet" || this._network === "devnet") {
       // Testnet

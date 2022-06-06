@@ -3,22 +3,18 @@ import { getKeyFromMnemonic } from "arweave-mnemonic-keys";
 import { ArweaveInitialise } from "@dojima-wallet/connection";
 
 export default class ArweaveAccount extends ArweaveInitialise {
-  constructor(mnemonic: string, network: NetworkType) {
-    super(mnemonic, network);
+  constructor(network: NetworkType) {
+    super(network);
   }
 
-  async getAddress(): Promise<string> {
-    const keyPair = await getKeyFromMnemonic(this._mnemonic);
-    const address = await this._arweave.wallets.jwkToAddress(keyPair);
+  async getAddress(mnemonic: string): Promise<string> {
+    // Get 'public address' from Seed phrase
+    const key = await getKeyFromMnemonic(mnemonic);
+    const address = await this._arweave.wallets.jwkToAddress(key);
     return address;
   }
 
-  async mintArTokens() {
-    const pvtKey = await getKeyFromMnemonic(this._mnemonic);
-    // console.log('Pvt key is : ' + pvtKey);
-    const pubAddress = await this._arweave.wallets.jwkToAddress(pvtKey);
-    // console.log('Pub Address is : ' + pubAddress);
-
+  async mintArTokens(pubAddress: string) {
     // testnet tokens in winston
     const test_ar_amount = 5000000000000;
 

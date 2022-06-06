@@ -4,23 +4,18 @@ import { ArweaveAccount } from "@dojima-wallet/account";
 import Transaction from "arweave/node/lib/transaction";
 
 export default class ArweaveChain extends ArweaveAccount {
+  _mnemonic: string;
   constructor(mnemonic: string, network: NetworkType) {
-    super(mnemonic, network);
+    super(network);
+    this._mnemonic = mnemonic;
   }
 
-  async getBalance(): Promise<number> {
-    const pvtKey = await getKeyFromMnemonic(this._mnemonic);
-    // console.log('Pvt key is : ' + pvtKey);
-    const pubAddress = await this._arweave.wallets.jwkToAddress(pvtKey);
-    // console.log('Pub Address is : ' + pubAddress);
-
-    // Get balance
+  async getBalance(pubAddress: string): Promise<number> {
+    // Get Winston balance of an account using public address
     let wnstBalance = await this._arweave.wallets.getBalance(pubAddress);
-    // console.log("Winston balance is : ", wnstBalance);
 
     // Convert balance from Winston to Ar. (1 Ar = 10^12)
     const arBalance = this._arweave.ar.winstonToAr(wnstBalance);
-    // console.log("Ar balance is : ", arBalance);
 
     return Number(arBalance);
   }
@@ -31,8 +26,6 @@ export default class ArweaveChain extends ArweaveAccount {
     amount: number
   ): Promise<Transaction> {
     const pvtKey = await getKeyFromMnemonic(this._mnemonic);
-    // const pubAddress = await this._arweave.wallets.jwkToAddress(pvtKey);
-    // console.log('Pub Address is : ' + pubAddress);
 
     // Create transaction
     const rawTx = await this._arweave.createTransaction(
@@ -66,16 +59,13 @@ export default class ArweaveChain extends ArweaveAccount {
   // Sign and Send the transaction
   async signAndSend(rawTx: Transaction) {
     const pvtKey = await getKeyFromMnemonic(this._mnemonic);
-    // const pubAddress = await this._arweave.wallets.jwkToAddress(pvtKey);
 
     // Sign transaction and retreive status
     await this._arweave.transactions.sign(rawTx, pvtKey);
     const status = await this._arweave.transactions.post(rawTx);
     await this._arweave.api.get("/mine");
-    // console.log("transfer status", status);
 
     if (status.status == 200) {
-      // console.log('Transaction Hash / Id is : ' + transaction.id);
       // Get status data using transaction hash / id
       // const statusData = await arweave.transactions.getStatus(rawTx.id);
 
@@ -83,7 +73,7 @@ export default class ArweaveChain extends ArweaveAccount {
 
       return rawTx.id;
     } else {
-      console.log(
+      throw new Error(
         "Error in status: Posting the transaction into arweave transactions"
       );
     }

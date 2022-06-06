@@ -1,29 +1,25 @@
-import { ArweaveAccount } from "@dojima-wallet/account";
 import { NetworkType } from "@dojima-wallet/types";
 import Arweave from "arweave";
 import GQLResultInterface, {
   ArTxDataResult,
+  ArTxsResult,
   GQLTransactionsResultInterface,
   InnerDataResult,
   OuterDataResult,
+  ReqVariables,
 } from "./utils/gqlResult";
 import moment from "moment";
 import _ from "lodash";
 import Transaction from "arweave/node/lib/transaction";
+import { ArweaveInitialise } from "@dojima-wallet/connection";
 
-export interface ReqVariables {
-  ownersFilter: Array<string>;
-  first: number;
-  after?: string;
-}
-
-export default class ArweaveTxs extends ArweaveAccount {
+export default class ArweaveTxs extends ArweaveInitialise {
   ownerHasNextPage: boolean | undefined;
   recipientHasNextPage: boolean | undefined;
   ownerCursor: string;
   recipientCursor: string;
-  constructor(mnemonic: string, network: NetworkType) {
-    super(mnemonic, network);
+  constructor(network: NetworkType) {
+    super(network);
     this.ownerHasNextPage = undefined;
     this.recipientHasNextPage = undefined;
     this.ownerCursor = "";
@@ -62,13 +58,16 @@ export default class ArweaveTxs extends ArweaveAccount {
   async getTransactionData(hash: string) {
     const tx: Transaction = await this._arweave.transactions.get(hash);
     if (tx !== null) {
-      return {
+      const fromAddress = await this._arweave.wallets.ownerToAddress(tx.owner);
+      const resultData: ArTxDataResult = {
         transaction_hash: tx.id,
+        from: fromAddress,
         to: tx.target,
         value: Number(tx.quantity) / Math.pow(10, 12),
         gas_price: (Number(tx.reward) / Math.pow(10, 12)).toFixed(12),
         signature: tx.signature,
       };
+      return resultData;
     } else {
       return null;
     }
@@ -106,7 +105,7 @@ export default class ArweaveTxs extends ArweaveAccount {
     let txs: GQLTransactionsResultInterface;
     let outerTxsData: OuterDataResult[] = [];
     let innerTxsData: InnerDataResult[] = [];
-    let txsDataFinal: ArTxDataResult = {
+    let txsDataFinal: ArTxsResult = {
       outer: outerTxsData,
       inner: innerTxsData,
     };
