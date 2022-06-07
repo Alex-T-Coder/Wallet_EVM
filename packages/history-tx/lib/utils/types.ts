@@ -131,8 +131,8 @@ export type TransactionHashDataResult = {
   result: EthTxHashDataResult;
 };
 
-export type SolTxDataResult = {
-  timeStamp: Date;
+export interface SolTxDataResult {
+  timeStamp: number;
   gasFee: number;
   amount: number;
   status: string;
@@ -141,11 +141,22 @@ export type SolTxDataResult = {
   to: string;
   recentBlockHash: string;
   instructionData: string;
-};
+}
 
-export type SolTxHistoryParams = {
+export interface SolTxHistoryParams {
   address: string;
   offset?: number;
   beforeHash?: string;
   untilHash?: string;
-};
+}
+
+export interface SolTxsArrayType {
+  transaction_hash: string;
+  block: number;
+  date: string;
+  time: string;
+}
+
+export interface SolTxsResult {
+  txs: Array<SolTxsArrayType>;
+}

@@ -1,15 +1,22 @@
 import { SolanaAccount } from "@dojima-wallet/account";
 import { NetworkType } from "@dojima-wallet/types";
-import * as web3 from "@solana/web3.js";
+import {
+  PublicKey,
+  sendAndConfirmTransaction,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 
 export default class SolanaChain extends SolanaAccount {
+  _mnemonic: string;
   constructor(mnemonic: string, network: NetworkType) {
-    super(mnemonic, network);
+    super(network);
+    this._mnemonic = mnemonic;
   }
 
-  async getBalance(): Promise<number> {
+  async getBalance(pubAddress: string): Promise<number> {
     // Get account details
-    const pubKey = new web3.PublicKey(await this.getAddress());
+    const pubKey = new PublicKey(pubAddress);
 
     // Retrieve user token balance
     let balance = await this._connection.getBalance(pubKey);
@@ -43,19 +50,19 @@ export default class SolanaChain extends SolanaAccount {
   async createTransaction(
     toAddress: string,
     amount: number
-  ): Promise<web3.Transaction> {
+  ): Promise<Transaction> {
     // Get account address
-    const pubKey = new web3.PublicKey(await this.getAddress());
+    const pubKey = new PublicKey(await this.getAddress(this._mnemonic));
 
     // Convert toAddress string to PublicKey
-    const to = new web3.PublicKey(toAddress);
+    const to = new PublicKey(toAddress);
 
     const toAmount = Math.floor(amount * Math.pow(10, 9));
     // console.log('To Amount : ' , toAmount);
 
     // Add transaction for the required amount
-    let rawTx = new web3.Transaction().add(
-      web3.SystemProgram.transfer({
+    let rawTx = new Transaction().add(
+      SystemProgram.transfer({
         fromPubkey: pubKey,
         toPubkey: to,
         lamports: toAmount,
@@ -65,16 +72,14 @@ export default class SolanaChain extends SolanaAccount {
     return rawTx;
   }
 
-  async signAndSend(rawTx: web3.Transaction): Promise<string> {
+  async signAndSend(rawTx: Transaction): Promise<string> {
     // Get account details
-    const account = await this.getKeypair();
+    const account = await this.getKeypair(this._mnemonic);
 
     // Sign the transaction
-    let signature = await web3.sendAndConfirmTransaction(
-      this._connection,
-      rawTx,
-      [account[0]]
-    );
+    let signature = await sendAndConfirmTransaction(this._connection, rawTx, [
+      account[0],
+    ]);
 
     return signature;
   }
