@@ -1,8 +1,9 @@
-import { EthereumAccount } from "@dojima-wallet/account";
 import { NetworkType } from "@dojima-wallet/types";
 import {
+  EthTxDataResult,
   EthTxDetailsResult,
   EthTxHashDataResult,
+  EthTxsResult,
   TransactionHashDataResult,
   TransactionHistoryResult,
   TxHashDataParams,
@@ -10,16 +11,11 @@ import {
 } from "./utils/types";
 import axios from "axios";
 import moment from "moment";
+import { EthereumWeb3 } from "@dojima-wallet/connection";
 
-export default class EthereumTransactions extends EthereumAccount {
-  _api: string;
-  constructor(mnemonic: string, network: NetworkType) {
-    super(mnemonic, network);
-    if (network === "mainnet" || network === "devnet") {
-      this._api = "https://api.etherscan.io/api";
-    } else if (network === "testnet") {
-      this._api = "https://api-ropsten.etherscan.io/api";
-    }
+export default class EthereumTransactions extends EthereumWeb3 {
+  constructor(network: NetworkType) {
+    super(network);
   }
 
   convertDateToTimestamp(date: string) {
@@ -91,7 +87,7 @@ export default class EthereumTransactions extends EthereumAccount {
       if (response.status === "1") {
         let result: EthTxDetailsResult[] = response.result;
         if (result !== (null || undefined)) {
-          return {
+          const resultTxs: EthTxsResult = {
             txs: result.map((res) => ({
               block: Number(res.blockNumber),
               date: moment(
@@ -116,6 +112,7 @@ export default class EthereumTransactions extends EthereumAccount {
                   : "Receive | ETH",
             })),
           };
+          return resultTxs;
         } else {
           return {
             txs: [],
@@ -144,6 +141,7 @@ export default class EthereumTransactions extends EthereumAccount {
       ).data;
       let result: EthTxHashDataResult = response.result;
       if (result !== (null || undefined)) {
+        let tx_type = "";
         let etherGasPrice = Number(
           this.convertHexToInt(this.remove0x(result.gasPrice as string)) /
             Math.pow(10, 18)
@@ -152,10 +150,16 @@ export default class EthereumTransactions extends EthereumAccount {
           Number(etherGasPrice) * Math.pow(10, 9)
         ).toFixed(9);
         let type = this.remove0x(result.type);
+        if (result.from === params.address) {
+          tx_type = "Send | SOL";
+        } else {
+          tx_type = "Receive | SOL";
+        }
         return {
           block: this.convertHexToInt(
             this.remove0x(result.blockNumber as string)
           ),
+          transaction_type: tx_type,
           from: this.remove0x(result.from),
           to: this.remove0x(result.to),
           gas: this.convertHexToInt(this.remove0x(result.gas as string)),
@@ -189,7 +193,7 @@ export default class EthereumTransactions extends EthereumAccount {
       ).data;
       let result: EthTxHashDataResult = response.result;
       if (result !== (null || undefined)) {
-        return {
+        const resultData: EthTxDataResult = {
           blockHash: result.blockHash,
           blockNumber: this.convertHexToInt(
             this.remove0x(result.blockNumber as string)
@@ -214,6 +218,7 @@ export default class EthereumTransactions extends EthereumAccount {
           r: result.r,
           s: result.s,
         };
+        return resultData;
       } else {
         return null;
       }
