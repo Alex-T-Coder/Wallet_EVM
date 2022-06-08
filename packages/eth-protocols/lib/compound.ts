@@ -7,14 +7,15 @@ import { AbiItem } from "web3-utils";
 export default class Compound extends EthereumAccount {
   contract;
   contractAddress: string;
+  fromAddress: string;
 
   constructor(
     token: tokenList,
     contract: string,
-    mnemonic: string,
+    fromAddress: string,
     network: NetworkType
   ) {
-    super(mnemonic, network);
+    super(network);
     this.contractAddress = contractData[`${token}`].contractAddress;
     this.contract = new this._web3.eth.Contract(
       abi[contract],
@@ -24,7 +25,7 @@ export default class Compound extends EthereumAccount {
 
   async redeem(cTokenAmount: number): Promise<any> {
     let result = this.contract.methods.redeem(cTokenAmount).send({
-      from: this.getAddress(),
+      from: this.fromAddress,
     });
 
     return result;
@@ -32,7 +33,7 @@ export default class Compound extends EthereumAccount {
 
   async supplyETH(amount: number): Promise<any> {
     let result = this.contract.methods.mint().send({
-      from: this.getAddress(),
+      from: this.fromAddress,
       value: amount,
     });
 
@@ -46,11 +47,11 @@ export default class Compound extends EthereumAccount {
     );
 
     underlying.methods.approve(this.contractAddress, amount).call({
-      from: this.getAddress(),
+      from: this.fromAddress,
     });
 
     let result = this.contract.methods.mint(amount).send({
-      from: this.getAddress(),
+      from: this.fromAddress,
     });
 
     return result;

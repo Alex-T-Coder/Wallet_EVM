@@ -7,11 +7,19 @@ import {
   SolTxHistoryParams,
   SolTxsResult,
   SolTxDataResult,
+  EthTxDataResult,
+  EthTxsResult,
+  TxHashDataParams,
+  TxHistoryParams,
 } from "./utils/types";
 
 export {
   ArTxDataResult,
   ArTxsResult,
+  TxHistoryParams,
+  EthTxsResult,
+  TxHashDataParams,
+  EthTxDataResult,
   SolTxHistoryParams,
   SolTxsResult,
   SolTxDataResult,

@@ -6,13 +6,15 @@ import { AbiItem } from "web3-utils";
 import { abi } from "./abi/Compound_abi";
 
 export default class Aave extends EthereumAccount {
+  fromAddress: string;
   constructor(
     token: tokenList,
     contract: string,
-    mnemonic: string,
+    fromAddress: string,
     network: NetworkType
   ) {
-    super(mnemonic, network);
+    super(network);
+    this.fromAddress = fromAddress;
   }
 
   async depositET(
@@ -29,9 +31,9 @@ export default class Aave extends EthereumAccount {
     );
 
     let result = contract.methods
-      .depositETH(lendingPoolAddress, this.getAddress(), 0)
+      .depositETH(lendingPoolAddress, this.fromAddress, 0)
       .send({
-        from: this.getAddress(),
+        from: this.fromAddress,
         value: amount,
       });
 
@@ -48,12 +50,12 @@ export default class Aave extends EthereumAccount {
       contractData.AAVE_ETH.contractAddress
     );
 
-    aWETHToken.methods.allowance(this.getAddress(), wETHGatewayAddress).call({
-      from: this.getAddress(),
+    aWETHToken.methods.allowance(this.fromAddress, wETHGatewayAddress).call({
+      from: this.fromAddress,
     });
 
     aWETHToken.methods.approve(wETHGatewayAddress, amount).call({
-      from: this.getAddress(),
+      from: this.fromAddress,
     });
 
     const contract = new this._web3.eth.Contract(
@@ -62,9 +64,9 @@ export default class Aave extends EthereumAccount {
     );
 
     let result = contract.methods
-      .withdrawETH(lendingPoolAddress, amount, this.getAddress(), 0)
+      .withdrawETH(lendingPoolAddress, amount, this.fromAddress, 0)
       .send({
-        from: this.getAddress(),
+        from: this.fromAddress,
         value: amount,
       });
 
@@ -82,12 +84,12 @@ export default class Aave extends EthereumAccount {
       underlyingAssetAddress
     );
 
-    underlying.methods.allowance(this.getAddress(), lendingPoolAddress).call({
-      from: this.getAddress(),
+    underlying.methods.allowance(this.fromAddress, lendingPoolAddress).call({
+      from: this.fromAddress,
     });
 
     underlying.methods.approve(lendingPoolAddress, amount).call({
-      from: this.getAddress(),
+      from: this.fromAddress,
     });
 
     const contract = new this._web3.eth.Contract(
@@ -96,9 +98,9 @@ export default class Aave extends EthereumAccount {
     );
 
     let result = contract.methods
-      .deposit(underlyingAssetAddress, amount, this.getAddress(), 0)
+      .deposit(underlyingAssetAddress, amount, this.fromAddress, 0)
       .send({
-        from: this.getAddress(),
+        from: this.fromAddress,
       });
 
     return result;
@@ -116,9 +118,9 @@ export default class Aave extends EthereumAccount {
     );
 
     let result = contract.methods
-      .withdraw(underlyingAssetAddress, amount, this.getAddress())
+      .withdraw(underlyingAssetAddress, amount, this.fromAddress)
       .send({
-        from: this.getAddress(),
+        from: this.fromAddress,
       });
 
     return result;

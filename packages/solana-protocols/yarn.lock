@@ -9,7 +9,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@dojima-wallet/account@^0.0.1-alpha.11":
+"@dojima-wallet/account@^0.0.1-alpha.15":
   version "0.0.1-alpha.15"
   resolved "https://registry.yarnpkg.com/@dojima-wallet/account/-/account-0.0.1-alpha.15.tgz#a51b228bf3193f683e33678febc3aa9cf06d0743"
   integrity sha512-qfE5dWFeo0d1JFe//ov1Ng0bB3+s6JzoLt2gaokHXgaqm5Jh/YLj9t9qt9ScKfibJyOR6BARMTL2keSdkSt7sg==
@@ -27,7 +27,7 @@
     ethereumjs-wallet "^1.0.2"
     tiny-secp256k1 "^2.2.0"
 
-"@dojima-wallet/connection@^0.0.1-alpha.12", "@dojima-wallet/connection@^0.0.1-alpha.17":
+"@dojima-wallet/connection@^0.0.1-alpha.17":
   version "0.0.1-alpha.17"
   resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.17.tgz#79a0355525bd3a1e4df3f0edf8976285b6f3424b"
   integrity sha512-s/VdMqTeyxnHhOBziP1ZY3OJzTwer3tMkfaXnfB+bE95ro2yH1gDVrXBP6XdbAZT7vT7WdiNwO5Lr1uhaWrDrg==
