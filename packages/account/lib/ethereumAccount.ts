@@ -12,4 +12,14 @@ export default class EthereumAccount extends EthereumWeb3 {
     const address = account.address;
     return address;
   }
+
+  async getBalance(pubAddress: string): Promise<number> {
+    const gweiBalance = await this._web3.eth.getBalance(pubAddress);
+    // Results balance in gwei, 1 eth = 10^9 gwei(1,000,000,000)
+
+    const ethBalance = this._web3.utils.fromWei(gweiBalance);
+    // Results balance in gwei, 1 eth = 10^9 gwei(1,000,000,000)
+
+    return Number(ethBalance);
+  }
 }

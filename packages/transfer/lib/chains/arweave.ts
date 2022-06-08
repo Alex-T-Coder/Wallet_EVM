@@ -10,16 +10,6 @@ export default class ArweaveChain extends ArweaveAccount {
     this._mnemonic = mnemonic;
   }
 
-  async getBalance(pubAddress: string): Promise<number> {
-    // Get Winston balance of an account using public address
-    let wnstBalance = await this._arweave.wallets.getBalance(pubAddress);
-
-    // Convert balance from Winston to Ar. (1 Ar = 10^12)
-    const arBalance = this._arweave.ar.winstonToAr(wnstBalance);
-
-    return Number(arBalance);
-  }
-
   // Create transaction based on user inputs
   async createTransaction(
     toAddress: string,

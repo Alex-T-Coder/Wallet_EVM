@@ -11,16 +11,6 @@ export default class EthereumChain extends EthereumAccount {
     this._mnemonic = mnemonic;
   }
 
-  async getBalance(pubAddress: string): Promise<number> {
-    const gweiBalance = await this._web3.eth.getBalance(pubAddress);
-    // Results balance in gwei, 1 eth = 10^9 gwei(1,000,000,000)
-
-    const ethBalance = this._web3.utils.fromWei(gweiBalance);
-    // Results balance in gwei, 1 eth = 10^9 gwei(1,000,000,000)
-
-    return Number(ethBalance);
-  }
-
   // Calculate 'gasFee' based on multiplier
   calculateFee(baseGasFee: number, multiplier: number): number {
     const fee = new BigNumber(baseGasFee)

@@ -1,6 +1,6 @@
 import * as bip39 from "bip39";
 import * as web3 from "@solana/web3.js";
-import { Keypair } from "@solana/web3.js";
+import { Keypair, PublicKey } from "@solana/web3.js";
 import { derivePath } from "ed25519-hd-key";
 import { SolanaConnection } from "@dojima-wallet/connection";
 import { NetworkType } from "@dojima-wallet/types";
@@ -27,5 +27,15 @@ export default class SolanaAccount extends SolanaConnection {
     const keypair = await this.getKeypair(mnemonic);
     const address = keypair[0].publicKey.toBase58();
     return address;
+  }
+
+  async getBalance(pubAddress: string): Promise<number> {
+    // Get account details
+    const pubKey = new PublicKey(pubAddress);
+
+    // Retrieve user token balance
+    let balance = await this._connection.getBalance(pubKey);
+    balance = balance / Math.pow(10, 9);
+    return balance;
   }
 }

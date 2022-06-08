@@ -14,16 +14,6 @@ export default class SolanaChain extends SolanaAccount {
     this._mnemonic = mnemonic;
   }
 
-  async getBalance(pubAddress: string): Promise<number> {
-    // Get account details
-    const pubKey = new PublicKey(pubAddress);
-
-    // Retrieve user token balance
-    let balance = await this._connection.getBalance(pubKey);
-    balance = balance / Math.pow(10, 9);
-    return balance;
-  }
-
   // Get recent block hash for calculating gas fee
   async getRecentBlockHash() {
     const blockHash = await this._connection.getRecentBlockhash();
