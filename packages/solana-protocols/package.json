@@ -1,6 +1,6 @@
 {
   "name": "@dojima-wallet/solana-protocols",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "description": "interaction with solana programs to lock, unlock, send solana, solana program library tokens send to dojima chain or other layer1 blockchains",
   "keywords": [
     "solana",
@@ -41,7 +41,7 @@
   "dependencies": {
     "@dojima-wallet/connection": "^0.0.1-alpha.17",
     "@dojima-wallet/types": "^0.0.1-alpha.4",
-    "@dojima-wallet/account": "^0.0.1-alpha.15",
+    "@dojima-wallet/account": "^0.0.1-alpha.16",
     "@project-serum/anchor": "^0.23.0",
     "@solana/spl-token": "^0.2.0"
   }

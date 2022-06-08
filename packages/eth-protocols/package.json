@@ -1,6 +1,6 @@
 {
   "name": "@dojima-wallet/eth-protocols",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "description": "allows to interact with famous protocols like curve, uniswap, sushiswap and withdraw funds from protocols to lock in dojima contract to swap tokens between different blockchains.",
   "keywords": [
     "protocol",
@@ -39,8 +39,8 @@
     "url": "https://github.com/dojimanetwork/wallet-js/issues"
   },
   "dependencies": {
-    "@dojima-wallet/account": "^0.0.1-alpha.15",
-    "@dojima-wallet/non-native": "^0.0.1-alpha.8",
+    "@dojima-wallet/account": "^0.0.1-alpha.16",
+    "@dojima-wallet/non-native": "^0.0.1-alpha.10",
     "@dojima-wallet/types": "^0.0.1-alpha.4",
     "web3-utils": "1.7.1"
   }
