@@ -15,7 +15,7 @@ const opts: web3.ConfirmOptions = {
 
 export default class SolanaProtocols extends SolanaAccount {
   constructor(mnemonic: string, network: NetworkType) {
-    super(mnemonic, network);
+    super(network);
   }
 
   async transferNativeToken(
@@ -24,9 +24,9 @@ export default class SolanaProtocols extends SolanaAccount {
     srcChain: string,
     dstChain: string,
     token: string,
-    fromKeyPair: web3.Keypair //TODO: Need to add this in solana accounts package.
+    fromKeyPair: web3.Keypair, //TODO: Need to add this in solana accounts package.
+    fromAddr: string
   ): Promise<String> {
-    const fromAddr = await this.getAddress();
     //Get account address
     const fromPubKey = new web3.PublicKey(fromAddr);
 
@@ -70,13 +70,14 @@ export default class SolanaProtocols extends SolanaAccount {
     srcChain: string,
     dstChain: string,
     token: string,
-    fromKeyPair: web3.Keypair
+    fromKeyPair: web3.Keypair,
+    fromAddr: string
   ): Promise<String> {
     //Convert to address to Publickey
     const toPubKey = new web3.PublicKey(toAddr);
 
     //Get account address
-    const fromPubKey = new web3.PublicKey(await this.getAddress());
+    const fromPubKey = new web3.PublicKey(fromAddr);
 
     //Create a token account for the payer wallet
     const fromTokenAcc = await getOrCreateAssociatedTokenAccount(

@@ -1,6 +1,6 @@
 {
   "name": "@dojima-wallet/non-native",
-  "version": "0.0.1-alpha.8",
+  "version": "0.0.1-alpha.9",
   "description": "package for non-native tokens functionality",
   "keywords": [
     "balance",
@@ -38,7 +38,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@dojima-wallet/account": "^0.0.1-alpha.11",
+    "@dojima-wallet/account": "^0.0.1-alpha.15",
     "web3-utils": "1.7.1"
   }
 }
