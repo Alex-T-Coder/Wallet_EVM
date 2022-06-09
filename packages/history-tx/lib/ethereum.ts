@@ -126,13 +126,13 @@ export default class EthereumTransactions extends EthereumWeb3 {
     }
   }
 
-  async getTransactionData(params: TxHashDataParams) {
+  async getTransactionData(hash: string, apiKey: string, address: string) {
     let requestUrl = `${this._api}?module=proxy&action=eth_getTransactionByHash`;
-    if (params.hash) {
-      requestUrl += `&txhash=${params.hash}`;
+    if (hash) {
+      requestUrl += `&txhash=${hash}`;
     }
-    if (params.apiKey) {
-      requestUrl += `&api=${params.apiKey}`;
+    if (apiKey) {
+      requestUrl += `&api=${apiKey}`;
     }
 
     try {
@@ -150,7 +150,7 @@ export default class EthereumTransactions extends EthereumWeb3 {
           Number(etherGasPrice) * Math.pow(10, 9)
         ).toFixed(9);
         let type = this.remove0x(result.type);
-        if (result.from === params.address) {
+        if (result.from === address) {
           tx_type = "Send | SOL";
         } else {
           tx_type = "Receive | SOL";

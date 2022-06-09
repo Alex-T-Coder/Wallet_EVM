@@ -145,7 +145,6 @@ export type TransactionHistoryResult = {
 export type TxHashDataParams = {
   hash: string;
   apiKey: string;
-  address: string;
 };
 
 export type EthTxHashDataResult = {

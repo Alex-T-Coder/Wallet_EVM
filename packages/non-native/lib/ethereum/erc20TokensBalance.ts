@@ -8,7 +8,7 @@ export default class Erc20TokenBalance extends EthereumAccount {
     super(network);
   }
 
-  async getBalance(
+  async getErc20Balance(
     token: tokenList,
     walletAddress: string
   ): Promise<BalanceResult> {
