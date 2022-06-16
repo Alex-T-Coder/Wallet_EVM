@@ -37,10 +37,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@dojima-wallet/connection": "^0.0.1-alpha.17",
+    "@dojima-wallet/connection": "^0.0.1-alpha.20",
     "@dojima-wallet/types": "^0.0.1-alpha.4",
     "@solana/web3.js": "^1.41.4",
-    "@xchainjs/xchain-crypto": "^0.2.6",
     "arweave": "^1.10.23",
     "arweave-mnemonic-keys": "^0.0.9",
     "bip32": "^2.0.5",

@@ -9,19 +9,17 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@dojima-wallet/connection@^0.0.1-alpha.17":
-  version "0.0.1-alpha.18"
-  resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.18.tgz#d71c05f827f6441c9cc10cfb8a225a00c6ae3c76"
-  integrity sha512-h/9cpyXH5swReZXg2ApfOFP80wkHm4pkTcW2HB8PapBp3dNMyIrFmgOiETiMtDwEbuTwZf0YBMciQWSVHRC5zQ==
+"@dojima-wallet/connection@^0.0.1-alpha.20":
+  version "0.0.1-alpha.20"
+  resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.20.tgz#0f864c6eeba99b4a426d619dfa5ab18db6550652"
+  integrity sha512-T1Cbya4XOgPpWVUbTpAS5U5U6nKNbeVACzErL0hZIw7Xg6bP/3fABQuZwlp0nGeiqwvctpf1KKM8g+C2Kd9EVg==
   dependencies:
     "@dojima-wallet/types" "^0.0.1-alpha.4"
     "@solana/web3.js" "^1.41.4"
-    "@xchainjs/xchain-bitcoin" "^0.18.0-alpha.2"
-    "@xchainjs/xchain-client" "^0.11.1"
-    "@xchainjs/xchain-crypto" "^0.2.6"
     arweave "^1.10.23"
     arweave-mnemonic-keys "^0.0.9"
     bip32 "^2.0.5"
+    coinselect "^3.1.13"
     ecpair "^2.0.1"
     web3 "^1.7.1"
 
@@ -424,16 +422,6 @@
   integrity sha512-JQbbmxZTZehdc2iszGKs5oC3NFnjeay7mtAWrdt7qNtAVK0g19muApzAy4bm9byz79xa2ZnO/BOBC2R8RC5Lww==
   dependencies:
     "@types/node" "*"
-
-"@xchainjs/xchain-bitcoin@^0.18.0-alpha.2":
-  version "0.18.2"
-  resolved "https://registry.yarnpkg.com/@xchainjs/xchain-bitcoin/-/xchain-bitcoin-0.18.2.tgz#cea4b37604787062d515849c6c7b3bbc11180abd"
-  integrity sha512-iHphumDgOa5ex3frSRrgYUkfgGLlpaMHB5EbaJqSwHIt/rPBfvJ5lfddw2pFOv01C8w/JsZkFIyMeHcAeq918g==
-
-"@xchainjs/xchain-client@^0.11.1":
-  version "0.11.3"
-  resolved "https://registry.yarnpkg.com/@xchainjs/xchain-client/-/xchain-client-0.11.3.tgz#9c76d27d287eae4d9e9bd623290c0fb95dfc56e9"
-  integrity sha512-wdL2kKUi/07RXQHGVp8yzsJvo75hBVlqr44xfp5PY7fAOhckQhbTSgfDfEFjyI+udpno8FDgZ2UwoZODO2kJMA==
 
 "@xchainjs/xchain-crypto@^0.2.6":
   version "0.2.6"
@@ -907,6 +895,11 @@ clone-response@^1.0.2:
   integrity sha512-yjLXh88P599UOyPTFX0POsd7WxnbsVsGohcwzHOLspIhhpalPw1BcqED8NblyZLKcGrL8dTgMlcaZxV2jAD41Q==
   dependencies:
     mimic-response "^1.0.0"
+
+coinselect@^3.1.13:
+  version "3.1.13"
+  resolved "https://registry.yarnpkg.com/coinselect/-/coinselect-3.1.13.tgz#b88c7f9659ed4891d1f1d0c894105b1c10ef89a1"
+  integrity sha512-iJOrKH/7N9gX0jRkxgOHuGjvzvoxUMSeylDhH1sHn+CjLjdin5R0Hz2WEBu/jrZV5OrHcm+6DMzxwu9zb5mSZg==
 
 combined-stream@^1.0.6, combined-stream@^1.0.8, combined-stream@~1.0.6:
   version "1.0.8"

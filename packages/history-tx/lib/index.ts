@@ -11,11 +11,17 @@ import {
   EthTxsResult,
   TxHashDataParams,
   TxHistoryParams,
+  BtcTxDataResult,
+  BtcTxsResult,
+  BtcTxHistoryParams,
 } from "./utils/types";
 
 export {
   ArTxDataResult,
   ArTxsResult,
+  BtcTxHistoryParams,
+  BtcTxsResult,
+  BtcTxDataResult,
   TxHistoryParams,
   EthTxsResult,
   TxHashDataParams,
