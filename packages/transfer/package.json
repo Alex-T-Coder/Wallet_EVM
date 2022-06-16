@@ -1,6 +1,6 @@
 {
   "name": "@dojima-wallet/transfer",
-  "version": "0.0.1-alpha.19",
+  "version": "0.0.1-alpha.20",
   "description": "Transfer assets from account to account",
   "keywords": [
     "transfer",
@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@dojima-wallet/connection": "^0.0.1-alpha.20",
+    "@dojima-wallet/account": "^0.0.1-alpha.18",
     "@dojima-wallet/types": "^0.0.1-alpha.4",
     "@solana/web3.js": "^1.41.4",
     "arweave": "^1.10.23",
