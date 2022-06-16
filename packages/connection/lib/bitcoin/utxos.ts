@@ -1,6 +1,6 @@
 import { NetworkType } from "@dojima-wallet/types";
-import { assetAmount, baseAmount } from "@xchainjs/xchain-util";
 import axios from "axios";
+import BigNumber from "bignumber.js";
 import BTCFeesClient from "./fees";
 import {
   SochainResponse,
@@ -189,14 +189,12 @@ export default class BTCUtxosClient extends BTCFeesClient {
           utxos.map(async (utxo) => ({
             hash: utxo.txid,
             index: utxo.output_no,
-            value: utils
-              .assetToBase(assetAmount(utxo.value, 8))
-              .amount()
+            value: new BigNumber(Number(utxo.value) * Math.pow(10, 8))
+              .decimalPlaces(2)
               .toNumber(),
             witnessUtxo: {
-              value: utils
-                .assetToBase(assetAmount(utxo.value, 8))
-                .amount()
+              value: new BigNumber(Number(utxo.value) * Math.pow(10, 8))
+                .decimalPlaces(2)
                 .toNumber(),
               script: Buffer.from(utxo.script_hex, "hex"),
             },
@@ -222,9 +220,9 @@ export default class BTCUtxosClient extends BTCFeesClient {
           utxos.map(async (utxo) => ({
             hash: utxo.txid,
             index: utxo.index,
-            value: baseAmount(utxo.value, 8).amount().toNumber(),
+            value: utxo.value,
             witnessUtxo: {
-              value: baseAmount(utxo.value, 8).amount().toNumber(),
+              value: utxo.value,
               script: Buffer.from(utxo.pkscript, "hex"),
             },
             txHex: withTxHex

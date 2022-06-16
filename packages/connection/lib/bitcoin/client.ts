@@ -1,4 +1,3 @@
-import { baseAmount } from "@xchainjs/xchain-util";
 import BigNumber from "bignumber.js";
 import * as bip39 from "bip39";
 import * as bip32 from "bip32";
@@ -114,15 +113,12 @@ export default class BitcoinClient extends BTCTxClient {
     // Convert amount to BigNumber
     const toAmount = new BigNumber(amount * Math.pow(10, 8));
 
-    // BaseAmount value
-    const bsAmount = baseAmount(toAmount, 8);
-
     const feeRateValue = feeRate || (await this.getFeeRates())[FeeOption.Fast];
 
     const fromAddressIndex = 0;
     const memoString = memo ? memo : undefined;
     const { psbt } = await this.buildTx(
-      bsAmount,
+      toAmount,
       recipient,
       sender,
       this._network,
