@@ -8,7 +8,7 @@ import { FeeOption } from "./types/fees";
 import BTCTxClient from "./transaction";
 import * as utils from "./utils";
 import axios from "axios";
-import { HaskoinBalanceResult, RawTransactionResult } from "./types/client";
+import { HaskoinBalanceResult, BtcRawTransactionResult } from "./types/client";
 // import { SochainBalanceResult } from "./types/client";
 import * as Bitcoin from "bitcoinjs-lib";
 import { NetworkType } from "@dojima-wallet/types";
@@ -110,7 +110,7 @@ export default class BitcoinClient extends BTCTxClient {
     feeRate?: number,
     memo?: string,
     walletIndex?: number
-  ): Promise<RawTransactionResult> {
+  ): Promise<BtcRawTransactionResult> {
     // Convert amount to BigNumber
     const toAmount = new BigNumber(amount * Math.pow(10, 8));
 
@@ -139,7 +139,7 @@ export default class BitcoinClient extends BTCTxClient {
     psbt.finalizeAllInputs(); // Finalise inputs
     const extractedTx = psbt.extractTransaction();
     const txHex = extractedTx.toHex(); // TX extracted and formatted to hex
-    const result: RawTransactionResult = {
+    const result: BtcRawTransactionResult = {
       tx_hex: txHex,
       gas_fee: psbt.getFee() / Math.pow(10, 8),
     };
