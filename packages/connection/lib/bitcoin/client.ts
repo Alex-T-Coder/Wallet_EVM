@@ -1,8 +1,5 @@
 import BigNumber from "bignumber.js";
 import * as bip39 from "bip39";
-import * as bip32 from "bip32";
-import * as ecc from "tiny-secp256k1";
-import { ECPairFactory, ECPairInterface } from "ecpair";
 import { FeeOption } from "./types/fees";
 import BTCTxClient from "./transaction";
 import * as utils from "./utils";
@@ -11,8 +8,6 @@ import { HaskoinBalanceResult, BtcRawTransactionResult } from "./types/client";
 // import { SochainBalanceResult } from "./types/client";
 import * as Bitcoin from "bitcoinjs-lib";
 import { NetworkType } from "@dojima-wallet/types";
-
-const ECPair = ECPairFactory(ecc);
 
 export default class BitcoinClient extends BTCTxClient {
   _network: NetworkType;
@@ -85,20 +80,33 @@ export default class BitcoinClient extends BTCTxClient {
     // }
   }
 
-  private getBtcKeys(mnemonic: string, index: number): ECPairInterface {
+  validateMnemonic(mnemonic: string): boolean {
+    return bip39.validateMnemonic(mnemonic);
+  }
+
+  getSeed(mnemonic: string): Buffer {
+    if (!this.validateMnemonic(mnemonic)) {
+      throw new Error("Invalid mnemonic");
+    }
+
+    return bip39.mnemonicToSeedSync(mnemonic);
+  }
+
+  private getBtcKeys(mnemonic: string, index: number): Bitcoin.ECPairInterface {
     const btcNetwork = utils.btcNetwork(this._network);
 
-    const seed = bip39.mnemonicToSeedSync(mnemonic);
-
-    const master = bip32
+    const seed = this.getSeed(mnemonic);
+    const master = Bitcoin.bip32
       .fromSeed(seed, btcNetwork)
       .derivePath(`${this._derivationPath}${index}`);
 
     if (!master.privateKey) {
-      throw new Error("Could not get private key from phrase");
+      throw new Error("Unable to retrieve private key from mnemonic");
     }
 
-    return ECPair.fromPrivateKey(master.privateKey, { network: btcNetwork });
+    return Bitcoin.ECPair.fromPrivateKey(master.privateKey, {
+      network: btcNetwork,
+    });
   }
 
   async createTransaction(
