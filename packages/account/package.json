@@ -1,6 +1,6 @@
 {
   "name": "@dojima-wallet/account",
-  "version": "0.0.1-alpha.18",
+  "version": "0.0.1-alpha.19",
   "description": "creates accounts for all layer1, layer2 supported chains.",
   "keywords": [
     "account",
@@ -43,7 +43,6 @@
     "arweave": "^1.10.23",
     "arweave-mnemonic-keys": "^0.0.9",
     "bip39": "^3.0.4",
-    "bitcoinjs-lib": "^6.0.1",
     "ed25519-hd-key": "^1.2.0",
     "ethereumjs-wallet": "^1.0.2"
   }
