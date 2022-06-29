@@ -9,15 +9,14 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@dojima-wallet/connection@^0.0.1-alpha.21":
-  version "0.0.1-alpha.21"
-  resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.21.tgz#76ffbf17105052a9362a55d8b58016b44cb672f2"
-  integrity sha512-jXsRNiEEJdajOQrt4xAH97KDuSJDQzC/KNCdEqyNg9X7JbA0pFp9OOR7n0ZKlysxTkDhvlpAnoXosYWNP6lYPg==
+"@dojima-wallet/connection@^0.0.1-alpha.22":
+  version "0.0.1-alpha.22"
+  resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.22.tgz#c5efa480144b7241c65e8eb0dcd5c7d0c4e7f5be"
+  integrity sha512-En9Va8mz31Msf/nAZ8cY01ZvtZ5uAmOgdpSz+o7LKFKql5SwD965s8XV/f24Ez1xw36rkz7t60KLqWQYU3QQbg==
   dependencies:
     "@dojima-wallet/types" "^0.0.1-alpha.4"
     "@solana/web3.js" "^1.41.4"
     arweave "^1.10.23"
-    arweave-mnemonic-keys "^0.0.9"
     bitcoinjs-lib "^5.2.0"
     coinselect "^3.1.13"
     web3 "^1.7.1"
@@ -431,11 +430,6 @@ accepts@~1.3.8:
     mime-types "~2.1.34"
     negotiator "0.6.3"
 
-aes-js@^3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/aes-js/-/aes-js-3.1.2.tgz#db9aabde85d5caabbfc0d4f2a4446960f627146a"
-  integrity sha512-e5pEa2kBnBOgR4Y/p20pskXI74UEz7de8ZGVo58asOtvSVG5YAbJeELPZxOmt+Bnz3rX753YKhfIn4X4l1PPRQ==
-
 ajv@^6.12.3:
   version "6.12.6"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.12.6.tgz#baf5a62e802b07d977034586f8c3baf5adf26df4"
@@ -457,14 +451,6 @@ array-flatten@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-1.1.1.tgz#9a5f699051b1e7073328f2a008968b64ea2955d2"
   integrity sha512-PCVAQswWemu6UdxsDFFX/+gVeYqKAod3D3UVm91jHwynguOwAvYPhx8nNlM++NqRcK6CxxpUafjmhIdKiHibqg==
-
-arweave-mnemonic-keys@^0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/arweave-mnemonic-keys/-/arweave-mnemonic-keys-0.0.9.tgz#7b147e8f0278af38fa01bd5391872508e64a201d"
-  integrity sha512-UZQ+XxsR1silyzMf6eZcSwo6RzLqeufSRpfsoB0KJY1Xu4rUj7EezMpub/65pwNjk/xxIOJ2vGH/leOdgkNbsQ==
-  dependencies:
-    human-crypto-keys "^0.1.4"
-    libp2p-crypto "^0.19.0"
 
 arweave@^1.10.13, arweave@^1.10.23:
   version "1.11.4"
@@ -1329,7 +1315,7 @@ ethereum-cryptography@^0.1.3:
     secp256k1 "^4.0.1"
     setimmediate "^1.0.5"
 
-ethereumjs-util@^7.0.10, ethereumjs-util@^7.1.0, ethereumjs-util@^7.1.2, ethereumjs-util@^7.1.5:
+ethereumjs-util@^7.0.10, ethereumjs-util@^7.1.0, ethereumjs-util@^7.1.5:
   version "7.1.5"
   resolved "https://registry.yarnpkg.com/ethereumjs-util/-/ethereumjs-util-7.1.5.tgz#9ecf04861e4fbbeed7465ece5f23317ad1129181"
   integrity sha512-SDl5kKrQAudFBUe5OJM9Ac6WmMyYmXX/6sTmLZ3ffG2eY6ZIGBes3pEDxNN6V72WyOw4CPD5RomKdsa8DAAwLg==
@@ -1339,20 +1325,6 @@ ethereumjs-util@^7.0.10, ethereumjs-util@^7.1.0, ethereumjs-util@^7.1.2, ethereu
     create-hash "^1.1.2"
     ethereum-cryptography "^0.1.3"
     rlp "^2.2.4"
-
-ethereumjs-wallet@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/ethereumjs-wallet/-/ethereumjs-wallet-1.0.2.tgz#2c000504b4c71e8f3782dabe1113d192522e99b6"
-  integrity sha512-CCWV4RESJgRdHIvFciVQFnCHfqyhXWchTPlkfp28Qc53ufs+doi5I/cV2+xeK9+qEo25XCWfP9MiL+WEPAZfdA==
-  dependencies:
-    aes-js "^3.1.2"
-    bs58check "^2.1.2"
-    ethereum-cryptography "^0.1.3"
-    ethereumjs-util "^7.1.2"
-    randombytes "^2.1.0"
-    scrypt-js "^3.0.1"
-    utf8 "^3.0.0"
-    uuid "^8.3.2"
 
 ethjs-unit@0.1.6:
   version "0.1.6"
@@ -3109,7 +3081,7 @@ utf-8-validate@^5.0.2:
   dependencies:
     node-gyp-build "^4.3.0"
 
-utf8@3.0.0, utf8@^3.0.0:
+utf8@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/utf8/-/utf8-3.0.0.tgz#f052eed1364d696e769ef058b183df88c87f69d1"
   integrity sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ==
