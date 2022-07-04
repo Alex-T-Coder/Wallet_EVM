@@ -33,7 +33,6 @@ export default class BitcoinChain extends BtcClient {
     } catch (error) {
       if (error instanceof Error) {
         if (error.message === "No utxos to send") {
-          console.log("Entered if else");
           const from: string = this._client.getAddress(
             process.env.SAMPLE_SEED_PHRASE as string
           );

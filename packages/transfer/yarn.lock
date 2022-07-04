@@ -9,10 +9,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@dojima-wallet/account@^0.0.1-alpha.19":
-  version "0.0.1-alpha.20"
-  resolved "https://registry.yarnpkg.com/@dojima-wallet/account/-/account-0.0.1-alpha.20.tgz#7702dd4fb7b1f6270114ac128231b12f82c06943"
-  integrity sha512-9cDZtTPVcZfYfleqgbL2YMGe8HFFdoEFOMdQDyNm5VfmDTVS+boAtmVyYz1jPK2z+bWUiRaRKAwfEvBoWLnfpw==
+"@dojima-wallet/account@^0.0.1-alpha.21":
+  version "0.0.1-alpha.21"
+  resolved "https://registry.yarnpkg.com/@dojima-wallet/account/-/account-0.0.1-alpha.21.tgz#a764e5fe6031508da5852eea65a62e5a17c6e511"
+  integrity sha512-jWrnPMFQHdFqgTOvnAe2tLpNeqGvpRmONlXn+DVUWJZyBCSv1lT/7/tQGvIGzNUkkGyo+FdHieUfd4aQLlMYNg==
   dependencies:
     "@dojima-wallet/connection" "^0.0.1-alpha.22"
     "@dojima-wallet/types" "^0.0.1-alpha.4"
@@ -23,7 +23,7 @@
     human-crypto-keys "^0.1.4"
     libp2p-crypto "^0.19.0"
 
-"@dojima-wallet/connection@^0.0.1-alpha.21", "@dojima-wallet/connection@^0.0.1-alpha.22":
+"@dojima-wallet/connection@^0.0.1-alpha.22":
   version "0.0.1-alpha.22"
   resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.22.tgz#c5efa480144b7241c65e8eb0dcd5c7d0c4e7f5be"
   integrity sha512-En9Va8mz31Msf/nAZ8cY01ZvtZ5uAmOgdpSz+o7LKFKql5SwD965s8XV/f24Ez1xw36rkz7t60KLqWQYU3QQbg==

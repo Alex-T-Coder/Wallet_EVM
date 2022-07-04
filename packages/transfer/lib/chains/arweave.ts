@@ -1,5 +1,4 @@
-import { getKeyFromMnemonic } from "arweave-mnemonic-keys";
-import { NetworkType } from "@dojima-wallet/types/dist/lib/network";
+import { NetworkType } from "@dojima-wallet/types";
 import { ArweaveAccount } from "@dojima-wallet/account";
 import Transaction from "arweave/node/lib/transaction";
 
@@ -15,7 +14,7 @@ export default class ArweaveChain extends ArweaveAccount {
     toAddress: string,
     amount: number
   ): Promise<Transaction> {
-    const pvtKey = await getKeyFromMnemonic(this._mnemonic);
+    const pvtKey = await this.getKeyFromMnemonic(this._mnemonic);
 
     // Create transaction
     const rawTx = await this._arweave.createTransaction(
@@ -48,7 +47,7 @@ export default class ArweaveChain extends ArweaveAccount {
 
   // Sign and Send the transaction
   async signAndSend(rawTx: Transaction) {
-    const pvtKey = await getKeyFromMnemonic(this._mnemonic);
+    const pvtKey = await this.getKeyFromMnemonic(this._mnemonic);
 
     // Sign transaction and retreive status
     await this._arweave.transactions.sign(rawTx, pvtKey);

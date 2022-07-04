@@ -9,7 +9,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@dojima-wallet/connection@^0.0.1-alpha.20":
+"@dojima-wallet/connection@^0.0.1-alpha.22":
   version "0.0.1-alpha.22"
   resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.22.tgz#c5efa480144b7241c65e8eb0dcd5c7d0c4e7f5be"
   integrity sha512-En9Va8mz31Msf/nAZ8cY01ZvtZ5uAmOgdpSz+o7LKFKql5SwD965s8XV/f24Ez1xw36rkz7t60KLqWQYU3QQbg==
