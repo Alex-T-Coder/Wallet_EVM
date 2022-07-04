@@ -1,7 +1,7 @@
 import { NetworkType } from "@dojima-wallet/types";
 import { ArweaveInitialise } from "@dojima-wallet/connection";
 import crypto from "libp2p-crypto";
-const humanCryptoKeys = require("human-crypto-keys");
+let humanCryptoKeys = require("human-crypto-keys");
 
 export interface KeypairResult {
   kty: string;
