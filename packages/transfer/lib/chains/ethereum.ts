@@ -3,6 +3,8 @@ import { NetworkType } from "@dojima-wallet/types/dist/lib/network";
 import { BigNumber } from "bignumber.js";
 import { TransactionConfig } from "web3-core";
 import { EthereumAccount } from "@dojima-wallet/account";
+import { CoinGecko } from "@dojima-wallet/prices";
+import { GasfeeResult } from "./utils";
 
 export default class EthereumChain extends EthereumAccount {
   _mnemonic: string;
@@ -20,19 +22,53 @@ export default class EthereumChain extends EthereumAccount {
   }
 
   // Calculate gasFee required for transaction
-  async getGasFee() {
+  async getGasFee(): Promise<GasfeeResult> {
     const baseGasFee = await this._web3.eth.getGasPrice();
-    return {
-      slow: {
-        fee: this.calculateFee(parseFloat(baseGasFee), 1) / Math.pow(10, 18),
-      },
-      average: {
-        fee: this.calculateFee(parseFloat(baseGasFee), 1.5) / Math.pow(10, 18),
-      },
-      fast: {
-        fee: this.calculateFee(parseFloat(baseGasFee), 2) / Math.pow(10, 18),
-      },
+    // return {
+    //   slow: {
+    //     fee: this.calculateFee(parseFloat(baseGasFee), 1) / Math.pow(10, 18),
+    //   },
+    //   average: {
+    //     fee: this.calculateFee(parseFloat(baseGasFee), 1.5) / Math.pow(10, 18),
+    //   },
+    //   fast: {
+    //     fee: this.calculateFee(parseFloat(baseGasFee), 2) / Math.pow(10, 18),
+    //   },
+    // };
+    const eth_gasFee = {
+      slow: this.calculateFee(parseFloat(baseGasFee), 1) / Math.pow(10, 18),
+      average:
+        this.calculateFee(parseFloat(baseGasFee), 1.5) / Math.pow(10, 18),
+      fast: this.calculateFee(parseFloat(baseGasFee), 2) / Math.pow(10, 18),
     };
+    const pricesInst = new CoinGecko();
+    const pricesData = await pricesInst.getAssestsCurrentMarketData({
+      assets: "ethereum",
+    });
+    if (pricesData !== undefined) {
+      return {
+        slow: {
+          fee: {
+            asset_fee: eth_gasFee.slow,
+            usdt_fee: eth_gasFee.slow * pricesData.current_price,
+          },
+        },
+        average: {
+          fee: {
+            asset_fee: eth_gasFee.average,
+            usdt_fee: eth_gasFee.average * pricesData.current_price,
+          },
+        },
+        fast: {
+          fee: {
+            asset_fee: eth_gasFee.fast,
+            usdt_fee: eth_gasFee.fast * pricesData.current_price,
+          },
+        },
+      };
+    } else {
+      throw new Error("Unable to retrieve current asset-usdt price");
+    }
   }
 
   // Create transaction details based on user input

@@ -1,5 +1,7 @@
 import { BtcClient } from "@dojima-wallet/connection";
+import { CoinGecko } from "@dojima-wallet/prices";
 import { NetworkType } from "@dojima-wallet/types";
+import { GasfeeResult } from "./utils";
 
 interface BtcRawTransactionResult {
   tx_hex: string;
@@ -17,7 +19,7 @@ export default class BitcoinChain extends BtcClient {
     feeRate: number,
     to?: string,
     memo?: string
-  ): Promise<number> {
+  ): Promise<GasfeeResult> {
     const from: string = this._client.getAddress(mnemonic);
     try {
       const rawTxDetails: BtcRawTransactionResult =
@@ -29,7 +31,27 @@ export default class BitcoinChain extends BtcClient {
           feeRate,
           memo ? memo : undefined
         );
-      return rawTxDetails.gas_fee;
+      const btc_gasFee = rawTxDetails.gas_fee;
+      const pricesInst = new CoinGecko();
+      const pricesData = await pricesInst.getAssestsCurrentMarketData({
+        assets: "bitcoin",
+      });
+      if (pricesData !== undefined) {
+        const usdt_gasFee = btc_gasFee * pricesData.current_price;
+        const resultFee = {
+          fee: {
+            asset_fee: btc_gasFee,
+            usdt_fee: usdt_gasFee,
+          },
+        };
+        return {
+          slow: resultFee,
+          average: resultFee,
+          fast: resultFee,
+        };
+      } else {
+        throw new Error("Unable to retrieve current asset-usdt price");
+      }
     } catch (error) {
       if (error instanceof Error) {
         if (error.message === "No utxos to send") {
@@ -45,7 +67,27 @@ export default class BitcoinChain extends BtcClient {
               feeRate,
               memo ? memo : undefined
             );
-          return rawTxDetails.gas_fee;
+          const btc_gasFee = rawTxDetails.gas_fee;
+          const pricesInst = new CoinGecko();
+          const pricesData = await pricesInst.getAssestsCurrentMarketData({
+            assets: "bitcoin",
+          });
+          if (pricesData !== undefined) {
+            const usdt_gasFee = btc_gasFee * pricesData.current_price;
+            const resultFee = {
+              fee: {
+                asset_fee: btc_gasFee,
+                usdt_fee: usdt_gasFee,
+              },
+            };
+            return {
+              slow: resultFee,
+              average: resultFee,
+              fast: resultFee,
+            };
+          } else {
+            throw new Error("Unable to retrieve current asset-usdt price");
+          }
         } else {
           // ✅ TypeScript knows err is Error
           throw new Error(error.message);
