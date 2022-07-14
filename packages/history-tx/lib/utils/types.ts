@@ -205,7 +205,7 @@ export interface EthTxDataResult {
   blockHash: string;
   blockNumber: number;
   from: string;
-  gas: number;
+  gas_limit: string;
   gasPrice: number;
   hash: string;
   input: string;

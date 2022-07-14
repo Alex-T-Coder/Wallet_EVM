@@ -151,9 +151,9 @@ export default class EthereumTransactions extends EthereumWeb3 {
         ).toFixed(9);
         let type = this.remove0x(result.type);
         if (result.from === address) {
-          tx_type = "Send | SOL";
+          tx_type = "Send | ETH";
         } else {
-          tx_type = "Receive | SOL";
+          tx_type = "Receive | ETH";
         }
         return {
           block: this.convertHexToInt(
@@ -162,7 +162,10 @@ export default class EthereumTransactions extends EthereumWeb3 {
           transaction_type: tx_type,
           from: this.remove0x(result.from),
           to: this.remove0x(result.to),
-          gas: this.convertHexToInt(this.remove0x(result.gas as string)),
+          gas_limit: `${Number(
+            this.convertHexToInt(this.remove0x(result.gas as string)) /
+              Math.pow(10, 9)
+          ).toFixed(9)} Gwei`,
           gas_price: `${etherGasPrice} Ether (${gweiGasPrice} Gwei)`,
           transaction_hash: result.hash,
           value:
@@ -199,7 +202,10 @@ export default class EthereumTransactions extends EthereumWeb3 {
             this.remove0x(result.blockNumber as string)
           ),
           from: this.remove0x(result.from),
-          gas: this.convertHexToInt(this.remove0x(result.gas as string)),
+          gas_limit: `${Number(
+            this.convertHexToInt(this.remove0x(result.gas as string)) /
+              Math.pow(10, 9)
+          ).toFixed(9)} Gwei`,
           gasPrice:
             this.convertHexToInt(this.remove0x(result.gasPrice as string)) /
             Math.pow(10, 18),
