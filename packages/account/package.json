@@ -37,7 +37,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@dojima-wallet/connection": "^0.0.1-alpha.22",
+    "@dojima-wallet/connection": "^0.0.1-alpha.23",
     "@dojima-wallet/types": "^0.0.1-alpha.4",
     "@solana/web3.js": "^1.41.4",
     "arweave": "^1.10.23",
