@@ -2,6 +2,7 @@ import BitcoinTransactions from "./bitcoin";
 import EthereumTransactions from "./ethereum";
 import SolanaTransactions from "./solana";
 import ArweaveTxs from "./arweave";
+import BinanceTranscations from "./binance";
 import { ArTxDataResult, ArTxsResult } from "./utils/gqlResult";
 import {
   SolTxHistoryParams,
@@ -32,6 +33,7 @@ export {
 };
 
 export {
+  BinanceTranscations,
   BitcoinTransactions,
   EthereumTransactions,
   SolanaTransactions,
