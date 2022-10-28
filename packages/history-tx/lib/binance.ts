@@ -23,13 +23,41 @@ export default class BinanceTranscations extends BinanceClient {
           hash: result.hash,
           blockNumber: result.height,
           type: result.tx.value.msg[0].type,
+          from: result.tx.value.msg[0].value.inputs[0].address,
+          amount: result.tx.value.msg[0].value.inputs[0].coins[0].amount,
+          asset: result.tx.value.msg[0].value.inputs[0].coins[0].denom,
+          to: result.tx.value.msg[0].value.outputs[0].address,
+          memo: result.tx.value.memo,
+        };
+        return finalResult;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      throw new Error("Something went wrong");
+    }
+  }
+
+  async getDetailTranscationData(hash: string) {
+    try {
+      let response = await axios.get(
+        `${this._clientUrl}/api/v1/tx/${hash}?format=json`
+      );
+      if (response.status && response.status === 200) {
+        let result = response.data;
+        const finalResult = {
+          hash: result.hash,
+          blockNumber: result.height,
+          type: result.tx.value.msg[0].type,
           memo: result.tx.value.memo,
           from: result.tx.value.msg[0].value.inputs[0].address,
           amount: result.tx.value.msg[0].value.inputs[0].coins[0].amount,
           asset: result.tx.value.msg[0].value.inputs[0].coins[0].denom,
           to: result.tx.value.msg[0].value.outputs[0].address,
           signature: result.tx.value.signatures[0].signature,
+          sequence: result.tx.value.signatures[0].sequence,
         };
+        console.log("final - ", finalResult);
         return finalResult;
       } else {
         return null;
