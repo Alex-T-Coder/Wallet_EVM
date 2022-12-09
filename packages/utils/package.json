@@ -36,6 +36,7 @@
     "access": "public"
   },
   "dependencies": {
+    "bignumber.js": "^9.1.1",
     "moment": "^2.29.3"
   }
 }
