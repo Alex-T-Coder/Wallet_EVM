@@ -39,7 +39,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@binance-chain/javascript-sdk": "^4.2.0",
     "@dojima-wallet/types": "^0.0.1-alpha.4",
     "@solana/web3.js": "^1.41.4",
     "arweave": "^1.10.23",
