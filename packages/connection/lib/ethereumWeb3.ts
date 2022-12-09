@@ -9,17 +9,17 @@ export default class EthereumWeb3 {
   constructor(network: NetworkType) {
     this._network = network;
     if (this._network === "testnet") {
-      // For testnet using ropsten network with infura. There are others like goerli, kovan and rinkeby netwoks
+      // For testnet using goerli network with infura
       this._providerRpcUrl =
-        "https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161";
-      this._api = "https://api-ropsten.etherscan.io/api";
+        "https://goerli.infura.io/v3/f37faaf5ddeb4e589d6f26300ed673a6";
+      this._api = "https://api-goerli.etherscan.io/api";
     } else if (this._network === "devnet") {
       this._providerRpcUrl =
-        "https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161";
+        "https://goerli.infura.io/v3/f37faaf5ddeb4e589d6f26300ed673a6";
       this._api = "https://api.etherscan.io/api";
     } else {
       this._providerRpcUrl =
-        "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161";
+        "https://mainnet.infura.io/v3/f37faaf5ddeb4e589d6f26300ed673a6";
       this._api = "https://api.etherscan.io/api";
     }
     this._web3 = new Web3(
