@@ -38,7 +38,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@dojima-wallet/account": "^0.0.1-alpha.21",
+    "@dojima-wallet/account": "^0.0.1-alpha.22",
     "@dojima-wallet/types": "^0.0.1-alpha.4",
     "web3-utils": "1.7.1"
   }
