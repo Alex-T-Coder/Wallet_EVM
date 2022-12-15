@@ -1,33 +1,18 @@
 import { NetworkType } from "@dojima-wallet/types";
 import { ArweaveAccount } from "@dojima-wallet/account";
-import Transaction from "arweave/node/lib/transaction";
+import Transaction, { Tag } from "arweave/node/lib/transaction";
 import { CoinGecko } from "@dojima-wallet/prices";
 import { GasfeeResult } from "./utils";
+import { getKeyFromMnemonic } from "arweave-mnemonic-keys";
+import { ApiConfig } from "arweave/node/lib/api";
+import { InboundAddressResult, SwapAssetList } from "@dojima-wallet/utils";
 
 export default class ArweaveChain extends ArweaveAccount {
   _mnemonic: string;
-  constructor(mnemonic: string, network: NetworkType) {
-    super(network);
+
+  constructor(mnemonic: string, network: NetworkType, config?: ApiConfig) {
+    super(network, config);
     this._mnemonic = mnemonic;
-  }
-
-  // Create transaction based on user inputs
-  async createTransaction(
-    toAddress: string,
-    amount: number
-  ): Promise<Transaction> {
-    const pvtKey = await this.getKeyFromMnemonic(this._mnemonic);
-
-    // Create transaction
-    const rawTx = await this._arweave.createTransaction(
-      {
-        target: toAddress, // Receiver address
-        quantity: this._arweave.ar.arToWinston(amount.toString()), // Amount to transfer in Ar
-      },
-      pvtKey
-    );
-
-    return rawTx;
   }
 
   // Calculate gasFee required for transaction
@@ -56,26 +41,102 @@ export default class ArweaveChain extends ArweaveAccount {
     }
   }
 
-  // Sign and Send the transaction
-  async signAndSend(rawTx: Transaction) {
-    const pvtKey = await this.getKeyFromMnemonic(this._mnemonic);
+  /** Create transaction based on user inputs */
+  async createTransaction(
+    recipient: string,
+    amount: number,
+    tag?: Tag
+  ): Promise<Transaction> {
+    const pvtKey = await getKeyFromMnemonic(this._mnemonic);
+    // const pubAddress = await this.arweave.wallets.jwkToAddress(pvtKey);
 
-    // Sign transaction and retreive status
+    // Create transaction
+    const rawTx = await this._arweave.createTransaction(
+      {
+        target: recipient, // Receiver address
+        quantity: this._arweave.ar.arToWinston(amount.toString()), // Amount to transfer in Ar
+        tags: tag ? [tag] : [],
+      },
+      pvtKey
+    );
+
+    return rawTx;
+  }
+
+  /** Sign and Send the transaction */
+  async signAndSend(rawTx: Transaction): Promise<string> {
+    const pvtKey = await getKeyFromMnemonic(this._mnemonic);
+    // const pubAddress = await this._arweave.wallets.jwkToAddress(pvtKey);
+
+    /** Sign transaction and retrieve status */
     await this._arweave.transactions.sign(rawTx, pvtKey);
     const status = await this._arweave.transactions.post(rawTx);
     await this._arweave.api.get("/mine");
 
-    if (status.status == 200) {
-      // Get status data using transaction hash / id
-      // const statusData = await arweave.transactions.getStatus(rawTx.id);
+    if (status.status !== 200) throw Error(`Transaction error or invalid`);
 
-      // console.log(JSON.stringify(statusData));
+    return rawTx.id;
+  }
 
-      return rawTx.id;
-    } else {
+  async getInboundObject(): Promise<InboundAddressResult> {
+    const response = await this._arweave.api.get(
+      "https://api-test.h4s.dojima.network/hermeschain/inbound_addresses"
+    );
+    if (response.status !== 200) {
       throw new Error(
-        "Error in status: Posting the transaction into arweave transactions"
+        `Unable to retrieve inbound addresses. Dojima gateway responded with status ${response.status}.`
       );
     }
+
+    const data: Array<InboundAddressResult> = response.data;
+    const inboundObj = data.find(
+      (res) => res.chain === "AR"
+    ) as InboundAddressResult;
+    return inboundObj;
+  }
+
+  async getArweaveInboundAddress(): Promise<string> {
+    const inboundObj = await this.getInboundObject();
+    return inboundObj.address;
+  }
+
+  async getDefaultLiquidityPoolGasFee(): Promise<number> {
+    const inboundObj = await this.getInboundObject();
+
+    /** Convert from Winston to Ar. (1 Ar = 10^12) */
+    const arGasFee = this._arweave.ar.winstonToAr(inboundObj.gas_rate);
+
+    return Number(arGasFee);
+  }
+
+  async addLiquidityPool(
+    amount: number,
+    inboundAddress: string,
+    dojAddress?: string
+  ): Promise<string> {
+    const tag = dojAddress
+      ? new Tag("memo", `ADD:AR.AR:${dojAddress}`)
+      : new Tag("memo", `ADD:AR.AR`);
+
+    const rawTx = await this.createTransaction(inboundAddress, amount, tag);
+
+    const txHash = await this.signAndSend(rawTx);
+
+    return txHash;
+  }
+
+  async swap(
+    amount: number,
+    token: SwapAssetList,
+    inboundAddress: string,
+    recipient: string
+  ): Promise<string> {
+    const tag = new Tag("memo", `SWAP:${token}:${recipient}`);
+
+    const rawTx = await this.createTransaction(inboundAddress, amount, tag);
+
+    const txHash = await this.signAndSend(rawTx);
+
+    return txHash;
   }
 }

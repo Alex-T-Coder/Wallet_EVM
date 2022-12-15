@@ -36,12 +36,14 @@
     "access": "public"
   },
   "dependencies": {
-    "@dojima-wallet/account": "^0.0.1-alpha.22",
-    "@dojima-wallet/connection": "^0.0.1-alpha.24",
+    "@dojima-wallet/account": "^0.0.1-alpha.23",
+    "@dojima-wallet/connection": "^0.0.1-alpha.26",
     "@dojima-wallet/prices": "^0.0.1-alpha.12",
     "@dojima-wallet/types": "^0.0.1-alpha.4",
+    "@dojima-wallet/utils": "^0.0.1-alpha.2",
     "@solana/web3.js": "^1.41.4",
-    "arweave": "^1.10.23",
+    "arweave": "^1.11.8",
+    "arweave-mnemonic-keys": "^0.0.9",
     "bip39": "^3.0.4",
     "web3": "^1.7.0"
   }

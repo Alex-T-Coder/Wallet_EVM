@@ -1,30 +1,19 @@
 import { SolanaAccount } from "@dojima-wallet/account";
 import { CoinGecko } from "@dojima-wallet/prices";
 import { NetworkType } from "@dojima-wallet/types";
-import {
-  PublicKey,
-  sendAndConfirmTransaction,
-  SystemProgram,
-  Transaction,
-} from "@solana/web3.js";
+import * as web3 from "@solana/web3.js";
 import { GasfeeResult } from "./utils";
 
 export default class SolanaChain extends SolanaAccount {
   _mnemonic: string;
-  constructor(mnemonic: string, network: NetworkType) {
-    super(network);
+  constructor(mnemonic: string, network: NetworkType, endpoint?: string) {
+    super(network, endpoint);
     this._mnemonic = mnemonic;
-  }
-
-  // Get recent block hash for calculating gas fee
-  async getRecentBlockHash() {
-    const blockHash = await this._connection.getRecentBlockhash();
-    return blockHash;
   }
 
   // Calculate Gas fee based in recent block hash
   async getFees(): Promise<GasfeeResult> {
-    const { feeCalculator } = await this.getRecentBlockHash();
+    const { feeCalculator } = await this._connection.getRecentBlockhash();
     // return {
     //   slow: {
     //     fee: feeCalculator.lamportsPerSignature / Math.pow(10, 9),
@@ -63,19 +52,18 @@ export default class SolanaChain extends SolanaAccount {
   async createTransaction(
     toAddress: string,
     amount: number
-  ): Promise<Transaction> {
+  ): Promise<web3.Transaction> {
     // Get account address
-    const pubKey = new PublicKey(await this.getAddress(this._mnemonic));
+    const pubKey = new web3.PublicKey(await this.getAddress(this._mnemonic));
 
     // Convert toAddress string to PublicKey
-    const to = new PublicKey(toAddress);
+    const to = new web3.PublicKey(toAddress);
 
     const toAmount = Math.floor(amount * Math.pow(10, 9));
-    // console.log('To Amount : ' , toAmount);
 
     // Add transaction for the required amount
-    let rawTx = new Transaction().add(
-      SystemProgram.transfer({
+    let rawTx = new web3.Transaction().add(
+      web3.SystemProgram.transfer({
         fromPubkey: pubKey,
         toPubkey: to,
         lamports: toAmount,
@@ -85,14 +73,16 @@ export default class SolanaChain extends SolanaAccount {
     return rawTx;
   }
 
-  async signAndSend(rawTx: Transaction): Promise<string> {
+  async signAndSend(rawTx: web3.Transaction): Promise<string> {
     // Get account details
     const account = await this.getKeypair(this._mnemonic);
 
     // Sign the transaction
-    let signature = await sendAndConfirmTransaction(this._connection, rawTx, [
-      account[0],
-    ]);
+    let signature = await web3.sendAndConfirmTransaction(
+      this._connection,
+      rawTx,
+      [account[0]]
+    );
 
     return signature;
   }
