@@ -6,8 +6,8 @@ import { SolanaConnection } from "@dojima-wallet/connection";
 import { NetworkType } from "@dojima-wallet/types";
 
 export default class SolanaAccount extends SolanaConnection {
-  constructor(network: NetworkType) {
-    super(network);
+  constructor(network: NetworkType, endpoint?: string) {
+    super(network, endpoint);
   }
 
   async getKeypair(mnemonic: string): Promise<Keypair[]> {
@@ -23,9 +23,9 @@ export default class SolanaAccount extends SolanaConnection {
     return keyPairResult;
   }
 
-  async getAddress(mnemonic: string) {
+  async getAddress(mnemonic: string, index = 0) {
     const keypair = await this.getKeypair(mnemonic);
-    const address = keypair[0].publicKey.toBase58();
+    const address = keypair[index].publicKey.toBase58();
     return address;
   }
 
