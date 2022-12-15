@@ -35,9 +35,6 @@ class PolkadotClient implements PolkaChainClient {
     network = Network.Mainnet,
     provider = defaultDotProvider,
   }: ChainClientParams & ChainProviderParams) {
-    console.log("phrase : ", phrase);
-    console.log("network : ", network);
-    console.log("provider : ", provider);
     if (phrase) {
       if (!validatePhrase(phrase)) {
         throw new Error("Invalid phrase");

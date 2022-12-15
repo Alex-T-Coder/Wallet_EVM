@@ -5,7 +5,7 @@ import BTCTxClient from "./transaction";
 import * as utils from "./utils";
 import axios from "axios";
 import { HaskoinBalanceResult, BtcRawTransactionResult } from "./types/client";
-// import { SochainBalanceResult } from "./types/client";
+import { SochainBalanceResult } from "./types/client";
 import * as Bitcoin from "bitcoinjs-lib";
 import { NetworkType } from "@dojima-wallet/types";
 
@@ -17,12 +17,12 @@ export default class BitcoinClient extends BTCTxClient {
   constructor(network: NetworkType) {
     super(network);
     this._network = network;
-    this.sochainUrl = "https://sochain.com/api/v2";
+    this.sochainUrl = "https://chain.so/api/v2";
     if (network === "mainnet" || network === "devnet") {
-      this.haskoinUrl = "https://api.haskoin.com/btc";
+      this.haskoinUrl = "https://haskoin.ninerealms.com/btc";
       this._derivationPath = `84'/0'/0'/0/`;
     } else {
-      this.haskoinUrl = "https://api.haskoin.com/btctest";
+      this.haskoinUrl = "https://haskoin.ninerealms.com/btctest";
       this._derivationPath = `84'/1'/0'/0/`;
     }
   }
@@ -44,40 +44,44 @@ export default class BitcoinClient extends BTCTxClient {
   }
 
   async getBalance(address: string, confirmed?: boolean): Promise<number> {
-    // Haskoin Api
-    try {
-      let requestApi = `${this.haskoinUrl}/address/${address}/balance`;
-      let response = await axios.get(requestApi);
-      let result: HaskoinBalanceResult = response.data;
-      const balance = confirmed
-        ? result.confirmed
-        : result.confirmed + result.unconfirmed;
-      return balance / Math.pow(10, 8);
-    } catch (error) {
-      throw new Error("Something went wrong");
+    switch (this._network) {
+      case "mainnet":
+      case "devnet":
+        // Haskoin Api
+        try {
+          let requestApi = `${this.haskoinUrl}/address/${address}/balance`;
+          let response = await axios.get(requestApi);
+          let result: HaskoinBalanceResult = response.data;
+          const balance = confirmed
+            ? result.confirmed
+            : result.confirmed + result.unconfirmed;
+          return balance / Math.pow(10, 8);
+        } catch (error) {
+          throw new Error("Something went wrong");
+        }
+      case "testnet":
+        // Sochain Api
+        try {
+          let requestApi = `${
+            this.sochainUrl
+          }/get_address_balance/${utils.toSochainNetwork(
+            this._network
+          )}/${address}`;
+          let response = await axios.get(requestApi);
+          let result: SochainBalanceResult = response.data;
+          if (result.status === "success") {
+            const balance = confirmed
+              ? Number(result.data.confirmed_balance)
+              : Number(result.data.confirmed_balance) +
+                Number(result.data.unconfirmed_balance);
+            return balance;
+          } else {
+            throw new Error("Something went wrong");
+          }
+        } catch (error) {
+          throw new Error("Something went wrong");
+        }
     }
-
-    // Sochain Api
-    // try {
-    //   let requestApi = `${
-    //     this.sochainUrl
-    //   }/get_address_balance/${utils.toSochainNetwork(
-    //     this._network
-    //   )}/${address}`;
-    //   let response = await axios.get(requestApi);
-    //   let result: SochainBalanceResult = response.data;
-    //   if (result.status === "success") {
-    //     const balance = confirmed
-    //       ? Number(result.data.confirmed_balance)
-    //       : Number(result.data.confirmed_balance) +
-    //         Number(result.data.unconfirmed_balance);
-    //     return balance;
-    //   } else {
-    //     throw new Error("Something went wrong");
-    //   }
-    // } catch (error) {
-    //   throw new Error("Something went wrong");
-    // }
   }
 
   validateMnemonic(mnemonic: string): boolean {

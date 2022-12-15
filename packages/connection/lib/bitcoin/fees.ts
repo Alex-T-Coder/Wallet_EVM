@@ -10,44 +10,43 @@ export default class BTCFeesClient {
 
   async getFeeRates(): Promise<FeeRates> {
     const feeRate = await this.getFees();
-    console.log("Thorchain Fee Rate :: ", feeRate);
     return this.standardFeeRates(feeRate);
   }
 
   async getFees(): Promise<number> {
     try {
-      return await this.getFeeRateFromThorchain();
+      return await this.getFeeRateFromHermeschain();
     } catch (error) {
-      console.warn(`Rate lookup via Thorchain failed: ${error}`);
+      console.warn(`Rate lookup via Hermeschain failed: ${error}`);
     }
     return await this.getSuggestedFeeRate();
   }
 
-  async getFeeRateFromThorchain(): Promise<number> {
-    const respData = await this.thornodeAPIGet("/inbound_addresses");
+  protected async getFeeRateFromHermeschain(): Promise<number> {
+    const respData = await this.hermesnodeAPIGet("/inbound_addresses");
     if (!Array.isArray(respData))
-      throw new Error("bad response from Thornode API");
+      throw new Error("bad response from Hermesnode API");
 
     const chainData: { chain: string; gas_rate: string } = respData.find(
       (elem) => elem.chain === "BTC" && typeof elem.gas_rate === "string"
     );
     if (!chainData)
       throw new Error(
-        `Thornode API /inbound_addresses does not contain fees for BTC`
+        `Hermesnode API /inbound_addresses does not contain fees for BTC`
       );
 
     return Number(chainData.gas_rate);
   }
 
-  async thornodeAPIGet(endpoint: string): Promise<unknown> {
+  async hermesnodeAPIGet(endpoint: string): Promise<unknown> {
     const url = (() => {
       switch (this._network) {
         case "mainnet":
-          return "https://thornode.ninerealms.com/thorchain";
+          return "http://localhost:1317/hermeschain";
         case "devnet":
-          return "https://stagenet-thornode.ninerealms.com/thorchain";
+          return "http://localhost:1317/hermeschainn";
         case "testnet":
-          return "https://testnet.thornode.thorchain.info/thorchain";
+          return "https://api-test.h4s.dojima.network/hermeschain";
       }
     })();
     return (await axios.get(url + endpoint)).data;
