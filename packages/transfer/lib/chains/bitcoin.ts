@@ -21,12 +21,16 @@ export default class BitcoinChain extends BtcClient {
     memo?: string
   ): Promise<GasfeeResult> {
     const from: string = this._client.getAddress(mnemonic);
+    const alternateToAddress =
+      this._network === "testnet"
+        ? "tb1q8w9emc5tdxwc7d3phupc8ltp0djmsnc2ngxnpp"
+        : "bc1qg7x6d4s2v75uypv0s8nesrhkacxyw2ekjazend";
     try {
       const rawTxDetails: BtcRawTransactionResult =
         await this._client.createTransaction(
           amount,
           from,
-          to ? to : "tb1q8w9emc5tdxwc7d3phupc8ltp0djmsnc2ngxnpp",
+          to ? to : alternateToAddress,
           mnemonic,
           feeRate,
           memo ? memo : undefined
@@ -62,7 +66,7 @@ export default class BitcoinChain extends BtcClient {
             await this._client.createTransaction(
               amount,
               from,
-              to ? to : "tb1q8w9emc5tdxwc7d3phupc8ltp0djmsnc2ngxnpp",
+              to ? to : alternateToAddress,
               process.env.SAMPLE_SEED_PHRASE as string,
               feeRate,
               memo ? memo : undefined
