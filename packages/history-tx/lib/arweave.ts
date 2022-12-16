@@ -12,14 +12,15 @@ import moment from "moment";
 import _ from "lodash";
 import Transaction from "arweave/node/lib/transaction";
 import { ArweaveInitialise } from "@dojima-wallet/connection";
+import { ApiConfig } from "arweave/node/lib/api";
 
 export default class ArweaveTxs extends ArweaveInitialise {
   ownerHasNextPage: boolean | undefined;
   recipientHasNextPage: boolean | undefined;
   ownerCursor: string;
   recipientCursor: string;
-  constructor(network: NetworkType) {
-    super(network);
+  constructor(network: NetworkType, config?: ApiConfig) {
+    super(network, config);
     this.ownerHasNextPage = undefined;
     this.recipientHasNextPage = undefined;
     this.ownerCursor = "";
@@ -253,10 +254,6 @@ export default class ArweaveTxs extends ArweaveInitialise {
                 id
                 owner { address }
                 recipient
-                tags {
-                  name
-                  value
-                }
                 block {
                   height
                   id

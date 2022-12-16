@@ -223,7 +223,6 @@ export interface SolTxDataResult {
   timeStamp: number;
   gasFee: number;
   amount: number;
-  status: string;
   block: number;
   from: string;
   to: string;

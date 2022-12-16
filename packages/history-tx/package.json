@@ -39,10 +39,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@dojima-wallet/connection": "^0.0.1-alpha.24",
+    "@dojima-wallet/connection": "^0.0.1-alpha.26",
     "@dojima-wallet/types": "^0.0.1-alpha.4",
-    "arweave": "^1.10.23",
-    "axios": "^0.26.1",
+    "arweave": "^1.11.8",
+    "axios": "^1.2.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.3"
   }

@@ -9,8 +9,8 @@ import { SolanaConnection } from "@dojima-wallet/connection";
 import { Finality, PublicKey } from "@solana/web3.js";
 
 export default class SolanaTransactions extends SolanaConnection {
-  constructor(network: NetworkType) {
-    super(network);
+  constructor(network: NetworkType, endpoint?: string) {
+    super(network, endpoint);
   }
 
   convertDateToTimestamp(date: string) {
@@ -39,7 +39,6 @@ export default class SolanaTransactions extends SolanaConnection {
           timeStamp: txData.blockTime ? txData.blockTime : 0,
           gasFee: txData.meta.fee / Math.pow(10, 9),
           amount: amount / Math.pow(10, 9),
-          status: "",
           block: txData.slot,
           from: txData.transaction.message.accountKeys[0].toString(),
           to: txData.transaction.message.accountKeys[1].toString(),
