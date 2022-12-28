@@ -1,6 +1,6 @@
 {
   "name": "@dojima-wallet/connection",
-  "version": "0.0.1-alpha.26",
+  "version": "0.0.1-alpha.27",
   "description": "Initialise and connection for layer 1&2 blockchain",
   "keywords": [
     "connection",
@@ -44,6 +44,15 @@
     "@dojima-wallet/utils": "^0.0.1-alpha.2",
     "@polkadot/api": "^9.10.2",
     "@solana/web3.js": "^1.67.0",
+    "@types/bech32": "^1.1.2",
+    "@types/big.js": "^4.0.5",
+    "@types/bip39": "^3.0.0",
+    "@types/bitcoinjs-lib": "^5.0.0",
+    "@types/crypto-js": "^4.0.2",
+    "@types/hdkey": "^2.0.0",
+    "@types/node": "^14.14.31",
+    "@types/uuid": "^8.3.1",
+    "@types/wif": "^2.0.2",
     "arweave": "^1.11.8",
     "arweave-mnemonic-keys": "^0.0.9",
     "axios": "^0.27.2",
@@ -62,15 +71,6 @@
     "moment": "^2.29.4",
     "uuid": "^8.3.2",
     "web3": "^1.7.1",
-    "@types/bech32": "^1.1.2",
-    "@types/big.js": "^4.0.5",
-    "@types/bip39": "^3.0.0",
-    "@types/bitcoinjs-lib": "^5.0.0",
-    "@types/crypto-js": "^4.0.2",
-    "@types/hdkey": "^2.0.0",
-    "@types/node": "^14.14.31",
-    "@types/uuid": "^8.3.1",
-    "@types/wif": "^2.0.2",
     "wif": "^2.0.6"
   }
 }
