@@ -1,111 +1,174 @@
-import BigNumber from "bignumber.js";
-import * as bip39 from "bip39";
-import { FeeOption } from "./types/fees";
-import BTCTxClient from "./transaction";
-import * as utils from "./utils";
-import axios from "axios";
-import { HaskoinBalanceResult, BtcRawTransactionResult } from "./types/client";
-import { SochainBalanceResult } from "./types/client";
+import {
+  Balance,
+  ChainClientParams,
+  Fee,
+  FeeOption,
+  FeeRate,
+  Network,
+  Tx,
+  TxHash,
+  TxHistoryParams,
+  TxParams,
+  TxType,
+  TxsPage,
+  UTXOClient,
+  checkFeeBounds,
+  standardFeeRates,
+} from "../client";
+import { getSeed } from "../crypto";
+import {
+  Address,
+  Asset,
+  AssetBTC,
+  Chain,
+  assetAmount,
+  assetToBase,
+} from "@dojima-wallet/utils";
 import * as Bitcoin from "bitcoinjs-lib";
-import { NetworkType } from "@dojima-wallet/types";
 
-export default class BitcoinClient extends BTCTxClient {
-  _network: NetworkType;
-  sochainUrl: string;
-  haskoinUrl: string;
-  _derivationPath: string;
-  constructor(network: NetworkType) {
-    super(network);
-    this._network = network;
-    this.sochainUrl = "https://chain.so/api/v2";
-    if (network === "mainnet" || network === "devnet") {
-      this.haskoinUrl = "https://haskoin.ninerealms.com/btc";
-      this._derivationPath = `84'/0'/0'/0/`;
-    } else {
-      this.haskoinUrl = "https://haskoin.ninerealms.com/btctest";
-      this._derivationPath = `84'/1'/0'/0/`;
+import { BTC_DECIMAL, LOWER_FEE_BOUND, UPPER_FEE_BOUND } from "./const";
+import * as sochain from "./sochain-api";
+import { ClientUrl } from "./types/client-types";
+import * as Utils from "./utils";
+
+export type BitcoinClientParams = ChainClientParams & {
+  sochainUrl?: string;
+  haskoinUrl?: ClientUrl;
+};
+
+/**
+ * Custom Bitcoin client
+ */
+class BitcoinClient extends UTXOClient {
+  private sochainUrl = "";
+  private haskoinUrl: ClientUrl;
+
+  /**
+   * Constructor
+   * Client is initialised with network type
+   *
+   * @param {BitcoinClientParams} params
+   */
+  constructor({
+    network = Network.Mainnet,
+    feeBounds = {
+      lower: LOWER_FEE_BOUND,
+      upper: UPPER_FEE_BOUND,
+    },
+    sochainUrl = "https://chain.so/api/v2",
+    haskoinUrl = {
+      [Network.Testnet]: "https://api.haskoin.com/btctest",
+      [Network.Mainnet]: "https://api.haskoin.com/btc",
+      [Network.Stagenet]: "https://api.haskoin.com/btc",
+    },
+    rootDerivationPaths = {
+      [Network.Mainnet]: `84'/0'/0'/0/`, //note this isn't bip44 compliant, but it keeps the wallets generated compatible to pre HD wallets
+      [Network.Testnet]: `84'/1'/0'/0/`,
+      [Network.Stagenet]: `84'/0'/0'/0/`,
+    },
+    phrase = "",
+  }: BitcoinClientParams) {
+    super(Chain.Bitcoin, { network, rootDerivationPaths, phrase, feeBounds });
+    this.setSochainUrl(sochainUrl);
+    this.haskoinUrl = haskoinUrl;
+  }
+
+  /**
+   * Set/Update the sochain url.
+   *
+   * @param {string} url The new sochain url.
+   * @returns {void}
+   */
+  setSochainUrl(url: string): void {
+    this.sochainUrl = url;
+  }
+
+  /**
+   * Get the explorer url.
+   *
+   * @returns {string} The explorer url based on the network.
+   */
+  getExplorerUrl(): string {
+    switch (this.network) {
+      case Network.Mainnet:
+      case Network.Stagenet:
+        return "https://blockstream.info";
+      case Network.Testnet:
+        return "https://blockstream.info/testnet";
     }
   }
 
-  getAddress(mnemonic: string): string {
-    const btcNetwork = utils.btcNetwork(this._network);
-    const btcKeys = this.getBtcKeys(mnemonic, 0);
+  /**
+   * Get the explorer url for the given address.
+   *
+   * @param {Address} address
+   * @returns {string} The explorer url for the given address based on the network.
+   */
+  getExplorerAddressUrl(address: string): string {
+    return `${this.getExplorerUrl()}/address/${address}`;
+  }
+  /**
+   * Get the explorer url for the given transaction id.
+   *
+   * @param {string} txID The transaction id
+   * @returns {string} The explorer url for the given transaction id based on the network.
+   */
+  getExplorerTxUrl(txID: string): string {
+    return `${this.getExplorerUrl()}/tx/${txID}`;
+  }
 
-    const { address } = Bitcoin.payments.p2wpkh({
-      pubkey: btcKeys.publicKey,
-      network: btcNetwork,
-    });
+  /**
+   * Get the current address.
+   *
+   * Generates a network-specific key-pair by first converting the buffer to a Wallet-Import-Format (WIF)
+   * The address is then decoded into type P2WPKH and returned.
+   *
+   * @returns {Address} The current address.
+   *
+   * @throws {"Phrase must be provided"} Thrown if phrase has not been set before.
+   * @throws {"Address not defined"} Thrown if failed creating account from phrase.
+   */
+  getAddress(index = 0): Address {
+    if (index < 0) {
+      throw new Error("index must be greater than zero");
+    }
+    if (this.phrase) {
+      const btcNetwork = Utils.btcNetwork(this.network);
+      const btcKeys = this.getBtcKeys(this.phrase, index);
 
-    if (!address) {
-      throw new Error("Address not defined");
-    } else {
+      const { address } = Bitcoin.payments.p2wpkh({
+        pubkey: btcKeys.publicKey,
+        network: btcNetwork,
+      });
+      if (!address) {
+        throw new Error("Address not defined");
+      }
       return address;
     }
+    throw new Error("Phrase must be provided");
   }
 
-  async getBalance(address: string, confirmed?: boolean): Promise<number> {
-    switch (this._network) {
-      case "mainnet":
-      case "devnet":
-        // Haskoin Api
-        try {
-          let requestApi = `${this.haskoinUrl}/address/${address}/balance`;
-          let response = await axios.get(requestApi);
-          let result: HaskoinBalanceResult = response.data;
-          const balance = confirmed
-            ? result.confirmed
-            : result.confirmed + result.unconfirmed;
-          return balance / Math.pow(10, 8);
-        } catch (error) {
-          throw new Error("Something went wrong");
-        }
-      case "testnet":
-        // Sochain Api
-        try {
-          let requestApi = `${
-            this.sochainUrl
-          }/get_address_balance/${utils.toSochainNetwork(
-            this._network
-          )}/${address}`;
-          let response = await axios.get(requestApi);
-          let result: SochainBalanceResult = response.data;
-          if (result.status === "success") {
-            const balance = confirmed
-              ? Number(result.data.confirmed_balance)
-              : Number(result.data.confirmed_balance) +
-                Number(result.data.unconfirmed_balance);
-            return balance;
-          } else {
-            throw new Error("Something went wrong");
-          }
-        } catch (error) {
-          throw new Error("Something went wrong");
-        }
-    }
-  }
+  /**
+   * @private
+   * Get private key.
+   *
+   * Private function to get keyPair from the this.phrase
+   *
+   * @param {string} phrase The phrase to be used for generating privkey
+   * @returns {ECPairInterface} The privkey generated from the given phrase
+   *
+   * @throws {"Could not get private key from phrase"} Throws an error if failed creating BTC keys from the given phrase
+   * */
+  private getBtcKeys(phrase: string, index = 0): Bitcoin.ECPairInterface {
+    const btcNetwork = Utils.btcNetwork(this.network);
 
-  validateMnemonic(mnemonic: string): boolean {
-    return bip39.validateMnemonic(mnemonic);
-  }
-
-  getSeed(mnemonic: string): Buffer {
-    if (!this.validateMnemonic(mnemonic)) {
-      throw new Error("Invalid mnemonic");
-    }
-
-    return bip39.mnemonicToSeedSync(mnemonic);
-  }
-
-  private getBtcKeys(mnemonic: string, index: number): Bitcoin.ECPairInterface {
-    const btcNetwork = utils.btcNetwork(this._network);
-
-    const seed = this.getSeed(mnemonic);
+    const seed = getSeed(phrase);
     const master = Bitcoin.bip32
       .fromSeed(seed, btcNetwork)
-      .derivePath(`${this._derivationPath}${index}`);
+      .derivePath(this.getFullDerivationPath(index));
 
     if (!master.privateKey) {
-      throw new Error("Unable to retrieve private key from mnemonic");
+      throw new Error("Could not get private key from phrase");
     }
 
     return Bitcoin.ECPair.fromPrivateKey(master.privateKey, {
@@ -113,48 +176,186 @@ export default class BitcoinClient extends BTCTxClient {
     });
   }
 
-  async createTransaction(
-    amount: number,
-    sender: string,
-    recipient: string,
-    mnemonic: string,
-    feeRate?: number,
-    memo?: string,
-    walletIndex?: number
-  ): Promise<BtcRawTransactionResult> {
-    // Convert amount to BigNumber
-    const toAmount = new BigNumber(amount * Math.pow(10, 8));
+  /**
+   * Validate the given address.
+   *
+   * @param {Address} address
+   * @returns {boolean} `true` or `false`
+   */
+  validateAddress(address: string): boolean {
+    return Utils.validateAddress(address, this.network);
+  }
 
-    const feeRateValue = feeRate || (await this.getFeeRates())[FeeOption.Fast];
+  /**
+   * Gets BTC balances of a given address.
+   *
+   * @param {Address} BTC address to get balances from
+   * @param {undefined} Needed for legacy only to be in common with `ChainClient` interface - will be removed by a next version
+   * @param {confirmedOnly} Flag to get balances of confirmed txs only
+   *
+   * @returns {Balance[]} BTC balances
+   */
+  async getBalance(
+    address: Address,
+    _assets?: Asset[] /* not used */,
+    confirmedOnly?: boolean
+  ): Promise<Balance[]> {
+    return Utils.getBalance({
+      params: {
+        sochainUrl: this.sochainUrl,
+        network: this.network,
+        address: address,
+      },
+      haskoinUrl: this.haskoinUrl[this.network],
+      confirmedOnly: !!confirmedOnly,
+    });
+  }
 
-    const fromAddressIndex = 0;
-    const memoString = memo ? memo : undefined;
-    const { psbt } = await this.buildTx(
-      toAmount,
-      recipient,
-      sender,
-      this._network,
-      this.sochainUrl,
-      this.haskoinUrl,
-      feeRateValue,
-      memoString,
-      false,
-      false,
-      fromAddressIndex
+  /**
+   * Get transaction history of a given address with pagination options.
+   * By default it will return the transaction history of the current wallet.
+   *
+   * @param {TxHistoryParams} params The options to get transaction history. (optional)
+   * @returns {TxsPage} The transaction history.
+   */
+  async getTransactions(params?: TxHistoryParams): Promise<TxsPage> {
+    // Sochain API doesn't have pagination parameter
+    const offset = params?.offset ?? 0;
+    const limit = params?.limit || 10;
+
+    const response = await sochain.getAddress({
+      address: params?.address + "",
+      sochainUrl: this.sochainUrl,
+      network: this.network,
+    });
+    const total = response.txs.length;
+    const transactions: Tx[] = [];
+
+    const txs = response.txs.filter(
+      (_, index) => offset <= index && index < offset + limit
     );
-    const btcKeys = this.getBtcKeys(mnemonic, fromAddressIndex);
-    psbt.signAllInputs(btcKeys); // Sign all inputs
-    psbt.finalizeAllInputs(); // Finalise inputs
-    const extractedTx = psbt.extractTransaction();
-    const txHex = extractedTx.toHex(); // TX extracted and formatted to hex
-    const result: BtcRawTransactionResult = {
-      tx_hex: txHex,
-      gas_fee: psbt.getFee() / Math.pow(10, 8),
+    for (const txItem of txs) {
+      const rawTx = await sochain.getTx({
+        sochainUrl: this.sochainUrl,
+        network: this.network,
+        hash: txItem.txid,
+      });
+      const tx: Tx = {
+        asset: AssetBTC,
+        from: rawTx.inputs.map((i) => ({
+          from: i.address,
+          amount: assetToBase(assetAmount(i.value, BTC_DECIMAL)),
+        })),
+        to: rawTx.outputs
+          .filter((i) => i.type !== "nulldata")
+          .map((i) => ({
+            to: i.address,
+            amount: assetToBase(assetAmount(i.value, BTC_DECIMAL)),
+          })),
+        date: new Date(rawTx.time * 1000),
+        type: TxType.Transfer,
+        hash: rawTx.txid,
+      };
+      transactions.push(tx);
+    }
+
+    const result: TxsPage = {
+      total,
+      txs: transactions,
     };
     return result;
   }
 
-  async transfer(txHex: string): Promise<string> {
-    return await this.broadcastTx(txHex, this.haskoinUrl);
+  /**
+   * Get the transaction details of a given transaction id.
+   *
+   * @param {string} txId The transaction id.
+   * @returns {Tx} The transaction details of the given transaction id.
+   */
+  async getTransactionData(txId: string): Promise<Tx> {
+    const rawTx = await sochain.getTx({
+      sochainUrl: this.sochainUrl,
+      network: this.network,
+      hash: txId,
+    });
+    return {
+      asset: AssetBTC,
+      from: rawTx.inputs.map((i) => ({
+        from: i.address,
+        amount: assetToBase(assetAmount(i.value, BTC_DECIMAL)),
+      })),
+      to: rawTx.outputs.map((i) => ({
+        to: i.address,
+        amount: assetToBase(assetAmount(i.value, BTC_DECIMAL)),
+      })),
+      date: new Date(rawTx.time * 1000),
+      type: TxType.Transfer,
+      hash: rawTx.txid,
+    };
+  }
+
+  protected async getSuggestedFeeRate(): Promise<FeeRate> {
+    return await sochain.getSuggestedTxFee();
+  }
+
+  protected calcFee(feeRate: FeeRate, memo?: string): Fee {
+    return Utils.calcFee(feeRate, memo);
+  }
+
+  /**
+   * Transfer BTC.
+   *
+   * @param {TxParams&FeeRate} params The transfer options.
+   * @returns {TxHash} The transaction hash.
+   *
+   * @throws {"memo too long"} Thrown if memo longer than  80 chars.
+   */
+  async transfer(params: TxParams & { feeRate?: FeeRate }): Promise<TxHash> {
+    const fromAddressIndex = params?.walletIndex || 0;
+
+    // set the default fee rate to `fast`
+    // const feeRate = params.feeRate || (await this.getFeeRates())[FeeOption.Fast]
+    const feeRate =
+      params.feeRate ||
+      standardFeeRates(await this.getSuggestedFeeRate())[FeeOption.Fast];
+    checkFeeBounds(this.feeBounds, feeRate);
+
+    /**
+     * do not spend pending UTXOs when adding a memo
+     */
+    const spendPendingUTXO = !params.memo;
+
+    const haskoinUrl = this.haskoinUrl[this.network];
+
+    const { psbt } = await Utils.buildTx({
+      ...params,
+      feeRate,
+      sender: this.getAddress(fromAddressIndex),
+      sochainUrl: this.sochainUrl,
+      haskoinUrl,
+      network: this.network,
+      spendPendingUTXO,
+    });
+
+    const btcKeys = this.getBtcKeys(this.phrase, fromAddressIndex);
+    psbt.signAllInputs(btcKeys); // Sign all inputs
+    psbt.finalizeAllInputs(); // Finalise inputs
+    const txHex = psbt.extractTransaction().toHex(); // TX extracted and formatted to hex
+
+    try {
+      return await Utils.sochainbroadcastTx({
+        sochainUrl: this.sochainUrl,
+        txHex,
+        network: this.network,
+      });
+    } catch (error) {
+      if (error instanceof Error && error.message === "Request failed") {
+        return await Utils.haskoinbroadcastTx({ txHex, haskoinUrl });
+      } else {
+        return Promise.reject(error);
+      }
+    }
   }
 }
+
+export { BitcoinClient };

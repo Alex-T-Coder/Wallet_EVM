@@ -1,11 +1,11 @@
-import { ChainClientParams, Network } from "@d11k-ts/client";
-import { validatePhrase } from "@d11k-ts/crypto";
-import { InboundAddressResult, SwapAssetList } from "@d11k-ts/utils";
+import { ChainClientParams, Network } from "../client";
+import { validatePhrase } from "../crypto";
+import { InboundAddressResult, SwapAssetList } from "@dojima-wallet/utils";
 import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
 import "@polkadot/api-augment";
 import { KeyringPair } from "@polkadot/keyring/types";
-import { BN } from "@polkadot/util";
 import axios from "axios";
+import BigNumber from "bignumber.js";
 
 import { GasfeeResult, PolkaTxParams, rawTxType } from "./types";
 
@@ -82,14 +82,16 @@ class PolkadotClient implements PolkaChainClient {
     // balance = balance / Math.pow(10, DOT_DECIMAL)
     // return balance
     const { data: balance } = await api.query.system.account(address);
-    const decimals = api.registry.chainDecimals;
-    const base = new BN(10).pow(new BN(decimals));
-    const freeBalance = `${balance.free}`;
-    const dm = new BN(freeBalance).divmod(base);
-    const resultBalance = parseFloat(
-      dm.div.toString() + "." + dm.mod.toString()
-    );
-    return resultBalance;
+    // const decimals = api.registry.chainDecimals
+    // const base = new BN(10).pow(new BN(decimals))
+    // const freeBalance = `${balance.free}`
+    // const dm = new BN(freeBalance).divmod(base)
+    // const resultBalance = parseFloat(dm.div.toString() + '.' + dm.mod.toString())
+    // return resultBalance
+    const baseValue = new BigNumber(`${balance.free}`)
+      .div(10 ** DOT_DECIMAL)
+      .decimalPlaces(DOT_DECIMAL);
+    return baseValue.toNumber();
   }
 
   async buildTx({ recipient, amount }: PolkaTxParams): Promise<rawTxType> {
