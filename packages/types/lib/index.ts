@@ -1,3 +1,3 @@
-import { NetworkType } from "./network";
+import { Network, NetworkType } from "./network";
 
-export { NetworkType };
+export { Network, NetworkType };
