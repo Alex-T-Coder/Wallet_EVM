@@ -1,22 +1,22 @@
-import Arweave from "arweave";
-import { NetworkType } from "@dojima-wallet/types";
-import { ApiConfig } from "arweave/node/lib/api";
+import { ArweaveClient } from "./arweave";
+import { Network } from "@dojima-wallet/types";
 
-export default class ArweaveInitialise {
-  _network: NetworkType;
-  public _arweave: Arweave;
-
-  constructor(network: NetworkType, config?: ApiConfig) {
-    this._network = network;
-    if (this._network === "testnet" || this._network === "devnet") {
-      // Testnet
-      this._arweave = Arweave.init(config);
+export default class ArweaveInit {
+  arConnect: ArweaveClient;
+  constructor(mnemonic: string, network: Network) {
+    if (network === Network.Testnet || network === Network.Stagenet) {
+      this.arConnect = new ArweaveClient({
+        phrase: mnemonic,
+        network: network,
+        config: {
+          host: "ar-test.h4s.dojima.network",
+          protocol: "https",
+          timeout: 100000,
+        },
+      });
     } else {
-      // Mainnet
-      this._arweave = Arweave.init({
-        host: "arweave.net",
-        protocol: "https",
-        timeout: 100000,
+      this.arConnect = new ArweaveClient({
+        phrase: mnemonic,
       });
     }
   }

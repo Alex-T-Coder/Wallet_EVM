@@ -31,6 +31,7 @@ import {
   ScanUTXOParam,
   TxBroadcastParams,
 } from "./types/sochain-api-types";
+import { Buffer } from "buffer";
 
 const TX_EMPTY_SIZE = 4 + 1 + 1 + 4; //10
 const TX_INPUT_BASE = 32 + 4 + 1 + 4; // 41

@@ -1,13 +1,22 @@
-import ArweaveInitialise from "./arweaveInit";
-import BtcClient from "./bitcoinClient";
-import EthereumWeb3 from "./ethereumWeb3";
-import SolanaConnection from "./solanaConnection";
-import PolkaClient from "./polkadotInstance";
+import ArweaveInit from "./arweaveInit";
+import BinanceBeaconInit from "./binanceBeaconInit";
+import BitcoinInit from "./bitcoinInit";
+import EthereumInit from "./ethereumInit";
+import SolanaInit from "./solanaInit";
+import PolkadotInit from "./polkadotInit";
+
+import { BTC_DECIMAL } from "./bitcoin";
+import { ETH_DECIMAL } from "./ethereum";
+import { DOT_DECIMAL } from "./polkadot";
+import { SOL_DECIMAL } from "./solana";
 
 export {
-  ArweaveInitialise,
-  BtcClient,
-  EthereumWeb3,
-  SolanaConnection,
-  PolkaClient,
+  ArweaveInit,
+  BinanceBeaconInit,
+  BitcoinInit,
+  EthereumInit,
+  SolanaInit,
+  PolkadotInit,
 };
+
+export { BTC_DECIMAL, ETH_DECIMAL, DOT_DECIMAL, SOL_DECIMAL };
