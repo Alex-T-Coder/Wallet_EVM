@@ -692,7 +692,11 @@ class EthereumClient extends BaseChainClient implements ChainClient, EthClient {
       );
     });
 
-    checkFeeBounds(this.feeBounds, gasPrice.toNumber());
+    try {
+      checkFeeBounds(this.feeBounds, gasPrice.toNumber());
+    } catch (error) {
+      console.warn("Gas price is lower than min fee bound");
+    }
 
     const valueToApprove: BigNumber = getApprovalAmount(amount);
 
@@ -806,7 +810,11 @@ class EthereumClient extends BaseChainClient implements ChainClient, EthClient {
       gasPrice: txGasPrice,
     };
 
-    checkFeeBounds(this.feeBounds, overrides.gasPrice.toNumber());
+    try {
+      checkFeeBounds(this.feeBounds, overrides.gasPrice.toNumber());
+    } catch (error) {
+      console.warn("Gas price is lower than min fee bound");
+    }
 
     const signer = txSigner || this.getWallet(walletIndex);
 
@@ -884,20 +892,33 @@ class EthereumClient extends BaseChainClient implements ChainClient, EthClient {
    */
   async estimateGasPricesFromEtherscan(): Promise<GasPrices> {
     const etherscan = this.getEtherscanProvider();
-    const response: GasOracleResponse = await etherscanAPI.getGasOracle(
-      etherscan.baseUrl,
-      etherscan.apiKey as string
-    );
-    // Convert result of gas prices: `Gwei` -> `Wei`
-    const averageWei = parseUnits(response.SafeGasPrice, "gwei");
-    const fastWei = parseUnits(response.ProposeGasPrice, "gwei");
-    const fastestWei = parseUnits(response.FastGasPrice, "gwei");
+    if (this.network === Network.Mainnet) {
+      const response: GasOracleResponse = await etherscanAPI.getGasOracle(
+        etherscan.baseUrl,
+        etherscan.apiKey
+      );
+      // Convert result of gas prices: `Gwei` -> `Wei`
+      const averageWei = parseUnits(response.SafeGasPrice, "gwei");
+      const fastWei = parseUnits(response.ProposeGasPrice, "gwei");
+      const fastestWei = parseUnits(response.FastGasPrice, "gwei");
 
-    return {
-      average: baseAmount(averageWei.toString(), ETH_DECIMAL),
-      fast: baseAmount(fastWei.toString(), ETH_DECIMAL),
-      fastest: baseAmount(fastestWei.toString(), ETH_DECIMAL),
-    };
+      return {
+        average: baseAmount(averageWei.toString(), ETH_DECIMAL),
+        fast: baseAmount(fastWei.toString(), ETH_DECIMAL),
+        fastest: baseAmount(fastestWei.toString(), ETH_DECIMAL),
+      };
+    } else {
+      const response = await etherscanAPI.getGoerliGasOracle(
+        etherscan.baseUrl,
+        etherscan.apiKey
+      );
+
+      return {
+        average: baseAmount(response, ETH_DECIMAL),
+        fast: baseAmount(response, ETH_DECIMAL),
+        fastest: baseAmount(response, ETH_DECIMAL),
+      };
+    }
   }
 
   /**
