@@ -3,3 +3,5 @@ export const defaultArConfig = {
   protocol: "https",
   timeout: 100000,
 };
+
+export const AR_DECIMAL = 12;

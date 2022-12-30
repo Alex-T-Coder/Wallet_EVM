@@ -5,6 +5,8 @@ import EthereumInit from "./ethereumInit";
 import SolanaInit from "./solanaInit";
 import PolkadotInit from "./polkadotInit";
 
+import { AR_DECIMAL } from "./arweave";
+import { BNB_DECIMAL } from "./binance-beacon";
 import { BTC_DECIMAL } from "./bitcoin";
 import { ETH_DECIMAL } from "./ethereum";
 import { DOT_DECIMAL } from "./polkadot";
@@ -19,4 +21,11 @@ export {
   PolkadotInit,
 };
 
-export { BTC_DECIMAL, ETH_DECIMAL, DOT_DECIMAL, SOL_DECIMAL };
+export {
+  AR_DECIMAL,
+  BNB_DECIMAL,
+  BTC_DECIMAL,
+  ETH_DECIMAL,
+  DOT_DECIMAL,
+  SOL_DECIMAL,
+};
