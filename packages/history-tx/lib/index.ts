@@ -1,39 +1,32 @@
-import BitcoinTransactions from "./bitcoin";
-import EthereumTransactions from "./ethereum";
-import SolanaTransactions from "./solana";
+import BitcoinTxs from "./bitcoin";
+import EthereumTxs from "./ethereum";
+import SolanaTxs from "./solana";
 import ArweaveTxs from "./arweave";
-import { ArTxDataResult, ArTxsResult } from "./utils/gqlResult";
+import BinanceBeaconTxs from "./binanceBeacon";
 import {
-  SolTxHistoryParams,
-  SolTxsResult,
-  SolTxDataResult,
-  EthTxDataResult,
-  EthTxsResult,
-  TxHashDataParams,
-  TxHistoryParams,
-  BtcTxDataResult,
-  BtcTxsResult,
-  BtcTxHistoryParams,
-} from "./utils/types";
+  ArTxDataType,
+  ArTxs,
+  BnbTxDataType,
+  BnbTxs,
+  BtcTxDataType,
+  BtcTxs,
+  EthTxDataType,
+  EthTxs,
+  SolTxDataType,
+  SolTxs,
+} from "./types";
 
 export {
-  ArTxDataResult,
-  ArTxsResult,
-  BtcTxHistoryParams,
-  BtcTxsResult,
-  BtcTxDataResult,
-  TxHistoryParams,
-  EthTxsResult,
-  TxHashDataParams,
-  EthTxDataResult,
-  SolTxHistoryParams,
-  SolTxsResult,
-  SolTxDataResult,
+  ArTxDataType,
+  ArTxs,
+  BnbTxDataType,
+  BnbTxs,
+  BtcTxDataType,
+  BtcTxs,
+  EthTxDataType,
+  EthTxs,
+  SolTxDataType,
+  SolTxs,
 };
 
-export {
-  BitcoinTransactions,
-  EthereumTransactions,
-  SolanaTransactions,
-  ArweaveTxs,
-};
+export { BitcoinTxs, EthereumTxs, SolanaTxs, ArweaveTxs, BinanceBeaconTxs };

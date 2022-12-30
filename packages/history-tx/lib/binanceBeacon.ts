@@ -1,24 +1,24 @@
-import { ETH_DECIMAL, EthereumInit } from "@dojima-wallet/connection";
+import { BinanceBeaconInit, BNB_DECIMAL } from "@dojima-wallet/connection";
 import { Network } from "@dojima-wallet/types";
-import { EthTxs, EthTxDataType } from "./types";
+import { BnbTxs, BnbTxDataType } from "./types";
 
-export default class EthereumTxs extends EthereumInit {
+export default class BinanceBeaconTxs extends BinanceBeaconInit {
   constructor(mnemonic: string, network: Network) {
     super(mnemonic, network);
   }
 
   async getTransactionData(hash: string) {
-    const data = await this.ethConnect.getTransactionData(hash);
+    const data = await this.bnbBConnect.getTransactionData(hash);
     const txType = (txAddr: string) => {
-      if (txAddr === this.ethConnect.getAddress()) return "SEND | ETH";
-      else return "RECEIVE | ETH";
+      if (txAddr === this.bnbBConnect.getAddress()) return "SEND | BNB";
+      else return "RECEIVE | BNB";
     };
-    const resTxData: EthTxDataType = {
+    const resTxData: BnbTxDataType = {
       transaction_hash: data.hash,
       from: data.from[0].from,
       value: (
-        Number(data.from[0].amount.amount()) / Math.pow(10, ETH_DECIMAL)
-      ).toFixed(ETH_DECIMAL),
+        Number(data.from[0].amount.amount()) / Math.pow(10, BNB_DECIMAL)
+      ).toFixed(BNB_DECIMAL),
       to: data.to[0].to,
       date: data.date,
       transfer_type: txType(data.from[0].from),
@@ -32,7 +32,7 @@ export default class EthereumTxs extends EthereumInit {
     limit?: number,
     startTime?: Date
   ) {
-    const txs = await this.ethConnect.getTransactions({
+    const txs = await this.bnbBConnect.getTransactions({
       address,
       limit,
       offset,
@@ -40,24 +40,24 @@ export default class EthereumTxs extends EthereumInit {
     });
     if (txs.total > 0) {
       const txType = (txAddr: string) => {
-        if (txAddr === address) return "SEND | ETH";
-        else return "RECEIVE | ETH";
+        if (txAddr === address) return "SEND | BNB";
+        else return "RECEIVE | BNB";
       };
-      let txsResult: Array<EthTxDataType> = [];
+      let txsResult: Array<BnbTxDataType> = [];
       txs.txs.map((res) => {
-        const resTx: EthTxDataType = {
+        const resTx: BnbTxDataType = {
           transaction_hash: res.hash,
           from: res.from[0].from,
           value: (
-            Number(res.from[0].amount.amount()) / Math.pow(10, ETH_DECIMAL)
-          ).toFixed(ETH_DECIMAL),
+            Number(res.from[0].amount.amount()) / Math.pow(10, BNB_DECIMAL)
+          ).toFixed(BNB_DECIMAL),
           to: res.to[0].to,
           date: res.date,
           transfer_type: txType(res.from[0].from),
         };
         txsResult.push(resTx);
       });
-      const result: EthTxs = {
+      const result: BnbTxs = {
         total: txs.total,
         txs: txsResult,
       };

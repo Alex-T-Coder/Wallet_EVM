@@ -1,167 +1,69 @@
-import { BtcClient } from "@dojima-wallet/connection";
-import { NetworkType } from "@dojima-wallet/types";
-import axios from "axios";
-import moment from "moment";
-import {
-  BtcTxDataResult,
-  BtcTxHashDataResult,
-  BtcTxHistoryParams,
-  BtcTxHistoryResult,
-  BtcTxsResult,
-} from "./utils/types";
+import { BitcoinInit, BTC_DECIMAL } from "@dojima-wallet/connection";
+import { Network } from "@dojima-wallet/types";
+import { BtcTxs, BtcTxDataType } from "./types";
 
-export default class BitcoinTransactions extends BtcClient {
-  constructor(network: NetworkType) {
-    super(network);
+export default class BitcoinTxs extends BitcoinInit {
+  constructor(mnemonic: string, network: Network) {
+    super(mnemonic, network);
   }
 
-  convertDateToTimestamp(date: string) {
-    const timestamp = moment(date).format("X"); // lowercase 'x' for timestamp in milliseconds
-    return Number(timestamp);
+  async getTransactionData(hash: string) {
+    const data = await this.btcConnect.getTransactionData(hash);
+    const txType = (txAddr: string) => {
+      if (txAddr === this.btcConnect.getAddress()) return "SEND | BTC";
+      else return "RECEIVE | BTC";
+    };
+    const resTxData: BtcTxDataType = {
+      transaction_hash: data.hash,
+      from: data.from[0].from,
+      value: (
+        Number(data.from[0].amount.amount()) / Math.pow(10, BTC_DECIMAL)
+      ).toFixed(BTC_DECIMAL),
+      to: data.to[0].to,
+      date: data.date,
+      transfer_type: txType(data.from[0].from),
+    };
+    return resTxData;
   }
 
-  convertTimestampToDate(timestamp: number) {
-    const date = moment(timestamp).toDate().toUTCString();
-    return date;
-  }
-
-  convertISOtoUTC(date: string) {
-    const utcDate = new Date(date).toUTCString();
-    return utcDate;
-  }
-
-  async getTransactionsHistory(params: BtcTxHistoryParams) {
-    let requestUrl = `${this._client.haskoinUrl}/address/transactions?addresses=${params.address}`;
-    if (params.limit) {
-      requestUrl += `&limit=${params.limit}`;
+  async getTransactionsHistory(
+    address: string,
+    offset?: number,
+    limit?: number,
+    startTime?: Date
+  ) {
+    const txs = await this.btcConnect.getTransactions({
+      address,
+      limit,
+      offset,
+      startTime,
+    });
+    if (txs.total > 0) {
+      const txType = (txAddr: string) => {
+        if (txAddr === address) return "SEND | BTC";
+        else return "RECEIVE | BTC";
+      };
+      let txsResult: Array<BtcTxDataType> = [];
+      txs.txs.map((res) => {
+        const resTx: BtcTxDataType = {
+          transaction_hash: res.hash,
+          from: res.from[0].from,
+          value: (
+            Number(res.from[0].amount.amount()) / Math.pow(10, BTC_DECIMAL)
+          ).toFixed(BTC_DECIMAL),
+          to: res.to[0].to,
+          date: res.date,
+          transfer_type: txType(res.from[0].from),
+        };
+        txsResult.push(resTx);
+      });
+      const result: BtcTxs = {
+        total: txs.total,
+        txs: txsResult,
+      };
+      return result;
     } else {
-      requestUrl += `&limit=100`;
-    }
-    if (params.startIndex) {
-      requestUrl += `&offset=${params.startIndex}`;
-    } else {
-      requestUrl += `&offset=0`;
-    }
-    try {
-      let response = await axios.get(requestUrl);
-      if (response.status && response.status === 200) {
-        let result: BtcTxHistoryResult[] = response.data;
-        if (result !== (null || undefined)) {
-          let finalResult: BtcTxsResult = {
-            txs: result.map((res) => ({
-              transaction_hash: res.txid,
-              block: res.block.height,
-            })),
-          };
-          return finalResult;
-        } else {
-          return {
-            txs: [],
-          };
-        }
-      } else {
-        return null;
-      }
-    } catch (error) {
-      throw new Error("Something went wrong");
-    }
-  }
-
-  async getTransactionData(txHash: string, address: string) {
-    let requestUrl = `${this._client.haskoinUrl}/transaction/${txHash}`;
-    try {
-      let response = await axios.get(requestUrl);
-      if (response.status) {
-        if (response.status === 200) {
-          let result: BtcTxHashDataResult = response.data;
-          if (result !== (null || undefined)) {
-            let date = "";
-            let time = "";
-            let tx_type = "";
-            let amount = 0;
-            if (result.time !== (null || undefined)) {
-              let dateValue = this.convertTimestampToDate(result.time * 1000);
-              date = moment(this.convertISOtoUTC(dateValue)).format(
-                "DD/MM/YYYY"
-              );
-              time = moment(this.convertISOtoUTC(dateValue)).format("HH:mm:ss");
-            }
-            if (
-              (result.inputs !== null || result.inputs !== []) &&
-              result.inputs[0].address === address
-            ) {
-              tx_type = "Send | BTC";
-              amount = result.inputs[0].value;
-            } else {
-              if (result.outputs !== null || result.outputs !== []) {
-                for (let i = 0; i < result.outputs.length; i++) {
-                  if (result.outputs[i].address === address) {
-                    tx_type = "Receive | BTC";
-                    amount = result.outputs[i].value;
-                    break;
-                  }
-                }
-              }
-            }
-            return {
-              transaction_type: tx_type,
-              transaction_hash: result.txid,
-              value: Number(amount / Math.pow(10, 8)),
-              block: result.block.height,
-              date: date,
-              time: time,
-              gas_fee: Number(result.fee / Math.pow(10, 8)),
-            };
-          } else {
-            return null;
-          }
-        }
-      } else {
-        return null;
-      }
-    } catch (error) {
-      throw new Error("Something went wrong");
-    }
-  }
-
-  async getDetailTransactionData(txHash: string) {
-    let requestUrl = `${this._client.haskoinUrl}/transaction/${txHash}`;
-    try {
-      let response = await axios.get(requestUrl);
-      if (response.status) {
-        if (response.status === 200) {
-          let result: BtcTxHashDataResult = response.data;
-          if (result !== (null || undefined)) {
-            let finalResult: BtcTxDataResult = {
-              txid: result.txid,
-              size: result.size,
-              version: result.version,
-              locktime: result.locktime,
-              fee: Number(result.fee / Math.pow(10, 8)),
-              inputs: result.inputs,
-              outputs: result.outputs,
-              block: result.block,
-              deleted: result.deleted,
-              timestamp: this.convertTimestampToDate(result.time * 1000),
-              rbf: result.rbf,
-              weight: result.weight,
-              from: result.inputs[0].address,
-              fromValue: Number(result.inputs[0].value / Math.pow(10, 8)),
-              to1: result.outputs[0].address,
-              to1Value: Number(result.outputs[0].value / Math.pow(10, 8)),
-              to2: result.outputs[1].address,
-              to2Value: Number(result.outputs[1].value / Math.pow(10, 8)),
-            };
-            return finalResult;
-          } else {
-            return null;
-          }
-        }
-      } else {
-        return null;
-      }
-    } catch (error) {
-      throw new Error("Something went wrong");
+      return null;
     }
   }
 }
