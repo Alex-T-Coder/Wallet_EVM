@@ -1,79 +1,36 @@
-export interface FeeResult {
-  asset_fee: number;
-  usdt_fee: number;
-}
-export interface GasfeeResult {
-  slow: {
-    fee: FeeResult;
-  };
-  average: {
-    fee: FeeResult;
-  };
-  fast: {
-    fee: FeeResult;
-  };
-}
+import { CoinGecko } from "@dojima-wallet/prices";
+import { GasfeeResult, UsdtTokenGasFeeResult } from "./types";
 
-export type DexFee = {
-  fee_name: DexFeeName;
-  fee_value: number;
+export const getUsdtTokenPriceResult = async (
+  gasFee: GasfeeResult,
+  asset: string
+): Promise<UsdtTokenGasFeeResult> => {
+  const pricesInst = new CoinGecko();
+  const pricesData = await pricesInst.getAssestsCurrentMarketData({
+    assets: asset,
+  });
+  if (pricesData !== undefined) {
+    return {
+      slow: {
+        fee: {
+          asset_fee: gasFee.slow,
+          usdt_fee: gasFee.slow * pricesData.current_price,
+        },
+      },
+      average: {
+        fee: {
+          asset_fee: gasFee.average,
+          usdt_fee: gasFee.average * pricesData.current_price,
+        },
+      },
+      fast: {
+        fee: {
+          asset_fee: gasFee.fast,
+          usdt_fee: gasFee.fast * pricesData.current_price,
+        },
+      },
+    };
+  } else {
+    throw new Error("Unable to retrieve current asset-usdt price");
+  }
 };
-
-export type DexFees = {
-  dex_fee_fields: DexFee[];
-};
-
-export type Fees = (Fee | TransferFee | DexFees)[];
-export type FeeType =
-  | "submit_proposal"
-  | "deposit"
-  | "vote"
-  | "create_validator"
-  | "remove_validator"
-  | "dexList"
-  | "orderNew"
-  | "orderCancel"
-  | "issueMsg"
-  | "mintMsg"
-  | "tokensBurn"
-  | "tokensFreeze"
-  | "send"
-  | "timeLock"
-  | "timeUnlock"
-  | "timeRelock"
-  | "setAccountFlags"
-  | "HTLT"
-  | "depositHTLT"
-  | "claimHTLT"
-  | "refundHTLT";
-
-export type Fee = {
-  msg_type: FeeType;
-  fee: number;
-  fee_for: number;
-};
-export const isTransferFee = (
-  v: Fee | TransferFee | DexFees
-): v is TransferFee =>
-  isFee((v as TransferFee)?.fixed_fee_params) &&
-  !!(v as TransferFee)?.multi_transfer_fee;
-export const isFee = (v: Fee | TransferFee | DexFees): v is Fee =>
-  !!(v as Fee)?.msg_type &&
-  (v as Fee)?.fee !== undefined &&
-  (v as Fee)?.fee_for !== undefined;
-
-export type TransferFee = {
-  fixed_fee_params: Fee;
-  multi_transfer_fee: number;
-  lower_limit_as_multi: number;
-};
-
-export type DexFeeName =
-  | "ExpireFee"
-  | "ExpireFeeNative"
-  | "CancelFee"
-  | "CancelFeeNative"
-  | "FeeRate"
-  | "FeeRateNative"
-  | "IOCExpireFee"
-  | "IOCExpireFeeNative";

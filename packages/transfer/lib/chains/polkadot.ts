@@ -1,62 +1,73 @@
-import { PolkadotAccount } from "@dojima-wallet/account";
-import { NetworkType } from "@dojima-wallet/types";
-import { GasfeeResult } from "./utils";
-import { CoinGecko } from "@dojima-wallet/prices";
-import { InboundAddressResult, SwapAssetList } from "@dojima-wallet/utils";
+import { Network } from "@dojima-wallet/types";
+import { UsdtTokenGasFeeResult } from "./types";
+import { SwapAssetList } from "@dojima-wallet/utils";
+import { PolkadotInit } from "@dojima-wallet/connection";
+import { getUsdtTokenPriceResult } from "./utils";
 
-export default class PolkadotChain extends PolkadotAccount {
-  _mnemonic: string;
+export default class PolkadotChain extends PolkadotInit {
+  constructor(mnemonic: string, network: Network) {
+    super(mnemonic, network);
+  }
 
-  constructor(mnemonic: string, network: NetworkType, provider?: string) {
-    super(mnemonic, network, provider);
-    this._mnemonic = mnemonic;
+  async getGasFee(
+    recipient: string,
+    amount: number
+  ): Promise<UsdtTokenGasFeeResult> {
+    const dot_gasFee = await this.dotConnect.getFees({
+      recipient,
+      amount,
+    });
+    const result = await getUsdtTokenPriceResult(dot_gasFee, "polkadot");
+    return result;
   }
 
   async transfer(recipient: string, amount: number): Promise<string> {
-    const hash = await this._client.transfer({ recipient, amount });
+    const hash = await this.dotConnect.transfer({ recipient, amount });
     return hash;
   }
 
-  async getFees(recipient: string, amount: number): Promise<GasfeeResult> {
-    const rawTx = await this._client.buildTx({ recipient, amount });
-    const paymentInfo = await rawTx.paymentInfo(await this.getAddress());
-    const dot_gasFee = paymentInfo.partialFee.toNumber() / Math.pow(10, 10);
-    const pricesInst = new CoinGecko();
-    const pricesData = await pricesInst.getAssestsCurrentMarketData({
-      assets: "polkadot",
-    });
-    if (pricesData !== undefined) {
-      const usdt_gasFee = dot_gasFee * pricesData.current_price;
-      const resultFee = {
-        fee: {
-          asset_fee: dot_gasFee,
-          usdt_fee: usdt_gasFee,
-        },
-      };
-      return {
-        slow: resultFee,
-        average: resultFee,
-        fast: resultFee,
-      };
-    } else {
-      throw new Error("Unable to retrieve current asset-usdt price");
+  async getDefaultLiquidityPoolGasFee(): Promise<UsdtTokenGasFeeResult> {
+    const LPDefaultGasFee =
+      await this.dotConnect.getDefaultLiquidityPoolGasFee();
+    const dot_LPgasfee = {
+      slow: LPDefaultGasFee,
+      average: LPDefaultGasFee,
+      fast: LPDefaultGasFee,
+    };
+    const result = await getUsdtTokenPriceResult(dot_LPgasfee, "polkadot");
+    return result;
+  }
+
+  async addLiquidityPool(
+    amount: number,
+    dojimaAddress?: string
+  ): Promise<string> {
+    try {
+      const inboundAddress = await this.dotConnect.getPolkadotInboundAddress();
+      const liquidityPoolHash = await this.dotConnect.addLiquidityPool(
+        amount,
+        inboundAddress,
+        dojimaAddress
+      );
+      return liquidityPoolHash;
+    } catch (error) {
+      return Promise.reject(error);
     }
   }
 
-  async getInboundObject(): Promise<InboundAddressResult> {
-    const inboundObj = await this._client.getInboundObject();
-    return inboundObj;
-  }
-
-  async getPolkadotInboundAddress(): Promise<string> {
-    const inboundObj = await this.getInboundObject();
-    return inboundObj.address;
-  }
-
-  async getDefaultLiquidityPoolGasFee(): Promise<number> {
-    const gasFee = await this._client.getDefaultLiquidityPoolGasFee();
-
-    return gasFee;
+  async swap(amount: number, recipient: string, token: SwapAssetList) {
+    try {
+      const inboundAddress = await this.dotConnect.getPolkadotInboundAddress();
+      const swapHash = await this.dotConnect.swap(
+        amount,
+        token,
+        inboundAddress,
+        recipient
+      );
+      return swapHash;
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
 
   async polkaBatchTxsToHermes(
@@ -64,42 +75,12 @@ export default class PolkadotChain extends PolkadotAccount {
     inboundAddress: string,
     memo: string
   ): Promise<string> {
-    const batchTxHash = await this._client.polkaBatchTxsToHermes(
+    const batchTxHash = await this.dotConnect.polkaBatchTxsToHermes(
       amount,
       inboundAddress,
       memo
     );
 
     return batchTxHash;
-  }
-
-  async addLiquidityPool(
-    amount: number,
-    inboundAddress: string,
-    dojAddress?: string
-  ): Promise<string> {
-    const txHash = await this._client.addLiquidityPool(
-      amount,
-      inboundAddress,
-      dojAddress
-    );
-
-    return txHash;
-  }
-
-  async swap(
-    amount: number,
-    token: SwapAssetList,
-    inboundAddress: string,
-    recipient: string
-  ): Promise<string> {
-    const txHash = await this._client.swap(
-      amount,
-      token,
-      inboundAddress,
-      recipient
-    );
-
-    return txHash;
   }
 }
