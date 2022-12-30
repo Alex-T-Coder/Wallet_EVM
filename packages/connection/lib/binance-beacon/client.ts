@@ -40,6 +40,7 @@ import {
   TxPage as BinanceTxPage,
 } from "./types/binance";
 import { getPrefix, isAccount, isTransferFee, parseTx } from "./util";
+import { BNB_DECIMAL } from "./types";
 
 type PrivKey = string;
 
@@ -270,7 +271,7 @@ class BinanceBeaconClient
         return {
           asset:
             assetFromString(`${Chain.Binance}.${balance.symbol}`) || AssetBNB,
-          amount: assetToBase(assetAmount(balance.free, 8)),
+          amount: assetToBase(assetAmount(balance.free, BNB_DECIMAL)),
         };
       })
       .filter(
