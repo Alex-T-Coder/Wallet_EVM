@@ -1,20 +1,18 @@
-import { NetworkType } from "@dojima-wallet/types";
-import { PolkaClient } from "@dojima-wallet/connection";
+import { Network } from "@dojima-wallet/types";
+import { PolkadotInit } from "@dojima-wallet/connection";
 
-export default class PolkadotAccount extends PolkaClient {
-  constructor(mnemonic: string, network: NetworkType, provider?: string) {
-    super(mnemonic, network, provider);
+export default class PolkadotAccount extends PolkadotInit {
+  constructor(mnemonic: string, network: Network) {
+    super(mnemonic, network);
   }
 
-  // Get public address using seed phrase
   async getAddress(): Promise<string> {
-    const address = this._client.getAddress();
+    const address = this.dotConnect.getAddress();
     return address;
   }
 
-  // Retrieve balance of the user
-  async getBalance(pubAddress: string): Promise<number> {
-    const balance = await this._client.getBalance(pubAddress);
+  async getBalance(address: string): Promise<number> {
+    const balance = await this.dotConnect.getBalance(address);
     return balance;
   }
 }

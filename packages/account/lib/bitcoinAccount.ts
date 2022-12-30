@@ -1,20 +1,20 @@
-import { NetworkType } from "@dojima-wallet/types";
-import { BtcClient } from "@dojima-wallet/connection";
+import { Network } from "@dojima-wallet/types";
+import { BitcoinInit } from "@dojima-wallet/connection";
+import { AssetBTC, baseToAsset } from "@dojima-wallet/utils";
 
-export default class BitcoinAccount extends BtcClient {
-  constructor(network: NetworkType) {
-    super(network);
+export default class BitcoinAccount extends BitcoinInit {
+  constructor(mnemonic: string, network: Network) {
+    super(mnemonic, network);
   }
 
-  // Get public address using seed phrase
-  getAddress(mnemonic: string): string {
-    const address = this._client.getAddress(mnemonic);
+  getAddress(): string {
+    const address = this.btcConnect.getAddress();
     return address;
   }
 
-  // Retrieve balance of the user
-  async getBalance(pubAddress: string): Promise<number> {
-    const balance = await this._client.getBalance(pubAddress);
+  async getBalance(address: string): Promise<number> {
+    const balArr = await this.btcConnect.getBalance(address, [AssetBTC]);
+    const balance = baseToAsset(balArr[0].amount).amount().toNumber();
     return balance;
   }
 }

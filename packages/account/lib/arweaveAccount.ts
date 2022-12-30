@@ -1,35 +1,18 @@
-import { NetworkType } from "@dojima-wallet/types";
-import { ArweaveInitialise } from "@dojima-wallet/connection";
-import { ApiConfig } from "arweave/node/lib/api";
-import { getKeyFromMnemonic } from "arweave-mnemonic-keys";
+import { Network } from "@dojima-wallet/types";
+import { ArweaveInit } from "@dojima-wallet/connection";
 
-export default class ArweaveAccount extends ArweaveInitialise {
-  constructor(network: NetworkType, config?: ApiConfig) {
-    super(network, config);
+export default class ArweaveAccount extends ArweaveInit {
+  constructor(mnemonic: string, network: Network) {
+    super(mnemonic, network);
   }
 
-  async getAddress(mnemonic: string): Promise<string> {
-    const keyPair = await getKeyFromMnemonic(mnemonic);
-    const address = await this._arweave.wallets.jwkToAddress(keyPair);
+  async getAddress(): Promise<string> {
+    const address = await this.arConnect.getAddress();
     return address;
   }
 
-  /** testnet tokens in winston */
-  async mintArTokens(address: string) {
-    const test_ar_amount = 2000000000000;
-
-    // Mint balance in Arlocal for testing
-    await this._arweave.api.get(`/mint/${address}/${test_ar_amount}`);
-    await this._arweave.api.get("/mine");
-  }
-
   async getBalance(address: string): Promise<number> {
-    /** Get balance */
-    const wnstBalance = await this._arweave.wallets.getBalance(address);
-
-    /** Convert balance from Winston to Ar. (1 Ar = 10^12) */
-    const arBalance = this._arweave.ar.winstonToAr(wnstBalance);
-
-    return Number(arBalance);
+    const balance = await this.arConnect.getBalance(address);
+    return balance;
   }
 }
