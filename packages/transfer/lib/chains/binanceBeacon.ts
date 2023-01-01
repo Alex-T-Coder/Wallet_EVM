@@ -1,6 +1,6 @@
 import { Network } from "@dojima-wallet/types";
 import { BinanceBeaconInit, BNB_DECIMAL } from "@dojima-wallet/connection";
-import { getUsdtTokenPriceResult } from "./utils";
+import { convertAssetBNtoBaseNumber, getUsdtTokenPriceResult } from "./utils";
 import { UsdtTokenGasFeeResult } from "./types";
 import { assetAmount, assetToBase } from "@dojima-wallet/utils";
 
@@ -11,12 +11,12 @@ export default class BinanceBeaconChain extends BinanceBeaconInit {
 
   async getGasFee(): Promise<UsdtTokenGasFeeResult> {
     const gasFee = await this.bnbBConnect.getFees();
-    const btc_gasFee = {
-      slow: gasFee.average.amount().toNumber(),
-      average: gasFee.fast.amount().toNumber(),
-      fast: gasFee.fastest.amount().toNumber(),
+    const bnb_gasFee = {
+      slow: convertAssetBNtoBaseNumber(gasFee.average.amount(), BNB_DECIMAL),
+      average: convertAssetBNtoBaseNumber(gasFee.fast.amount(), BNB_DECIMAL),
+      fast: convertAssetBNtoBaseNumber(gasFee.fastest.amount(), BNB_DECIMAL),
     };
-    const result = await getUsdtTokenPriceResult(btc_gasFee, "bitcoin");
+    const result = await getUsdtTokenPriceResult(bnb_gasFee, "binance");
     return result;
   }
 

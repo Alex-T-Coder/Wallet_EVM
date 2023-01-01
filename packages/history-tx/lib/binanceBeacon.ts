@@ -20,7 +20,7 @@ export default class BinanceBeaconTxs extends BinanceBeaconInit {
         Number(data.from[0].amount.amount()) / Math.pow(10, BNB_DECIMAL)
       ).toFixed(BNB_DECIMAL),
       to: data.to[0].to,
-      date: data.date,
+      date: data.date.toUTCString(),
       transfer_type: txType(data.from[0].from),
     };
     return resTxData;
@@ -52,7 +52,7 @@ export default class BinanceBeaconTxs extends BinanceBeaconInit {
             Number(res.from[0].amount.amount()) / Math.pow(10, BNB_DECIMAL)
           ).toFixed(BNB_DECIMAL),
           to: res.to[0].to,
-          date: res.date,
+          date: res.date.toUTCString(),
           transfer_type: txType(res.from[0].from),
         };
         txsResult.push(resTx);

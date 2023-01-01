@@ -10,12 +10,12 @@ export default class SolanaChain extends SolanaInit {
 
   async getGasFee(): Promise<UsdtTokenGasFeeResult> {
     const gasFee = await this.solConnect.getFees();
-    const btc_gasFee = {
+    const sol_gasFee = {
       slow: gasFee.slow,
       average: gasFee.average,
       fast: gasFee.fast,
     };
-    const result = await getUsdtTokenPriceResult(btc_gasFee, "solana");
+    const result = await getUsdtTokenPriceResult(sol_gasFee, "solana");
     return result;
   }
 

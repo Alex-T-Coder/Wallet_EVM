@@ -1,7 +1,7 @@
 import { UsdtTokenGasFeeResult } from "./types";
 import { ETH_DECIMAL, EthereumInit } from "@dojima-wallet/connection";
 import { Network } from "@dojima-wallet/types";
-import { getUsdtTokenPriceResult } from "./utils";
+import { convertAssetBNtoBaseNumber, getUsdtTokenPriceResult } from "./utils";
 import { assetAmount, assetToBase } from "@dojima-wallet/utils";
 
 export default class EthereumChain extends EthereumInit {
@@ -18,12 +18,12 @@ export default class EthereumChain extends EthereumInit {
       amount: baseAmt,
       recipient,
     });
-    const btc_gasFee = {
-      slow: gasFee.average.amount().toNumber(),
-      average: gasFee.fast.amount().toNumber(),
-      fast: gasFee.fastest.amount().toNumber(),
+    const eth_gasFee = {
+      slow: convertAssetBNtoBaseNumber(gasFee.average.amount(), ETH_DECIMAL),
+      average: convertAssetBNtoBaseNumber(gasFee.fast.amount(), ETH_DECIMAL),
+      fast: convertAssetBNtoBaseNumber(gasFee.fastest.amount(), ETH_DECIMAL),
     };
-    const result = await getUsdtTokenPriceResult(btc_gasFee, "ethereum");
+    const result = await getUsdtTokenPriceResult(eth_gasFee, "ethereum");
     return result;
   }
 

@@ -46,7 +46,7 @@ export interface ArTxs {
 export interface BtcTxDataType {
   transaction_hash: string;
   value: string;
-  date: Date;
+  date: string;
   transfer_type: string;
   from: string;
   to: string;
@@ -60,7 +60,7 @@ export interface BtcTxs {
 export interface BnbTxDataType {
   transaction_hash: string;
   value: string;
-  date: Date;
+  date: string;
   transfer_type: string;
   from: string;
   to: string;
@@ -74,7 +74,7 @@ export interface BnbTxs {
 export interface EthTxDataType {
   transaction_hash: string;
   value: string;
-  date: Date;
+  date: string;
   transfer_type: string;
   from: string;
   to: string;

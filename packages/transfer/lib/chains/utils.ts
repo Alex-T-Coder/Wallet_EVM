@@ -1,5 +1,6 @@
 import { CoinGecko } from "@dojima-wallet/prices";
 import { GasfeeResult, UsdtTokenGasFeeResult } from "./types";
+import BigNumber from "bignumber.js";
 
 export const getUsdtTokenPriceResult = async (
   gasFee: GasfeeResult,
@@ -33,4 +34,13 @@ export const getUsdtTokenPriceResult = async (
   } else {
     throw new Error("Unable to retrieve current asset-usdt price");
   }
+};
+
+export const convertAssetBNtoBaseNumber = (
+  assetBNValue: BigNumber,
+  decimal: number
+) => {
+  return Number(
+    (Number(assetBNValue) / Math.pow(10, decimal)).toFixed(decimal)
+  );
 };
