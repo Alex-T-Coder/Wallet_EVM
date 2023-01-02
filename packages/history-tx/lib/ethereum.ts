@@ -71,9 +71,9 @@ export default class EthereumTxs extends EthereumInit {
         offset ? offset : 1
       }&offset=${limit ? limit : 10}`;
     } else {
-      url = `https://api-goerli.etherscan.io/api?module=account&action=txlist&sort=desc&apiKey=6IU4JG5P2PNVRSB54YIAMIAQFQ879PXJ7C&address=${address}&offset=${
-        offset ? offset : 10
-      }`;
+      url = `https://api-goerli.etherscan.io/api?module=account&action=txlist&sort=desc&apiKey=6IU4JG5P2PNVRSB54YIAMIAQFQ879PXJ7C&address=${address}&page=${
+        offset ? offset : 1
+      }&offset=${limit ? limit : 10}`;
     }
     const data = await axios.get(url);
     if (data.status !== 200) {
@@ -92,13 +92,11 @@ export default class EthereumTxs extends EthereumInit {
             from: res.from,
             to: res.to,
             transaction_hash: res.hash,
-            value: (
-              this.convertHexToInt(this.remove0x(res.value)) /
-              Math.pow(10, ETH_DECIMAL)
-            ).toFixed(ETH_DECIMAL),
+            value: (Number(res.value) / Math.pow(10, ETH_DECIMAL)).toFixed(
+              ETH_DECIMAL
+            ),
             gas_price: (
-              this.convertHexToInt(this.remove0x(res.gasPrice)) /
-              Math.pow(10, ETH_DECIMAL)
+              Number(res.gasPrice) / Math.pow(10, ETH_DECIMAL)
             ).toFixed(ETH_DECIMAL),
             date: new Date(Number(res.timeStamp) * 1000).toUTCString(),
           };
