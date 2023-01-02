@@ -38,7 +38,7 @@ export default class BinanceBeaconTxs extends BinanceBeaconInit {
       offset,
       startTime,
     });
-    if (txs.total > 0) {
+    if (txs.txs.length > 0) {
       const txType = (txAddr: string) => {
         if (txAddr === address) return "SEND | BNB";
         else return "RECEIVE | BNB";
@@ -58,7 +58,7 @@ export default class BinanceBeaconTxs extends BinanceBeaconInit {
         txsResult.push(resTx);
       });
       const result: BnbTxs = {
-        total: txs.total,
+        total: txsResult.length,
         txs: txsResult,
       };
       return result;

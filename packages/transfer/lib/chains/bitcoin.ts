@@ -1,6 +1,6 @@
 import { Network } from "@dojima-wallet/types";
 import { BitcoinInit, BTC_DECIMAL } from "@dojima-wallet/connection";
-import { convertAssetBNtoBaseNumber, getUsdtTokenPriceResult } from "./utils";
+import { getUsdtTokenPriceResult } from "./utils";
 import { UsdtTokenGasFeeResult } from "./types";
 import { assetAmount, AssetBTC, assetToBase } from "@dojima-wallet/utils";
 
@@ -10,13 +10,19 @@ export default class BitcoinChain extends BitcoinInit {
   }
 
   async getGasFee(): Promise<UsdtTokenGasFeeResult> {
-    const gasFee = await this.btcConnect.getFees();
-    const btc_gasFee = {
-      slow: convertAssetBNtoBaseNumber(gasFee.average.amount(), BTC_DECIMAL),
-      average: convertAssetBNtoBaseNumber(gasFee.fast.amount(), BTC_DECIMAL),
-      fast: convertAssetBNtoBaseNumber(gasFee.fastest.amount(), BTC_DECIMAL),
+    // const gasFee = await this.btcConnect.getFees();
+    const rates = await this.btcConnect.getFeeRates();
+    // const btc_gasFee = {
+    //   slow: convertAssetBNtoBaseNumber(gasFee.average.amount(), BTC_DECIMAL),
+    //   average: convertAssetBNtoBaseNumber(gasFee.fast.amount(), BTC_DECIMAL),
+    //   fast: convertAssetBNtoBaseNumber(gasFee.fastest.amount(), BTC_DECIMAL),
+    // };
+    const btc_gasPrice = {
+      slow: rates.average / Math.pow(10, BTC_DECIMAL),
+      average: rates.fast / Math.pow(10, BTC_DECIMAL),
+      fast: rates.fastest / Math.pow(10, BTC_DECIMAL),
     };
-    const result = await getUsdtTokenPriceResult(btc_gasFee, "bitcoin");
+    const result = await getUsdtTokenPriceResult(btc_gasPrice, "bitcoin");
     return result;
   }
 

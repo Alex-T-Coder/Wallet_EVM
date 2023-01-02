@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "@dojima-wallet/connection": "^0.0.1-alpha.30",
-    "@dojima-wallet/types": "^0.0.1-alpha.5"
+    "@dojima-wallet/types": "^0.0.1-alpha.5",
+    "axios": "^0.27.2"
   }
 }

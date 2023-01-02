@@ -38,7 +38,7 @@ export default class BitcoinTxs extends BitcoinInit {
       offset,
       startTime,
     });
-    if (txs.total > 0) {
+    if (txs.txs.length > 0) {
       const txType = (txAddr: string) => {
         if (txAddr === address) return "SEND | BTC";
         else return "RECEIVE | BTC";
@@ -58,7 +58,7 @@ export default class BitcoinTxs extends BitcoinInit {
         txsResult.push(resTx);
       });
       const result: BtcTxs = {
-        total: txs.total,
+        total: txsResult.length,
         txs: txsResult,
       };
       return result;
