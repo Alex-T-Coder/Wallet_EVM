@@ -71,6 +71,19 @@ export interface BnbTxs {
   txs: Array<BtcTxDataType>;
 }
 
+export interface DojTxDataType {
+  transfer_type: string;
+  transaction_hash: string;
+  from: string;
+  to: string;
+  amount: number;
+  gas_fee: number;
+  block_number: number;
+  block_hash: string;
+  gas_price: string;
+  nonce: number;
+}
+
 export interface EthTxDataRes {
   blockHash: string;
   blockNumber: string;
@@ -117,20 +130,33 @@ export interface EthTxsRes {
 }
 
 export interface EthTxDataType {
-  transaction_hash: string;
-  value: string;
   transfer_type: string;
+  transaction_hash: string;
   from: string;
   to: string;
-  date?: string;
-  block?: string;
-  gas_price?: string;
+  amount: number;
+  gas_fee: number;
+  block_number: number;
+  block_hash: string;
+  gas_price: string;
+  nonce: number;
 }
 
-export interface EthTxs {
-  total: number;
-  txs: Array<EthTxDataType>;
-}
+// export interface EthTxDataType {
+//   transaction_hash: string;
+//   value: string;
+//   transfer_type: string;
+//   from: string;
+//   to: string;
+//   date?: string;
+//   block?: string;
+//   gas_price?: string;
+// }
+//
+// export interface EthTxs {
+//   total: number;
+//   txs: Array<EthTxDataType>;
+// }
 
 export interface SolTxDataType {
   transaction_hash: string;

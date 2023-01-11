@@ -1,4 +1,5 @@
 import BitcoinTxs from "./bitcoin";
+import DojimaTxs from "./dojima";
 import EthereumTxs from "./ethereum";
 import SolanaTxs from "./solana";
 import ArweaveTxs from "./arweave";
@@ -10,8 +11,9 @@ import {
   BnbTxs,
   BtcTxDataType,
   BtcTxs,
+  DojTxDataType,
   EthTxDataType,
-  EthTxs,
+  // EthTxs,
   SolTxDataType,
   SolTxs,
 } from "./types";
@@ -23,10 +25,18 @@ export {
   BnbTxs,
   BtcTxDataType,
   BtcTxs,
+  DojTxDataType,
   EthTxDataType,
-  EthTxs,
+  // EthTxs,
   SolTxDataType,
   SolTxs,
 };
 
-export { BitcoinTxs, EthereumTxs, SolanaTxs, ArweaveTxs, BinanceBeaconTxs };
+export {
+  BitcoinTxs,
+  DojimaTxs,
+  EthereumTxs,
+  SolanaTxs,
+  ArweaveTxs,
+  BinanceBeaconTxs,
+};
