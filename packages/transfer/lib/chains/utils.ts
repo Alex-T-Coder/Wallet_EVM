@@ -7,27 +7,33 @@ export const getUsdtTokenPriceResult = async (
   asset: string
 ): Promise<UsdtTokenGasFeeResult> => {
   const pricesInst = new CoinGecko();
-  const pricesData = await pricesInst.getAssestsCurrentMarketData({
-    assets: asset,
-  });
-  if (pricesData !== undefined) {
+  let usdt_price: number;
+  if (asset === ("dojima" || "hermes")) {
+    usdt_price = 0.0111;
+  } else {
+    const pricesData = await pricesInst.getAssestsCurrentMarketData({
+      assets: asset,
+    });
+    usdt_price = pricesData.current_price;
+  }
+  if (usdt_price) {
     return {
       slow: {
         fee: {
           asset_fee: gasFee.slow,
-          usdt_fee: gasFee.slow * pricesData.current_price,
+          usdt_fee: gasFee.slow * usdt_price,
         },
       },
       average: {
         fee: {
           asset_fee: gasFee.average,
-          usdt_fee: gasFee.average * pricesData.current_price,
+          usdt_fee: gasFee.average * usdt_price,
         },
       },
       fast: {
         fee: {
           asset_fee: gasFee.fast,
-          usdt_fee: gasFee.fast * pricesData.current_price,
+          usdt_fee: gasFee.fast * usdt_price,
         },
       },
     };
