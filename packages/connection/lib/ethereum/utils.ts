@@ -26,8 +26,8 @@ import {
   TransactionInfo,
   TransactionOperation,
 } from "./types";
+import { ETH_DECIMAL } from "./const";
 
-export const ETH_DECIMAL = 18;
 export const ETHPLORER_FREEKEY = "freekey";
 
 // from https://github.com/MetaMask/metamask-extension/blob/ee205b893fe61dc4736efc576e0663189a9d23da/ui/app/pages/send/send.constants.js#L39
