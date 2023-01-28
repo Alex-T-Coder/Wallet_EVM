@@ -43,6 +43,7 @@
     "@dojima-wallet/types": "^0.0.1-alpha.5",
     "@dojima-wallet/utils": "^0.0.1-alpha.2",
     "@polkadot/api": "^9.10.2",
+    "@project-serum/anchor": "0.23.0",
     "@solana/web3.js": "^1.67.0",
     "@types/bech32": "^1.1.2",
     "@types/big.js": "^4.0.5",

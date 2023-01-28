@@ -16,7 +16,7 @@ export default class BinanceBeaconChain extends BinanceBeaconInit {
       average: convertAssetBNtoBaseNumber(gasFee.fast.amount(), BNB_DECIMAL),
       fast: convertAssetBNtoBaseNumber(gasFee.fastest.amount(), BNB_DECIMAL),
     };
-    const result = await getUsdtTokenPriceResult(bnb_gasFee, "binance");
+    const result = await getUsdtTokenPriceResult(bnb_gasFee, "binancecoin");
     return result;
   }
 

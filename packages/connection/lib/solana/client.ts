@@ -1,9 +1,12 @@
 import { ChainClientParams, Network } from "../client";
 import { validatePhrase } from "../crypto";
+import { InboundAddressResult, SwapAssetList } from "@dojima-wallet/utils";
 import * as web3 from "@solana/web3.js";
+import axios from "axios";
 import * as bip39 from "bip39";
 import { derivePath } from "ed25519-hd-key";
 
+import { SOL_DECIMAL, programId } from "./const";
 import {
   GasfeeResult,
   SolTxData,
@@ -11,7 +14,8 @@ import {
   SolTxs,
   SolTxsHistoryParams,
 } from "./types";
-import { SOL_DECIMAL, baseToLamports, lamportsToBase } from "./utils";
+import { baseToLamports, IDL, lamportsToBase } from "./utils";
+import { Program, Provider, Wallet } from "@project-serum/anchor";
 
 export interface SolanaChainClient {
   getCluster(): web3.Cluster;
@@ -252,6 +256,102 @@ class SolanaClient implements SolanaChainClient {
       ),
     };
     return resultTxs;
+  }
+
+  async getInboundObject(): Promise<InboundAddressResult> {
+    const response = await axios.get(
+      "https://api-test.h4s.dojima.network/hermeschain/inbound_addresses"
+    );
+    if (response.status !== 200) {
+      throw new Error(
+        `Unable to retrieve inbound addresses. Dojima gateway responded with status ${response.status}.`
+      );
+    }
+
+    const data: Array<InboundAddressResult> = response.data;
+    const inboundObj = data.find(
+      (res) => res.chain === "SOL"
+    ) as InboundAddressResult;
+    return inboundObj;
+  }
+
+  async getSolanaInboundAddress(): Promise<string> {
+    const inboundObj = await this.getInboundObject();
+    return inboundObj.address;
+  }
+
+  async getDefaultLiquidityPoolGasFee(): Promise<number> {
+    const inboundObj = await this.getInboundObject();
+
+    const gasFee = Number(inboundObj.gas_rate) / Math.pow(10, SOL_DECIMAL);
+
+    return gasFee;
+  }
+
+  async getProvider() {
+    const opts: web3.ConfirmOptions = {
+      preflightCommitment: "processed",
+    };
+    const provider = new Provider(
+      this.connection,
+      new Wallet((await this.getKeypair())[0]),
+      opts
+    );
+    return provider;
+  }
+
+  async solanaBatchTxsToHermes(
+    amount: number,
+    recipient: string,
+    memo: string
+  ) {
+    const provider = await this.getProvider();
+    const programIDPPubKey = new web3.PublicKey(`${programId}`);
+    const program = new Program(IDL, programIDPPubKey, provider);
+    const fromWallet = await this.getKeypair();
+    const swapHash = await program.rpc.transferNativeTokens(`${amount}`, memo, {
+      accounts: {
+        from: fromWallet[0].publicKey,
+        to: new web3.PublicKey(recipient),
+        systemProgram: web3.SystemProgram.programId,
+      },
+      signers: [fromWallet[0]],
+    });
+    // await this.connection.confirmTransaction(swapHash);
+    return swapHash;
+  }
+
+  async addLiquidityPool(
+    amount: number,
+    inboundAddress: string,
+    dojAddress?: string
+  ) {
+    const toAmount = baseToLamports(amount, SOL_DECIMAL);
+    const memo = dojAddress ? `ADD:SOL.SOL:${dojAddress}` : `ADD:SOL.SOL`;
+    const poolHash = await this.solanaBatchTxsToHermes(
+      toAmount,
+      inboundAddress,
+      memo
+    );
+    // await this.connection.confirmTransaction(swapHash);
+    return poolHash;
+  }
+
+  async swap(
+    amount: number,
+    token: SwapAssetList,
+    inboundAddress: string,
+    recipient: string
+  ) {
+    const toAmount = baseToLamports(amount, SOL_DECIMAL);
+    const memo = `SWAP:${token}:${recipient}`;
+    const swapHash = await this.solanaBatchTxsToHermes(
+      toAmount,
+      inboundAddress,
+      memo
+    );
+    // await this.connection.confirmTransaction(swapHash);
+    return swapHash;
   }
 }
 

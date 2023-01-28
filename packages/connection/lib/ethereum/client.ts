@@ -1,5 +1,7 @@
 import { ChainClientParams, Network } from "../client";
 import { validatePhrase } from "../crypto";
+import { InboundAddressResult, SwapAssetList } from "@dojima-wallet/utils";
+import axios from "axios";
 import BigNumber from "bignumber.js";
 import * as ethers from "ethers";
 import Web3 from "web3";
@@ -126,6 +128,69 @@ class EthereumClient {
     } else {
       throw new Error(`Failed to get transaction data (tx-hash: ${hash})`);
     }
+  }
+
+  async getInboundObject(): Promise<InboundAddressResult> {
+    const response = await axios.get(
+      "https://api-test.h4s.dojima.network/hermeschain/inbound_addresses"
+    );
+    if (response.status !== 200) {
+      throw new Error(
+        `Unable to retrieve inbound addresses. Dojima gateway responded with status ${response.status}.`
+      );
+    }
+
+    const data: Array<InboundAddressResult> = response.data;
+    const inboundObj: InboundAddressResult = data.find(
+      (res) => res.chain === "ETH"
+    ) as InboundAddressResult;
+    return inboundObj;
+  }
+
+  async getEthereumInboundAddress(): Promise<string> {
+    const inboundObj = await this.getInboundObject();
+    return inboundObj.address;
+  }
+
+  async getDefaultLiquidityPoolGasFee(): Promise<number> {
+    const inboundObj = await this.getInboundObject();
+
+    const gasFee = Number(inboundObj.gas_rate) / Math.pow(10, ETH_DECIMAL);
+
+    return gasFee;
+  }
+
+  async addLiquidityPool(
+    amount: number,
+    inboundAddress: string,
+    dojAddress?: string
+  ): Promise<string> {
+    const memo = dojAddress ? `ADD:ETH.ETH:${dojAddress}` : `ADD:ETH.ETH`;
+
+    const txHash = await this.transfer({
+      amount,
+      recipient: inboundAddress,
+      memo,
+    });
+
+    return txHash;
+  }
+
+  async swap(
+    amount: number,
+    token: SwapAssetList,
+    inboundAddress: string,
+    recipient: string
+  ): Promise<string> {
+    const memo = `SWAP:${token}:${recipient}`;
+
+    const txHash = await this.transfer({
+      amount,
+      recipient: inboundAddress,
+      memo,
+    });
+
+    return txHash;
   }
 }
 

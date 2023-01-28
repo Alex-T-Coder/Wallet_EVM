@@ -97,46 +97,42 @@ export default class ArweaveTxClient {
         this.ownerCursor = txs.edges[txs.edges.length - 1].cursor;
         txs.edges.map((res) => {
           const outerResult: OuterDataResult = {
-            timestamp: res.node.block.timestamp,
+            timestamp: res.node.block ? `${res.node.block.timestamp}` : "-",
             transaction_hash: res.node.id,
-            block: res.node.block.height,
+            block: res.node.block ? `${res.node.block.height}` : "-",
             from: res.node.owner.address,
             to: res.node.recipient,
             value: res.node.quantity.ar,
             gas_price: res.node.fee.ar,
             date:
-              res.node.block.timestamp &&
-              res.node.block.timestamp !== (null || undefined)
+              res.node.block && res.node.block.timestamp !== (null || undefined)
                 ? convertTimestampToDateFormat(res.node.block.timestamp)
                 : "-",
             time:
-              res.node.block.timestamp &&
-              res.node.block.timestamp !== (null || undefined)
+              res.node.block && res.node.block.timestamp !== (null || undefined)
                 ? convertTimestampToTimeFormat(res.node.block.timestamp)
                 : "-",
           };
           outerTxsData.push(outerResult);
 
           const innerResult: InnerDataResult = {
-            timestamp: res.node.block.timestamp,
+            timestamp: res.node.block ? `${res.node.block.timestamp}` : "-",
             transaction_hash: res.node.id,
-            block: res.node.block.height,
+            block: res.node.block ? `${res.node.block.height}` : "-",
             from: res.node.owner.address,
             to: res.node.recipient,
             value: res.node.quantity.ar,
             gas_price: res.node.fee.ar,
             date:
-              res.node.block.timestamp &&
-              res.node.block.timestamp !== (null || undefined)
+              res.node.block && res.node.block.timestamp !== (null || undefined)
                 ? convertTimestampToDateFormat(res.node.block.timestamp)
                 : "-",
             time:
-              res.node.block.timestamp &&
-              res.node.block.timestamp !== (null || undefined)
+              res.node.block && res.node.block.timestamp !== (null || undefined)
                 ? convertTimestampToTimeFormat(res.node.block.timestamp)
                 : "-",
             signature: res.node.signature,
-            block_hash: res.node.block.id,
+            block_hash: res.node.block ? res.node.block.id : "-",
           };
           innerTxsData.push(innerResult);
         });
@@ -152,46 +148,42 @@ export default class ArweaveTxClient {
         this.recipientCursor = txs.edges[txs.edges.length - 1].cursor;
         txs.edges.map((res) => {
           const outerResult: OuterDataResult = {
-            timestamp: res.node.block.timestamp,
+            timestamp: res.node.block ? `${res.node.block.timestamp}` : "-",
             transaction_hash: res.node.id,
-            block: res.node.block.height,
+            block: res.node.block ? `${res.node.block.height}` : "-",
             from: res.node.owner.address,
             to: res.node.recipient,
             value: res.node.quantity.ar,
             gas_price: res.node.fee.ar,
             date:
-              res.node.block.timestamp &&
-              res.node.block.timestamp !== (null || undefined)
+              res.node.block && res.node.block.timestamp !== (null || undefined)
                 ? convertTimestampToDateFormat(res.node.block.timestamp)
                 : "-",
             time:
-              res.node.block.timestamp &&
-              res.node.block.timestamp !== (null || undefined)
+              res.node.block && res.node.block.timestamp !== (null || undefined)
                 ? convertTimestampToTimeFormat(res.node.block.timestamp)
                 : "-",
           };
           outerTxsData.push(outerResult);
 
           const innerResult: InnerDataResult = {
-            timestamp: res.node.block.timestamp,
+            timestamp: res.node.block ? `${res.node.block.timestamp}` : "-",
             transaction_hash: res.node.id,
-            block: res.node.block.height,
+            block: res.node.block ? `${res.node.block.height}` : "-",
             from: res.node.owner.address,
             to: res.node.recipient,
             value: res.node.quantity.ar,
             gas_price: res.node.fee.ar,
             date:
-              res.node.block.timestamp &&
-              res.node.block.timestamp !== (null || undefined)
+              res.node.block && res.node.block.timestamp !== (null || undefined)
                 ? convertTimestampToDateFormat(res.node.block.timestamp)
                 : "-",
             time:
-              res.node.block.timestamp &&
-              res.node.block.timestamp !== (null || undefined)
+              res.node.block && res.node.block.timestamp !== (null || undefined)
                 ? convertTimestampToTimeFormat(res.node.block.timestamp)
                 : "-",
             signature: res.node.signature,
-            block_hash: res.node.block.id,
+            block_hash: res.node.block ? res.node.block.id : "-",
           };
           innerTxsData.push(innerResult);
         });
