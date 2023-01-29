@@ -39,7 +39,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@dojima-wallet/connection": "^0.0.1-alpha.31",
+    "@dojima-wallet/connection": "^0.0.1-alpha.32",
     "@dojima-wallet/types": "^0.0.1-alpha.5",
     "axios": "^0.27.2"
   }
