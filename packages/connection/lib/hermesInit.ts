@@ -1,18 +1,17 @@
 import { Network } from "@dojima-wallet/types";
-import { DojimaClient } from "./dojima";
+import { HermesClient } from "./hermes";
 
-export default class DojimaInit {
-  dojConnect: DojimaClient;
+export default class HermesInit {
+  h4sConnect: HermesClient;
   constructor(mnemonic: string, network: Network) {
     if (network === Network.Mainnet) {
-      this.dojConnect = new DojimaClient({
+      this.h4sConnect = new HermesClient({
         phrase: mnemonic,
       });
     } else {
-      this.dojConnect = new DojimaClient({
+      this.h4sConnect = new HermesClient({
         phrase: mnemonic,
         network: Network.DojTestnet,
-        rpcUrl: "https://api-test.d11k.dojima.network:8545/",
       });
     }
   }

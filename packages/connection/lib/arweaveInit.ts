@@ -4,7 +4,7 @@ import { Network } from "@dojima-wallet/types";
 export default class ArweaveInit {
   arConnect: ArweaveClient;
   constructor(mnemonic: string, network: Network) {
-    if (network === Network.Testnet || network === Network.Stagenet) {
+    if (network === Network.DojTestnet) {
       this.arConnect = new ArweaveClient({
         phrase: mnemonic,
         network: network,
@@ -13,6 +13,11 @@ export default class ArweaveInit {
           protocol: "https",
           timeout: 100000,
         },
+      });
+    } else if (network === Network.Testnet || network === Network.Stagenet) {
+      this.arConnect = new ArweaveClient({
+        phrase: mnemonic,
+        network: network,
       });
     } else {
       this.arConnect = new ArweaveClient({
