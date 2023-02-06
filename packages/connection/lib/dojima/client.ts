@@ -39,12 +39,12 @@ class DojimaClient {
     if (this.network !== Network.Mainnet && rpcUrl === defaultDojInfuraRpcUrl) {
       throw Error(`'rpcUrl' param can't be empty for 'testnet' or 'stagenet'`);
     }
-    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
-      this.rpcUrl = rpcUrl;
-      this.web3 = new Web3(this.rpcUrl);
-    } else {
+    if (this.network === Network.Mainnet) {
       this.rpcUrl = `${rpcUrl}${infuraApiKey}`;
       this.web3 = new Web3(new Web3.providers.HttpProvider(this.rpcUrl));
+    } else {
+      this.rpcUrl = rpcUrl;
+      this.web3 = new Web3(this.rpcUrl);
     }
     this.account = ethers.Wallet.fromMnemonic(this.phrase);
   }

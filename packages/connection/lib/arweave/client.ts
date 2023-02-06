@@ -15,7 +15,7 @@ import {
   GasfeeResult,
   TxStatusResponse,
 } from "./types";
-import { defaultArConfig } from "./utils";
+import { defaultArMainnetConfig, defaultArTestnetConfig } from "./utils";
 
 export interface ArweaveChainClient {
   getAddress(): Promise<string>;
@@ -36,10 +36,11 @@ class ArweaveClient extends ArweaveTxClient implements ArweaveChainClient {
   protected network: Network;
   protected arweave: Arweave;
   protected phrase = "";
+  protected apiConfig: ApiConfig;
   constructor({
     phrase,
     network = Network.Mainnet,
-    config = defaultArConfig,
+    config = defaultArMainnetConfig,
   }: ChainClientParams & ChainConfigParams) {
     super();
     if (phrase) {
@@ -49,10 +50,17 @@ class ArweaveClient extends ArweaveTxClient implements ArweaveChainClient {
       this.phrase = phrase;
     }
     this.network = network;
-    if (this.network !== Network.Mainnet && config === defaultArConfig) {
-      throw Error(`'config' params can't be empty for 'testnet' or 'stagenet'`);
+    this.apiConfig = config;
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
+      this.apiConfig = defaultArTestnetConfig;
     }
-    this.arweave = Arweave.init(config);
+    if (
+      this.network === Network.DojTestnet &&
+      this.apiConfig === defaultArMainnetConfig
+    ) {
+      throw Error(`'config' params can't be empty for 'dojtestnet'`);
+    }
+    this.arweave = Arweave.init(this.apiConfig);
   }
 
   async getAddress(): Promise<string> {

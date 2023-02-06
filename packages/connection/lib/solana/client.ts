@@ -31,7 +31,7 @@ export type ChainEndpointParams = {
   endpoint?: string;
 };
 
-export const defaultSolEndpoint = web3.clusterApiUrl("mainnet-beta");
+export const defaultSolEndpoint = "mainnet-beta";
 
 class SolanaClient implements SolanaChainClient {
   protected network: Network;
@@ -52,12 +52,20 @@ class SolanaClient implements SolanaChainClient {
     }
     this.network = network;
     this.cluster = this.getCluster();
-    if (this.network !== Network.Mainnet && endpoint === defaultSolEndpoint) {
-      throw Error(
-        `'endpoint' param can't be empty for 'testnet' or 'stagenet'`
+    if (
+      this.network === Network.DojTestnet &&
+      endpoint === defaultSolEndpoint
+    ) {
+      throw Error(`'endpoint' params can't be empty for 'doj-testnet'`);
+    }
+    if (this.network === Network.DojTestnet) {
+      this.connection = new web3.Connection(endpoint, "confirmed");
+    } else {
+      this.connection = new web3.Connection(
+        web3.clusterApiUrl(this.cluster),
+        "confirmed"
       );
     }
-    this.connection = new web3.Connection(endpoint, "confirmed");
   }
 
   getCluster(): web3.Cluster {
