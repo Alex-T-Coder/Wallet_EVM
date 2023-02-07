@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@dojima-wallet/types@^0.0.1-alpha.5":
-  version "0.0.1-alpha.5"
-  resolved "https://registry.yarnpkg.com/@dojima-wallet/types/-/types-0.0.1-alpha.5.tgz#caa26f3d48d4a40cedb69dbf2c26382e4b8eff4d"
-  integrity sha512-o1a5OJjzffS55/LfI2ybHCTphTe725f+yLZGPAeauUJ9u2Dm69P/k8u46gTXxfj1x5nuX18mUkGfmaxiq+sXZQ==
+"@dojima-wallet/types@^0.0.1-alpha.6":
+  version "0.0.1-alpha.6"
+  resolved "https://registry.yarnpkg.com/@dojima-wallet/types/-/types-0.0.1-alpha.6.tgz#6734a5222aac11a1c2aa11385104110a92dc17f3"
+  integrity sha512-SnE1uCAxi3ClfZEK8pG6yCDyQBMuWm0yDtklSzLu6EDPyM5Zjc7bu9twMM/Dn1R2wgffCvgeOjtB6/Xfu93Jjw==
 
 moment@^2.29.2:
   version "2.29.4"
