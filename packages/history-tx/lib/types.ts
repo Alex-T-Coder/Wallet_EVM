@@ -68,7 +68,21 @@ export interface BnbTxDataType {
 
 export interface BnbTxs {
   total: number;
-  txs: Array<BtcTxDataType>;
+  txs: Array<BnbTxDataType>;
+}
+
+export interface H4sTxDataType {
+  transaction_hash: string;
+  value: string;
+  date: string;
+  transfer_type: string;
+  from: string;
+  to: string;
+}
+
+export interface H4sTxs {
+  total: number;
+  txs: Array<H4sTxDataType>;
 }
 
 export interface DojTxDataType {
@@ -140,6 +154,24 @@ export interface EthTxDataType {
   block_hash: string;
   gas_price: string;
   nonce: number;
+}
+
+export interface EthTxsArrayResult {
+  block: number;
+  date: string;
+  time: string;
+  transaction_hash: string;
+  contract_address: string;
+  value: number;
+  gas_price: string;
+  from: string;
+  to: string;
+  transaction_type: string;
+}
+
+export interface EthTxs {
+  total: number;
+  txs: Array<EthTxsArrayResult>;
 }
 
 // export interface EthTxDataType {

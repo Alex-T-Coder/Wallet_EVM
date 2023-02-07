@@ -1,12 +1,14 @@
 import { EthereumInit } from "@dojima-wallet/connection";
 import { Network } from "@dojima-wallet/types";
-import { EthTxDataType } from "./types";
+import { EthTxDataType, EthTxs } from "./types";
 // import { EthTxs, EthTxDataType, EthTxDataRes, EthTxsRes } from "./types";
 // import axios from "axios";
 
 export default class EthereumTxs extends EthereumInit {
+  protected isDojTestnet = false;
   constructor(mnemonic: string, network: Network) {
     super(mnemonic, network);
+    if (network === Network.DojTestnet) this.isDojTestnet = true;
   }
 
   async getTransactionData(hash: string): Promise<EthTxDataType> {
@@ -28,7 +30,33 @@ export default class EthereumTxs extends EthereumInit {
         nonce: data.nonce,
       };
     } else {
-      throw new Error(`Unable to retrieve data`);
+      throw Error(`Unable to retrieve data`);
+    }
+  }
+
+  async getTransactionsHistory(
+    address: string,
+    offset?: number,
+    limit?: number,
+    startBlock?: number,
+    endBlock?: number
+  ): Promise<EthTxs> {
+    if (this.isDojTestnet) {
+      return null;
+    } else {
+      try {
+        const txs = await this.ethConnect.getTransactionsHistory({
+          address,
+          apiKey: "J19V58VEVM69RDGJHNH69M42F2J4BFDVIV",
+          limit: limit ? limit : undefined,
+          page: offset ? offset : undefined,
+          startBlock: startBlock ? startBlock : undefined,
+          endBlock: endBlock ? endBlock : undefined,
+        });
+        return txs;
+      } catch (e) {
+        throw Error(`Unable to retrieve txs`);
+      }
     }
   }
 
