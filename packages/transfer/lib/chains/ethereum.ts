@@ -2,6 +2,7 @@ import { UsdtTokenGasFeeResult } from "./types";
 import { EthereumInit } from "@dojima-wallet/connection";
 import { Network } from "@dojima-wallet/types";
 import { getUsdtTokenPriceResult } from "./utils";
+import { SwapAssetList } from "@dojima-wallet/utils";
 // import { assetAmount, assetToBase } from "@dojima-wallet/utils";
 
 export default class EthereumChain extends EthereumInit {
@@ -34,6 +35,50 @@ export default class EthereumChain extends EthereumInit {
       memo: memo ? memo : undefined,
     });
     return hash;
+  }
+
+  async getDefaultLiquidityPoolGasFee(): Promise<UsdtTokenGasFeeResult> {
+    const LPDefaultGasFee =
+      await this.ethConnect.getDefaultLiquidityPoolGasFee();
+    const eth_LPgasfee = {
+      slow: LPDefaultGasFee,
+      average: LPDefaultGasFee,
+      fast: LPDefaultGasFee,
+    };
+    const result = await getUsdtTokenPriceResult(eth_LPgasfee, "ethereum");
+    return result;
+  }
+
+  async addLiquidityPool(
+    amount: number,
+    dojimaAddress?: string
+  ): Promise<string> {
+    try {
+      const inboundAddress = await this.ethConnect.getEthereumInboundAddress();
+      const liquidityPoolHash = await this.ethConnect.addLiquidityPool(
+        amount,
+        inboundAddress,
+        dojimaAddress
+      );
+      return liquidityPoolHash;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async swap(amount: number, recipient: string, token: SwapAssetList) {
+    try {
+      const inboundAddress = await this.ethConnect.getEthereumInboundAddress();
+      const swapHash = await this.ethConnect.swap(
+        amount,
+        token,
+        inboundAddress,
+        recipient
+      );
+      return swapHash;
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
 
   // async getGasFee(
