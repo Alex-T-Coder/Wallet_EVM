@@ -1,0 +1,79 @@
+import { UsdtTokenGasFeeResult } from "./types";
+import { DOJ_DECIMAL, HermesInit } from "@dojima-wallet/connection";
+import { Network } from "@dojima-wallet/types";
+import { getUsdtTokenPriceResult } from "./utils";
+import {
+  assetAmount,
+  assetToBase,
+  baseAmount,
+  baseToAsset,
+  SwapAssetList,
+} from "@dojima-wallet/utils";
+import BigNumber from "bignumber.js";
+
+export default class HermesChain extends HermesInit {
+  constructor(mnemonic: string, network: Network) {
+    super(mnemonic, network);
+  }
+
+  async getGasFee(): Promise<UsdtTokenGasFeeResult> {
+    const gasFee = await this.h4sConnect.getFees();
+    const h4s_gasFee = {
+      slow: Number(baseToAsset(baseAmount(gasFee.average.amount())).amount()),
+      average: Number(baseToAsset(baseAmount(gasFee.fast.amount())).amount()),
+      fast: Number(baseToAsset(baseAmount(gasFee.fastest.amount())).amount()),
+    };
+    const result = await getUsdtTokenPriceResult(h4s_gasFee, "hermes");
+    return result;
+  }
+
+  async transfer(
+    recipient: string,
+    amount: number,
+    gasPrice?: number,
+    memo?: string
+  ): Promise<string> {
+    const baseAmt = assetToBase(assetAmount(amount, DOJ_DECIMAL));
+    const hash = await this.h4sConnect.transfer({
+      recipient,
+      amount: baseAmt,
+      gasLimit: gasPrice
+        ? new BigNumber(gasPrice * Math.pow(10, DOJ_DECIMAL))
+        : undefined,
+      memo: memo ? memo : undefined,
+    });
+    return hash;
+  }
+
+  async addLiquidityPool(
+    amount: number,
+    recipient: string,
+    token: SwapAssetList
+  ): Promise<string> {
+    try {
+      const baseAmt = assetToBase(assetAmount(amount, DOJ_DECIMAL));
+      const memo = `ADD:${token}:${recipient}`;
+      const liquidityPoolHash = await this.h4sConnect.deposit({
+        amount: baseAmt,
+        memo,
+      });
+      return liquidityPoolHash;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async swap(amount: number, recipient: string, token: SwapAssetList) {
+    try {
+      const baseAmt = assetToBase(assetAmount(amount, DOJ_DECIMAL));
+      const memo = `SWAP:${token}:${recipient}`;
+      const swapHash = await this.h4sConnect.deposit({
+        amount: baseAmt,
+        memo,
+      });
+      return swapHash;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+}
