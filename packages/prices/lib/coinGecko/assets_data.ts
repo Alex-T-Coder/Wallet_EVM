@@ -226,8 +226,17 @@ export default class CoinGecko {
   // Minutely data will be used for duration within 1 day,
   // Hourly data will be used for duration between 1 day and 10 days,
   // Daily data will be used for duration above 10 days.
-  async getAssetHistoryPriceByNoOfDays(asset: AssetsIdList, noOfDays: number) {
-    let requestApi = `${this.api}/coins/${asset}/market_chart?vs_currency=usd`;
+  async getAssetHistoryPriceByNoOfDays(
+    asset: AssetsIdList,
+    noOfDays: number,
+    resCurrency: CurrencyList
+  ) {
+    let requestApi = `${this.api}/coins/${asset}/market_chart`;
+    if (resCurrency) {
+      requestApi += `?vs_currency=${resCurrency}`;
+    } else {
+      requestApi += `?vs_currency=usd`;
+    }
     if (noOfDays > 10) {
       requestApi += `&days=${noOfDays}&interval=daily`;
     } else if (noOfDays <= 10 && noOfDays > 1) {
