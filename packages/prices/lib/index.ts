@@ -10,6 +10,7 @@ import CoinGecko, {
   PriceHistoryResult,
 } from "./coinGecko";
 import CryptoCompare, { AssetIdList, DataObject } from "./cryptoCompare";
+import CoinMarketCap from "./coinMarketCap";
 
 export {
   AssetsData,
@@ -27,4 +28,5 @@ export {
   CryptoCompare,
   DataObject,
   AssetIdList,
+  CoinMarketCap,
 };
