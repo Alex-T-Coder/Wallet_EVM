@@ -8,7 +8,8 @@ export default class BinanceBeaconInit {
       this.bnbBConnect = new BinanceBeaconClient({
         phrase: mnemonic,
         network: network,
-        dojClientUrl: "https://bnb-test.h4s.dojima.network",
+        // dojClientUrl: "https://bnb-test.h4s.dojima.network",
+        dojClientUrl: "http://localhost:26660",
       });
     } else if (network === Network.Testnet || network === Network.Stagenet) {
       this.bnbBConnect = new BinanceBeaconClient({

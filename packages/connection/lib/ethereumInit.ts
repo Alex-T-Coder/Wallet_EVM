@@ -9,7 +9,8 @@ export default class EthereumInit {
         phrase: mnemonic,
         network: Network.DojTestnet,
         // rpcUrl: "https://eth-test.h4s.dojima.network:9545/",
-        rpcUrl: "https://eth-test.h4s.dojima.network/",
+        // rpcUrl: "https://eth-test.h4s.dojima.network/",
+        rpcUrl: "http://localhost:9545",
       });
     } else if (network === Network.Testnet || network === Network.Stagenet) {
       this.ethConnect = new EthereumClient({

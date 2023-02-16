@@ -8,7 +8,8 @@ export default class PolkaClient {
       this.dotConnect = new PolkadotClient({
         phrase: mnemonic,
         network: network,
-        provider: "wss://dotws-test.h4s.dojima.network:9944",
+        // provider: "wss://dotws-test.h4s.dojima.network:9944",
+        provider: "ws://localhost:9944",
       });
     } else if (network === Network.Testnet || network === Network.Stagenet) {
       this.dotConnect = new PolkadotClient({

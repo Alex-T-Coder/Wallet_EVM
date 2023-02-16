@@ -8,7 +8,8 @@ export default class SolanaInit {
       this.solConnect = new SolanaClient({
         phrase: mnemonic,
         network: Network.DojTestnet,
-        endpoint: "https://sol-test.h4s.dojima.network:8899",
+        // endpoint: "https://sol-test.h4s.dojima.network:8899",
+        endpoint: "http://127.0.0.1:8899",
       });
     } else if (network === Network.Testnet || network === Network.Stagenet) {
       this.solConnect = new SolanaClient({

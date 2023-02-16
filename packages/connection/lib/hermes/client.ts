@@ -104,8 +104,10 @@ class HermesClient
     phrase,
     clientUrl = {
       [Network.DojTestnet]: {
-        node: "https://api-test.h4s.dojima.network",
-        rpc: "https://rpc-test.h4s.dojima.network",
+        // node: "https://api-test.h4s.dojima.network",
+        // rpc: "https://rpc-test.h4s.dojima.network",
+        node: "http://localhost:1317",
+        rpc: "http://localhost:26657",
       },
       [Network.Testnet]: {
         node: "https://api-test.h4s.dojima.network",
@@ -132,8 +134,10 @@ class HermesClient
     chainIds = {
       [Network.Mainnet]: "hermeschain",
       [Network.Stagenet]: "hermeschain",
-      [Network.Testnet]: "hermes-testnet",
-      [Network.DojTestnet]: "hermes-testnet",
+      // [Network.Testnet]: "hermes-testnet",
+      // [Network.DojTestnet]: "hermes-testnet",
+      [Network.Testnet]: "hermeschain",
+      [Network.DojTestnet]: "hermeschain",
     },
   }: ChainClientParams & HermeschainClientParams) {
     super(Chain.Cosmos, { network, rootDerivationPaths, phrase });
