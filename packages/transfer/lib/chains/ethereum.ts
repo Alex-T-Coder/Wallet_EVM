@@ -1,4 +1,4 @@
-import { UsdtTokenGasFeeResult } from "./types";
+import { PoolData, UsdtTokenGasFeeResult } from "./types";
 import { EthereumInit } from "@dojima-wallet/connection";
 import { Network } from "@dojima-wallet/types";
 import { getUsdtTokenPriceResult } from "./utils";
@@ -35,6 +35,30 @@ export default class EthereumChain extends EthereumInit {
       memo: memo ? memo : undefined,
     });
     return hash;
+  }
+
+  getSwapOutput(amount: number, pool: PoolData, toDoj: boolean): number {
+    return this.ethConnect.getSwapOutput(amount, pool, toDoj);
+  }
+
+  getDoubleSwapOutput(
+    amount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    return this.ethConnect.getDoubleSwapOutput(amount, pool1, pool2);
+  }
+
+  getSwapSlippage(amount: number, pool: PoolData, toDoj: boolean): number {
+    return this.ethConnect.getSwapSlip(amount, pool, toDoj) * 100;
+  }
+
+  getDoubleSwapSlippage(
+    amount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    return this.ethConnect.getDoubleSwapSlip(amount, pool1, pool2) * 100;
   }
 
   async getDefaultLiquidityPoolGasFee(): Promise<UsdtTokenGasFeeResult> {

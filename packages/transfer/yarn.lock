@@ -69,10 +69,10 @@
     secp256k1 "^4.0.2"
     tweetnacl "^1.0.3"
 
-"@dojima-wallet/connection@^0.0.1-alpha.34":
-  version "0.0.1-alpha.34"
-  resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.34.tgz#7b9b9a8377bfeb4792854e3a62118549e350525d"
-  integrity sha512-2t/bPE+0n8byLTzaw3736K6xvhuhRFo9OmWzjxpumYat3T9oVzADdMx/2XvySwL3qRLEpsAV20a3Na5qcmPyBw==
+"@dojima-wallet/connection@^0.0.1-alpha.35":
+  version "0.0.1-alpha.35"
+  resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.35.tgz#85e8b774fa512ef21f0171b26335ad19e022c8f5"
+  integrity sha512-MixmoXItdoeq+AtLh072VTbeK2Y7O4OyzOkJJD382caeQKxfL3FQJdcRlEAPTAZF6bbRJK0twAFeQRBfHvamiA==
   dependencies:
     "@binance-chain/javascript-sdk" "^4.2.0"
     "@cosmos-client/core" "0.45.13"
@@ -114,7 +114,7 @@
     web3 "^1.8.1"
     wif "^2.0.6"
 
-"@dojima-wallet/prices@^0.0.1-alpha.14":
+"@dojima-wallet/prices@^0.0.1-alpha.16":
   version "0.0.1-alpha.16"
   resolved "https://registry.yarnpkg.com/@dojima-wallet/prices/-/prices-0.0.1-alpha.16.tgz#c11a84f2c25678dfacc1142d432c0aa73b725653"
   integrity sha512-OKmqJvSVCaL0s77xq37xh1dF+cqOLXL7+criaffK/WaP39P3VJZNEiFj5SJelhAqXZ2jupmJ3j2u4BOvpwPqtA==
@@ -1258,9 +1258,9 @@
     form-data "^3.0.0"
 
 "@types/node@*", "@types/node@>=13.7.0":
-  version "18.13.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.13.0.tgz#0400d1e6ce87e9d3032c19eb6c58205b0d3f7850"
-  integrity sha512-gC3TazRzGoOnoKAhUx+Q0t8S9Tzs74z7m0ipwGpSqQrleP14hKxP4/JUeEQcD3W1/aIpnWl8pHowI7WokuZpXg==
+  version "18.14.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.14.0.tgz#94c47b9217bbac49d4a67a967fdcdeed89ebb7d0"
+  integrity sha512-5EWrvLmglK+imbCJY0+INViFWUHg1AHel1sq4ZVSfdcNqGy9Edv3UB9IIzzg+xPaUcAgZYcfVs2fBcwDeZzU0A==
 
 "@types/node@10.12.18":
   version "10.12.18"

@@ -1,3 +1,30 @@
+export type PoolDataResult = {
+  balance_doj: string;
+  balance_asset: string;
+  asset: string;
+  LP_units: string;
+  pool_units: string;
+  status: string;
+  synth_units: string;
+  synth_supply: string;
+  pending_inbound_doj: string;
+  pending_inbound_asset: string;
+};
+
+export type PoolData = {
+  balance_doj: string;
+  balance_asset: string;
+  asset: string;
+  LP_units: string;
+  pool_units: string;
+  status: string;
+  synth_units: string;
+  synth_supply: string;
+  pending_inbound_doj: string;
+  pending_inbound_asset: string;
+  decimals?: number;
+};
+
 export interface FeeResult {
   asset_fee: number;
   usdt_fee: number;

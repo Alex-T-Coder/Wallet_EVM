@@ -1,5 +1,5 @@
 import { Network } from "@dojima-wallet/types";
-import { UsdtTokenGasFeeResult } from "./types";
+import { PoolData, UsdtTokenGasFeeResult } from "./types";
 import { SolanaInit } from "@dojima-wallet/connection";
 import { getUsdtTokenPriceResult } from "./utils";
 import { SwapAssetList } from "@dojima-wallet/utils";
@@ -26,6 +26,30 @@ export default class SolanaChain extends SolanaInit {
       amount,
     });
     return hash;
+  }
+
+  getSwapOutput(amount: number, pool: PoolData, toDoj: boolean): number {
+    return this.solConnect.getSwapOutput(amount, pool, toDoj);
+  }
+
+  getDoubleSwapOutput(
+    amount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    return this.solConnect.getDoubleSwapOutput(amount, pool1, pool2);
+  }
+
+  getSwapSlippage(amount: number, pool: PoolData, toDoj: boolean): number {
+    return this.solConnect.getSwapSlip(amount, pool, toDoj) * 100;
+  }
+
+  getDoubleSwapSlippage(
+    amount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    return this.solConnect.getDoubleSwapSlip(amount, pool1, pool2) * 100;
   }
 
   async getDefaultLiquidityPoolGasFee(): Promise<UsdtTokenGasFeeResult> {

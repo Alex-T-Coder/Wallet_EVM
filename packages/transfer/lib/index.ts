@@ -6,9 +6,14 @@ import EthereumChain from "./chains/ethereum";
 import HermesChain from "./chains/hermes";
 import SolanaChain from "./chains/solana";
 import PolkadotChain from "./chains/polkadot";
-import { GasfeeResult, UsdtTokenGasFeeResult } from "./chains/types";
+import {
+  GasfeeResult,
+  UsdtTokenGasFeeResult,
+  PoolDataResult,
+} from "./chains/types";
+import { getPoolData } from "./chains/utils";
 
-export { GasfeeResult, UsdtTokenGasFeeResult };
+export { GasfeeResult, UsdtTokenGasFeeResult, PoolDataResult, getPoolData };
 export {
   SolanaChain,
   ArweaveChain,

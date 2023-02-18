@@ -1,5 +1,5 @@
 import { Network } from "@dojima-wallet/types";
-import { UsdtTokenGasFeeResult } from "./types";
+import { PoolData, UsdtTokenGasFeeResult } from "./types";
 import { SwapAssetList } from "@dojima-wallet/utils";
 import { PolkadotInit } from "@dojima-wallet/connection";
 import { getUsdtTokenPriceResult } from "./utils";
@@ -24,6 +24,30 @@ export default class PolkadotChain extends PolkadotInit {
   async transfer(recipient: string, amount: number): Promise<string> {
     const hash = await this.dotConnect.transfer({ recipient, amount });
     return hash;
+  }
+
+  getSwapOutput(amount: number, pool: PoolData, toDoj: boolean): number {
+    return this.dotConnect.getSwapOutput(amount, pool, toDoj);
+  }
+
+  getDoubleSwapOutput(
+    amount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    return this.dotConnect.getDoubleSwapOutput(amount, pool1, pool2);
+  }
+
+  getSwapSlippage(amount: number, pool: PoolData, toDoj: boolean): number {
+    return this.dotConnect.getSwapSlip(amount, pool, toDoj) * 100;
+  }
+
+  getDoubleSwapSlippage(
+    amount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    return this.dotConnect.getDoubleSwapSlip(amount, pool1, pool2) * 100;
   }
 
   async getDefaultLiquidityPoolGasFee(): Promise<UsdtTokenGasFeeResult> {

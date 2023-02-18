@@ -1,6 +1,10 @@
 import { CoinGecko } from "@dojima-wallet/prices";
-import { GasfeeResult, UsdtTokenGasFeeResult } from "./types";
+import { GasfeeResult, PoolDataResult, UsdtTokenGasFeeResult } from "./types";
 import BigNumber from "bignumber.js";
+import axios from "axios";
+
+// const HermesChainUrl = 'https://api-test.h4s.dojima.network/hermeschain'
+const HermesChainUrl = "http://localhost:1317/hermeschain";
 
 export const getUsdtTokenPriceResult = async (
   gasFee: GasfeeResult,
@@ -49,4 +53,9 @@ export const convertAssetBNtoBaseNumber = (
   return Number(
     (Number(assetBNValue) / Math.pow(10, decimal)).toFixed(decimal)
   );
+};
+
+export const getPoolData = async (token: string): Promise<PoolDataResult> => {
+  const response = await axios.get(`${HermesChainUrl}/pool/${token}`);
+  return response.data;
 };

@@ -1,7 +1,7 @@
 import { Network } from "@dojima-wallet/types";
 import { BinanceBeaconInit, BNB_DECIMAL } from "@dojima-wallet/connection";
 import { convertAssetBNtoBaseNumber, getUsdtTokenPriceResult } from "./utils";
-import { UsdtTokenGasFeeResult } from "./types";
+import { PoolData, UsdtTokenGasFeeResult } from "./types";
 import { assetAmount, assetToBase, SwapAssetList } from "@dojima-wallet/utils";
 
 export default class BinanceBeaconChain extends BinanceBeaconInit {
@@ -32,6 +32,30 @@ export default class BinanceBeaconChain extends BinanceBeaconInit {
       memo: memo ? memo : undefined,
     });
     return hash;
+  }
+
+  getSwapOutput(amount: number, pool: PoolData, toDoj: boolean): number {
+    return this.bnbBConnect.getSwapOutput(amount, pool, toDoj);
+  }
+
+  getDoubleSwapOutput(
+    amount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    return this.bnbBConnect.getDoubleSwapOutput(amount, pool1, pool2);
+  }
+
+  getSwapSlippage(amount: number, pool: PoolData, toDoj: boolean): number {
+    return this.bnbBConnect.getSwapSlip(amount, pool, toDoj) * 100;
+  }
+
+  getDoubleSwapSlippage(
+    amount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    return this.bnbBConnect.getDoubleSwapSlip(amount, pool1, pool2) * 100;
   }
 
   async getDefaultLiquidityPoolGasFee(): Promise<UsdtTokenGasFeeResult> {

@@ -1,7 +1,7 @@
 import { Network } from "@dojima-wallet/types";
 import { ArweaveInit } from "@dojima-wallet/connection";
 import { getUsdtTokenPriceResult } from "./utils";
-import { UsdtTokenGasFeeResult } from "./types";
+import { PoolData, UsdtTokenGasFeeResult } from "./types";
 import { SwapAssetList } from "@dojima-wallet/utils";
 
 export default class ArweaveChain extends ArweaveInit {
@@ -23,6 +23,30 @@ export default class ArweaveChain extends ArweaveInit {
   async transfer(recipient: string, amount: number): Promise<string> {
     const hash = await this.arConnect.transfer({ recipient, amount });
     return hash;
+  }
+
+  getSwapOutput(amount: number, pool: PoolData, toDoj: boolean): number {
+    return this.arConnect.getSwapOutput(amount, pool, toDoj);
+  }
+
+  getDoubleSwapOutput(
+    amount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    return this.arConnect.getDoubleSwapOutput(amount, pool1, pool2);
+  }
+
+  getSwapSlippage(amount: number, pool: PoolData, toDoj: boolean): number {
+    return this.arConnect.getSwapSlip(amount, pool, toDoj) * 100;
+  }
+
+  getDoubleSwapSlippage(
+    amount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    return this.arConnect.getDoubleSwapSlip(amount, pool1, pool2) * 100;
   }
 
   async getDefaultLiquidityPoolGasFee(): Promise<UsdtTokenGasFeeResult> {
