@@ -14,8 +14,16 @@ import {
   SolTxs,
   SolTxsHistoryParams,
 } from "./types";
-import { baseToLamports, IDL, lamportsToBase } from "./utils";
-import { Program, Provider, Wallet } from "@project-serum/anchor";
+import { baseToLamports, IDL, lamportsToBase, SOLNodeWallet } from "./utils";
+import { Program, Provider } from "@project-serum/anchor";
+import {
+  calcDoubleSwapOutput,
+  calcDoubleSwapSlip,
+  calcSwapOutput,
+  calcSwapSlip,
+  PoolData,
+  SwapFeeResult,
+} from "../swap_utils";
 
 export interface SolanaChainClient {
   getCluster(): web3.Cluster;
@@ -266,6 +274,38 @@ class SolanaClient implements SolanaChainClient {
     return resultTxs;
   }
 
+  getSwapOutput(inputAmount: number, pool: PoolData, toDoj: boolean): number {
+    const input = inputAmount * Math.pow(10, SOL_DECIMAL);
+    return calcSwapOutput(input, pool, toDoj);
+  }
+
+  getDoubleSwapOutput(
+    inputAmount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    const input = inputAmount * Math.pow(10, SOL_DECIMAL);
+    return calcDoubleSwapOutput(input, pool1, pool2);
+  }
+
+  getSwapSlip(inputAmount: number, pool: PoolData, toDoj: boolean): number {
+    const input = inputAmount * Math.pow(10, SOL_DECIMAL);
+    return calcSwapSlip(input, pool, toDoj);
+  }
+
+  getDoubleSwapSlip(
+    inputAmount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    const input = inputAmount * Math.pow(10, SOL_DECIMAL);
+    return calcDoubleSwapSlip(input, pool1, pool2);
+  }
+
+  async getSwapFeesData(): Promise<SwapFeeResult> {
+    return;
+  }
+
   async getInboundObject(): Promise<InboundAddressResult> {
     const response = await axios.get(
       "https://api-test.h4s.dojima.network/hermeschain/inbound_addresses"
@@ -300,9 +340,10 @@ class SolanaClient implements SolanaChainClient {
     const opts: web3.ConfirmOptions = {
       preflightCommitment: "processed",
     };
+    // const provider = new Provider(this.connection, new Wallet((await this.getKeypair())[0]), opts);
     const provider = new Provider(
       this.connection,
-      new Wallet((await this.getKeypair())[0]),
+      new SOLNodeWallet((await this.getKeypair())[0]),
       opts
     );
     return provider;

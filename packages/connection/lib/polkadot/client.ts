@@ -8,6 +8,14 @@ import axios from "axios";
 import BigNumber from "bignumber.js";
 
 import { GasfeeResult, PolkaTxParams, rawTxType } from "./types";
+import {
+  calcDoubleSwapOutput,
+  calcDoubleSwapSlip,
+  calcSwapOutput,
+  calcSwapSlip,
+  PoolData,
+  SwapFeeResult,
+} from "../swap_utils";
 
 export type ChainProviderParams = {
   provider?: string;
@@ -15,7 +23,8 @@ export type ChainProviderParams = {
 
 export const defaultDotProvider = "wss://rpc.polkadot.io";
 export const testnetDotProvider = "wss://westend-rpc.polkadot.io";
-export const DOT_DECIMAL = 10;
+// export const DOT_DECIMAL = 10;
+export const DOT_DECIMAL = 12;
 
 export interface PolkaChainClient {
   createInstance(): Promise<ApiPromise>;
@@ -131,6 +140,38 @@ class PolkadotClient implements PolkaChainClient {
       average: gasFee,
       fast: gasFee,
     };
+  }
+
+  getSwapOutput(inputAmount: number, pool: PoolData, toDoj: boolean): number {
+    const input = inputAmount * Math.pow(10, DOT_DECIMAL);
+    return calcSwapOutput(input, pool, toDoj);
+  }
+
+  getDoubleSwapOutput(
+    inputAmount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    const input = inputAmount * Math.pow(10, DOT_DECIMAL);
+    return calcDoubleSwapOutput(input, pool1, pool2);
+  }
+
+  getSwapSlip(inputAmount: number, pool: PoolData, toDoj: boolean): number {
+    const input = inputAmount * Math.pow(10, DOT_DECIMAL);
+    return calcSwapSlip(input, pool, toDoj);
+  }
+
+  getDoubleSwapSlip(
+    inputAmount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    const input = inputAmount * Math.pow(10, DOT_DECIMAL);
+    return calcDoubleSwapSlip(input, pool1, pool2);
+  }
+
+  async getSwapFeesData(): Promise<SwapFeeResult> {
+    return;
   }
 
   async getInboundObject(): Promise<InboundAddressResult> {

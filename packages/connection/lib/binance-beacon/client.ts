@@ -44,6 +44,14 @@ import {
 import { getPrefix, isAccount, isTransferFee, parseTx } from "./util";
 import { BNB_DECIMAL } from "./types";
 import { BnbDojTestnetClient } from "./doj-testnet";
+import {
+  calcDoubleSwapOutput,
+  calcDoubleSwapSlip,
+  calcSwapOutput,
+  calcSwapSlip,
+  PoolData,
+  SwapFeeResult,
+} from "../swap_utils";
 
 type PrivKey = string;
 
@@ -604,6 +612,38 @@ class BinanceBeaconClient
         } as Fees,
       };
     }
+  }
+
+  getSwapOutput(inputAmount: number, pool: PoolData, toDoj: boolean): number {
+    const input = inputAmount * Math.pow(10, BNB_DECIMAL);
+    return calcSwapOutput(input, pool, toDoj);
+  }
+
+  getDoubleSwapOutput(
+    inputAmount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    const input = inputAmount * Math.pow(10, BNB_DECIMAL);
+    return calcDoubleSwapOutput(input, pool1, pool2);
+  }
+
+  getSwapSlip(inputAmount: number, pool: PoolData, toDoj: boolean): number {
+    const input = inputAmount * Math.pow(10, BNB_DECIMAL);
+    return calcSwapSlip(input, pool, toDoj);
+  }
+
+  getDoubleSwapSlip(
+    inputAmount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    const input = inputAmount * Math.pow(10, BNB_DECIMAL);
+    return calcDoubleSwapSlip(input, pool1, pool2);
+  }
+
+  async getSwapFeesData(): Promise<SwapFeeResult> {
+    return;
   }
 
   async getInboundObject(): Promise<InboundAddressResult> {
