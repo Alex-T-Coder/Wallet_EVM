@@ -8,17 +8,17 @@ export default class ArweaveInit {
       this.arConnect = new ArweaveClient({
         phrase: mnemonic,
         network: network,
-        // config: {
-        //   host: "ar-test.h4s.dojima.network",
-        //   protocol: "https",
-        //   timeout: 100000,
-        // },
         config: {
-          host: "localhost",
-          port: "1984",
-          protocol: "http",
+          host: "ar-test.h4s.dojima.network",
+          protocol: "https",
           timeout: 100000,
         },
+        // config: {
+        //   host: "localhost",
+        //   port: "1984",
+        //   protocol: "http",
+        //   timeout: 100000,
+        // },
       });
     } else if (network === Network.Testnet || network === Network.Stagenet) {
       this.arConnect = new ArweaveClient({
