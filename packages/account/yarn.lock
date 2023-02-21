@@ -3,9 +3,9 @@
 
 
 "@babel/runtime@^7.10.4", "@babel/runtime@^7.12.5", "@babel/runtime@^7.17.2", "@babel/runtime@^7.20.13", "@babel/runtime@^7.20.6":
-  version "7.20.13"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.20.13.tgz#7055ab8a7cff2b8f6058bf6ae45ff84ad2aded4b"
-  integrity sha512-gt3PKXs0DBoL9xCvOIIZ2NEqAGZqHjAnmVbfQtB620V0uReIQutpel14KcneZuer7UioY8ALKZ7iocavvzTNFA==
+  version "7.21.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.21.0.tgz#5b55c9d394e5fcf304909a8b00c07dc217b56673"
+  integrity sha512-xwII0//EObnq89Ji5AKYQaRYiW/nZ3llSv29d49IuxPhKbtJoLP+9QUUZ4nVragQVtaVGeZrpB+ZtG/Pdy/POw==
   dependencies:
     regenerator-runtime "^0.13.11"
 
@@ -69,10 +69,10 @@
     secp256k1 "^4.0.2"
     tweetnacl "^1.0.3"
 
-"@dojima-wallet/connection@0.0.1-alpha.36":
-  version "0.0.1-alpha.36"
-  resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.36.tgz#f1bd1f044cb6174c8ac93bd7574784d7d43a684e"
-  integrity sha512-AKJNyesLhUtWWpr4zLuSpEi5NBFaidrlrv31cPOu9KOm7jorZ5yW2nwFe+v7G/L28vlHYMi+f27DMgrFj2D0kA==
+"@dojima-wallet/connection@0.0.1-alpha.37":
+  version "0.0.1-alpha.37"
+  resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.37.tgz#141e927d427d2a5662ac345ff2391e74ef9d2750"
+  integrity sha512-ZK8xJgf0fe8A7w0Be16eabLYHu5qZWR9YataiXJwRK4ijPDTLqBLTHmWKRzi9DDLk+5+VTTRcgYLyRveyw5Xig==
   dependencies:
     "@binance-chain/javascript-sdk" "^4.2.0"
     "@cosmos-client/core" "0.45.13"
