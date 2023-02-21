@@ -23,8 +23,8 @@ export type ChainProviderParams = {
 
 export const defaultDotProvider = "wss://rpc.polkadot.io";
 export const testnetDotProvider = "wss://westend-rpc.polkadot.io";
-// export const DOT_DECIMAL = 10;
-export const DOT_DECIMAL = 12;
+export const DOT_DECIMAL = 10;
+// export const DOT_DECIMAL = 12;
 
 export interface PolkaChainClient {
   createInstance(): Promise<ApiPromise>;
