@@ -249,8 +249,14 @@ class ArweaveClient extends ArweaveTxClient implements ArweaveChainClient {
     dojAddress?: string
   ): Promise<string> {
     const tag = dojAddress
-      ? new Tag("memo", `ADD:AR.AR:${dojAddress}`)
-      : new Tag("memo", `ADD:AR.AR`);
+      ? new Tag(
+          this.arweave.utils.stringToB64Url("memo"),
+          this.arweave.utils.stringToB64Url(`ADD:AR.AR:${dojAddress}`)
+        )
+      : new Tag(
+          this.arweave.utils.stringToB64Url("memo"),
+          this.arweave.utils.stringToB64Url(`ADD:AR.AR`)
+        );
 
     const rawTx = await this.createTransaction(inboundAddress, amount, tag);
 
@@ -265,7 +271,10 @@ class ArweaveClient extends ArweaveTxClient implements ArweaveChainClient {
     inboundAddress: string,
     recipient: string
   ): Promise<string> {
-    const tag = new Tag("memo", `SWAP:${token}:${recipient}`);
+    const tag = new Tag(
+      this.arweave.utils.stringToB64Url("memo"),
+      this.arweave.utils.stringToB64Url(`SWAP:${token}:${recipient}`)
+    );
 
     const rawTx = await this.createTransaction(inboundAddress, amount, tag);
 
