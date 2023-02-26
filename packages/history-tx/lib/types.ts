@@ -7,22 +7,22 @@ export interface ArTxDataType {
   signature: string;
 }
 
-export interface OuterDataResult {
-  timestamp: number;
+export type OuterDataResult = {
+  timestamp: string;
   transaction_hash: string;
-  block: number;
+  block: string;
   from: string;
   to: string;
   value: string;
   gas_price: string;
   date: string;
   time: string;
-}
+};
 
-export interface InnerDataResult {
-  timestamp: number;
+export type InnerDataResult = {
+  timestamp: string;
   transaction_hash: string;
-  block: number;
+  block: string;
   from: string;
   to: string;
   value: string;
@@ -31,17 +31,17 @@ export interface InnerDataResult {
   time: string;
   signature: string;
   block_hash: string;
-}
+};
 
-export interface ArTxsResult {
+export type ArTxsResult = {
   outer: OuterDataResult[];
   inner: InnerDataResult[];
-}
+};
 
-export interface ArTxs {
+export type ArTxs = {
   total: number;
   txs: ArTxsResult;
-}
+};
 
 export interface BtcTxDataType {
   transaction_hash: string;
