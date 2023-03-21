@@ -69,10 +69,10 @@
     secp256k1 "^4.0.2"
     tweetnacl "^1.0.3"
 
-"@dojima-wallet/connection@^0.0.1-alpha.38":
-  version "0.0.1-alpha.38"
-  resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.38.tgz#949125f0f3749d912b1b63711c3b936623dc2a26"
-  integrity sha512-XnIUUTGTQmEMDpI1aIqb0aVGvYCQDfux1kL8pfMpeY+EVP7sFbrgZ51UCX4oI+mNmoynGgI0M7WDeRyJR7jqrA==
+"@dojima-wallet/connection@^0.0.1-alpha.39":
+  version "0.0.1-alpha.39"
+  resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.39.tgz#3aec3782c9a40d4a5a349e2d7540d6b3d707cc54"
+  integrity sha512-fvJpwTZpmFQdQaFZRf89wX+OEF1Wr7hdNb5WvWPDEUB/4vo7C8cyvsYh9H/zzDuvEZ827NqSvFA+okvd0aSMbg==
   dependencies:
     "@binance-chain/javascript-sdk" "^4.2.0"
     "@cosmos-client/core" "0.45.13"
