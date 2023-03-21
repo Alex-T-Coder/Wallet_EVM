@@ -445,7 +445,7 @@ export const getBalance = async ({
         amount: baseAmount(0, DOJ_DECIMAL),
       },
     ];
-    console.log(data);
+    return data;
   } else {
     return balances
       .map((balance) => ({
