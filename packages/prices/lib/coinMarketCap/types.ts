@@ -76,6 +76,5 @@ export type AssetsList =
   | "UNI"
   | "SHIB"
   | "LTC"
-  | "DOGE"
   | "MKR"
   | "AAVE";

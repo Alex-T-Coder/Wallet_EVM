@@ -438,18 +438,29 @@ export const getBalance = async ({
   cosmosClient: CosmosSDKClient;
 }): Promise<Balance[]> => {
   const balances = await cosmosClient.getBalance(address);
-  return balances
-    .map((balance) => ({
-      asset: (balance.denom && assetFromDenom(balance.denom)) || AssetDOJNative,
-      amount: baseAmount(balance.amount, DOJ_DECIMAL),
-    }))
-    .filter(
-      (balance) =>
-        !assets ||
-        assets.filter(
-          (asset) => assetToString(balance.asset) === assetToString(asset)
-        ).length
-    );
+  if (balances.length === 0) {
+    const data = [
+      {
+        asset: AssetDOJNative,
+        amount: baseAmount(0, DOJ_DECIMAL),
+      },
+    ];
+    console.log(data);
+  } else {
+    return balances
+      .map((balance) => ({
+        asset:
+          (balance.denom && assetFromDenom(balance.denom)) || AssetDOJNative,
+        amount: baseAmount(balance.amount, DOJ_DECIMAL),
+      }))
+      .filter(
+        (balance) =>
+          !assets ||
+          assets.filter(
+            (asset) => assetToString(balance.asset) === assetToString(asset)
+          ).length
+      );
+  }
 };
 
 /**

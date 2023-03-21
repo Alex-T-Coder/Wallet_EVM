@@ -22,11 +22,15 @@ class BnbDojTestnetClient {
     const data: Array<BalancesResult> = response.data;
     if (data.length > 0) {
       const balanceObj = data.find((res) => res.address === address);
-      if (balanceObj.balances && balanceObj.balances.length > 0) {
-        const bal = balanceObj.balances.find(
-          (res) => res.denom === AssetBNB.symbol
-        );
-        balance = bal.amount / Math.pow(10, BNB_DECIMAL);
+      if (balanceObj) {
+        if (balanceObj.balances && balanceObj.balances.length > 0) {
+          const bal = balanceObj.balances.find(
+            (res) => res.denom === AssetBNB.symbol
+          );
+          balance = bal.amount / Math.pow(10, BNB_DECIMAL);
+        } else {
+          balance = 0;
+        }
       } else {
         balance = 0;
       }
