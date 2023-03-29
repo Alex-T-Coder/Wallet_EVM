@@ -1,4 +1,4 @@
-import { UsdtTokenGasFeeResult } from "./types";
+import { PoolData, UsdtTokenGasFeeResult } from "./types";
 import { DOJ_DECIMAL, HermesInit } from "@dojima-wallet/connection";
 import { Network } from "@dojima-wallet/types";
 import { getUsdtTokenPriceResult } from "./utils";
@@ -43,6 +43,30 @@ export default class HermesChain extends HermesInit {
       memo: memo ? memo : undefined,
     });
     return hash;
+  }
+
+  getSwapOutput(amount: number, pool: PoolData, toDoj: boolean): number {
+    return this.h4sConnect.getSwapOutput(amount, pool, toDoj);
+  }
+
+  getDoubleSwapOutput(
+    amount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    return this.h4sConnect.getDoubleSwapOutput(amount, pool1, pool2);
+  }
+
+  getSwapSlippage(amount: number, pool: PoolData, toDoj: boolean): number {
+    return this.h4sConnect.getSwapSlip(amount, pool, toDoj) * 100;
+  }
+
+  getDoubleSwapSlippage(
+    amount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    return this.h4sConnect.getDoubleSwapSlip(amount, pool1, pool2) * 100;
   }
 
   async addLiquidityPool(

@@ -69,10 +69,10 @@
     secp256k1 "^4.0.2"
     tweetnacl "^1.0.3"
 
-"@dojima-wallet/connection@^0.0.1-alpha.39":
-  version "0.0.1-alpha.39"
-  resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.39.tgz#3aec3782c9a40d4a5a349e2d7540d6b3d707cc54"
-  integrity sha512-fvJpwTZpmFQdQaFZRf89wX+OEF1Wr7hdNb5WvWPDEUB/4vo7C8cyvsYh9H/zzDuvEZ827NqSvFA+okvd0aSMbg==
+"@dojima-wallet/connection@^0.0.1-alpha.40":
+  version "0.0.1-alpha.40"
+  resolved "https://registry.yarnpkg.com/@dojima-wallet/connection/-/connection-0.0.1-alpha.40.tgz#426499fc6b44e922c2cf89ee6516bea66a373eab"
+  integrity sha512-6qsWWYFubBAwGI8QQA4fyPujTBPeAFX916iE3HPBCeCUQlK4uFcTq8I8SLyY/vL/IIm79dvb8zi7sSKB2zm+zg==
   dependencies:
     "@binance-chain/javascript-sdk" "^4.2.0"
     "@cosmos-client/core" "0.45.13"
@@ -1245,9 +1245,9 @@
     "@types/node" "*"
 
 "@types/lodash@^4.14.149":
-  version "4.14.191"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.191.tgz#09511e7f7cba275acd8b419ddac8da9a6a79e2fa"
-  integrity sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==
+  version "4.14.192"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.192.tgz#5790406361a2852d332d41635d927f1600811285"
+  integrity sha512-km+Vyn3BYm5ytMO13k9KTp27O75rbQ0NFw+U//g+PX7VZyjCioXaRFisqSIJRECljcTv73G3i6BpglNGHgUQ5A==
 
 "@types/long@^4.0.1":
   version "4.0.2"
@@ -1255,17 +1255,17 @@
   integrity sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==
 
 "@types/node-fetch@^2.6.2":
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.6.2.tgz#d1a9c5fd049d9415dce61571557104dec3ec81da"
-  integrity sha512-DHqhlq5jeESLy19TYhLakJ07kNumXWjcDdxXsLUMJZ6ue8VZJj4kLPQVE/2mdHh3xZziNF1xppu5lwmS53HR+A==
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.6.3.tgz#175d977f5e24d93ad0f57602693c435c57ad7e80"
+  integrity sha512-ETTL1mOEdq/sxUtgtOhKjyB2Irra4cjxksvcMUR5Zr4n+PxVhsCD9WS46oPbHL3et9Zde7CNRr+WUNlcHvsX+w==
   dependencies:
     "@types/node" "*"
     form-data "^3.0.0"
 
 "@types/node@*", "@types/node@>=13.7.0":
-  version "18.15.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.15.5.tgz#3af577099a99c61479149b716183e70b5239324a"
-  integrity sha512-Ark2WDjjZO7GmvsyFFf81MXuGTA/d6oP38anyxWOL6EREyBKAxKoFHwBhaZxCfLRLpO8JgVXwqOwSwa7jRcjew==
+  version "18.15.11"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.15.11.tgz#b3b790f09cb1696cffcec605de025b088fa4225f"
+  integrity sha512-E5Kwq2n4SbMzQOn6wnmBjuK9ouqlURrcZDVfbo9ftDDTFt3nk7ZKK4GMOzoYgnpQJKcxwQw+lGaBvvlMo0qN/Q==
 
 "@types/node@10.12.18":
   version "10.12.18"
@@ -1283,9 +1283,9 @@
   integrity sha512-s3nugnZumCC//n4moGGe6tkNMyYEdaDBitVjwPxXmR5lnMG5dHePinH2EdxkG3Rh1ghFHHixAG4NJhpJW1rthQ==
 
 "@types/node@^14.14.31":
-  version "14.18.40"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.40.tgz#773945366f7531d60473087be12b819f300e3e69"
-  integrity sha512-pGteXO/JQX7wPxGR8lyT+doqjMa7XvlVowwrDwLfX92k5SdLkk4cwC7CYSLBxrenw/R5oQwKioVIak7ZgplM3g==
+  version "14.18.42"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.42.tgz#fa39b2dc8e0eba61bdf51c66502f84e23b66e114"
+  integrity sha512-xefu+RBie4xWlK8hwAzGh3npDz/4VhF6icY/shU+zv/1fNn+ZVG7T7CRwe9LId9sAYRPxI+59QBPuKL3WpyGRg==
 
 "@types/pbkdf2@^3.0.0":
   version "3.1.0"
@@ -1462,9 +1462,9 @@ arweave-mnemonic-keys@^0.0.9:
     libp2p-crypto "^0.19.0"
 
 arweave@^1.10.13, arweave@^1.11.8:
-  version "1.13.3"
-  resolved "https://registry.yarnpkg.com/arweave/-/arweave-1.13.3.tgz#00f0b486e0c9c82901ea861dbeb7cfbfe199cdef"
-  integrity sha512-Zj+mKMU6/gl3nIqGU4c8J8LdYt11qfA8CBy5NZ25X2dFrd40m3GufxmnmwS1V0Gm97i3+mwO+ARDEm0o4REEoQ==
+  version "1.13.5"
+  resolved "https://registry.yarnpkg.com/arweave/-/arweave-1.13.5.tgz#0bd28aae9d0e9fc66df45217661b08f57658c090"
+  integrity sha512-bxXoxmQF1OVXw2QFjD9m29Oo+lwUSvb2mzli494BRFGCfSSTBpE5Fp9f65HmmGEUURCL4xS17J6wBjLm1efrig==
   dependencies:
     arconnect "^0.4.2"
     asn1.js "^5.4.1"
@@ -3517,9 +3517,9 @@ mkdirp-promise@^5.0.1:
     mkdirp "*"
 
 mkdirp@*:
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-2.1.5.tgz#78d7eaf15e069ba7b6b47d76dd94cfadf7a4062f"
-  integrity sha512-jbjfql+shJtAPrFoKxHOXip4xS+kul9W3OzfzzrqueWK2QMGon2bFH2opl6W9EagBThjEz+iysyi/swOoVfB/w==
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-2.1.6.tgz#964fbcb12b2d8c5d6fbc62a963ac95a273e2cc19"
+  integrity sha512-+hEnITedc8LAtIP9u3HJDFIdcLV2vXP33sqLLIzkv1Db1zO/1OxbvYf0Y1OC/S/Qo5dxHXepofhmxL02PsKe+A==
 
 mkdirp@^0.5.5:
   version "0.5.6"
@@ -3932,9 +3932,9 @@ protobufjs@^6.11.2:
     long "^4.0.0"
 
 protobufjs@^7.1.2:
-  version "7.2.2"
-  resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-7.2.2.tgz#2af401d8c547b9476fb37ffc65782cf302342ca3"
-  integrity sha512-++PrQIjrom+bFDPpfmqXfAGSQs40116JRrqqyf53dymUMvvb5d/LMRyicRoF1AUKoXVS1/IgJXlEgcpr4gTF3Q==
+  version "7.2.3"
+  resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-7.2.3.tgz#01af019e40d9c6133c49acbb3ff9e30f4f0f70b2"
+  integrity sha512-TtpvOqwB5Gdz/PQmOjgsrGH1nHjAQVCN7JG4A6r1sXRWESL5rNMAiRcBQlCAdKxZcAbstExQePYG8xof/JVRgg==
   dependencies:
     "@protobufjs/aspromise" "^1.1.2"
     "@protobufjs/base64" "^1.1.2"
