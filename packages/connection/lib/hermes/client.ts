@@ -63,6 +63,14 @@ import {
   registerDepositCodecs,
   registerSendCodecs,
 } from "./util";
+import {
+  calcDoubleSwapOutput,
+  calcDoubleSwapSlip,
+  calcSwapOutput,
+  calcSwapSlip,
+  PoolData,
+  SwapFeeResult,
+} from "../swap_utils";
 
 /**
  * Interface for custom Hermeschain client
@@ -741,6 +749,38 @@ class HermesClient
     } catch {
       return getDefaultFees();
     }
+  }
+
+  getSwapOutput(inputAmount: number, pool: PoolData, toDoj: boolean): number {
+    const input = inputAmount * Math.pow(10, DOJ_DECIMAL);
+    return calcSwapOutput(input, pool, toDoj);
+  }
+
+  getDoubleSwapOutput(
+    inputAmount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    const input = inputAmount * Math.pow(10, DOJ_DECIMAL);
+    return calcDoubleSwapOutput(input, pool1, pool2);
+  }
+
+  getSwapSlip(inputAmount: number, pool: PoolData, toDoj: boolean): number {
+    const input = inputAmount * Math.pow(10, DOJ_DECIMAL);
+    return calcSwapSlip(input, pool, toDoj);
+  }
+
+  getDoubleSwapSlip(
+    inputAmount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    const input = inputAmount * Math.pow(10, DOJ_DECIMAL);
+    return calcDoubleSwapSlip(input, pool1, pool2);
+  }
+
+  async getSwapFeesData(): Promise<SwapFeeResult> {
+    return;
   }
 }
 
