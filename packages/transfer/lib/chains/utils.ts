@@ -12,7 +12,7 @@ export const getUsdtTokenPriceResult = async (
 ): Promise<UsdtTokenGasFeeResult> => {
   const pricesInst = new CoinGecko();
   let usdt_price: number;
-  if (asset === ("dojima" || "hermes")) {
+  if (asset === "dojima" || asset === "hermes") {
     usdt_price = 0.0111;
   } else {
     const pricesData = await pricesInst.getAssestsCurrentMarketData({
