@@ -147,18 +147,22 @@ $root.common = (function () {
       while (reader.pos < end) {
         var tag = reader.uint32();
         switch (tag >>> 3) {
-          case 1:
+          case 1: {
             message.chain = reader.string();
             break;
-          case 2:
+          }
+          case 2: {
             message.symbol = reader.string();
             break;
-          case 3:
+          }
+          case 3: {
             message.ticker = reader.string();
             break;
-          case 4:
+          }
+          case 4: {
             message.synth = reader.bool();
             break;
+          }
           default:
             reader.skipType(tag & 7);
             break;
@@ -261,6 +265,21 @@ $root.common = (function () {
      */
     Asset.prototype.toJSON = function toJSON() {
       return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for Asset
+     * @function getTypeUrl
+     * @memberof common.Asset
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    Asset.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+      if (typeUrlPrefix === undefined) {
+        typeUrlPrefix = "type.googleapis.com";
+      }
+      return typeUrlPrefix + "/common.Asset";
     };
 
     return Asset;
@@ -386,15 +405,18 @@ $root.common = (function () {
       while (reader.pos < end) {
         var tag = reader.uint32();
         switch (tag >>> 3) {
-          case 1:
+          case 1: {
             message.asset = $root.common.Asset.decode(reader, reader.uint32());
             break;
-          case 2:
+          }
+          case 2: {
             message.amount = reader.string();
             break;
-          case 3:
+          }
+          case 3: {
             message.decimals = reader.int64();
             break;
+          }
           default:
             reader.skipType(tag & 7);
             break;
@@ -541,6 +563,21 @@ $root.common = (function () {
       return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
+    /**
+     * Gets the default type url for Coin
+     * @function getTypeUrl
+     * @memberof common.Coin
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    Coin.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+      if (typeUrlPrefix === undefined) {
+        typeUrlPrefix = "type.googleapis.com";
+      }
+      return typeUrlPrefix + "/common.Coin";
+    };
+
     return Coin;
   })();
 
@@ -650,12 +687,14 @@ $root.common = (function () {
       while (reader.pos < end) {
         var tag = reader.uint32();
         switch (tag >>> 3) {
-          case 1:
+          case 1: {
             message.secp256k1 = reader.string();
             break;
-          case 2:
+          }
+          case 2: {
             message.ed25519 = reader.string();
             break;
+          }
           default:
             reader.skipType(tag & 7);
             break;
@@ -747,6 +786,21 @@ $root.common = (function () {
      */
     PubKeySet.prototype.toJSON = function toJSON() {
       return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for PubKeySet
+     * @function getTypeUrl
+     * @memberof common.PubKeySet
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    PubKeySet.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+      if (typeUrlPrefix === undefined) {
+        typeUrlPrefix = "type.googleapis.com";
+      }
+      return typeUrlPrefix + "/common.PubKeySet";
     };
 
     return PubKeySet;
@@ -923,31 +977,38 @@ $root.common = (function () {
       while (reader.pos < end) {
         var tag = reader.uint32();
         switch (tag >>> 3) {
-          case 1:
+          case 1: {
             message.id = reader.string();
             break;
-          case 2:
+          }
+          case 2: {
             message.chain = reader.string();
             break;
-          case 3:
+          }
+          case 3: {
             message.fromAddress = reader.string();
             break;
-          case 4:
+          }
+          case 4: {
             message.toAddress = reader.string();
             break;
-          case 5:
+          }
+          case 5: {
             if (!(message.coins && message.coins.length)) message.coins = [];
             message.coins.push(
               $root.common.Coin.decode(reader, reader.uint32())
             );
             break;
-          case 6:
+          }
+          case 6: {
             if (!(message.gas && message.gas.length)) message.gas = [];
             message.gas.push($root.common.Coin.decode(reader, reader.uint32()));
             break;
-          case 7:
+          }
+          case 7: {
             message.memo = reader.string();
             break;
+          }
           default:
             reader.skipType(tag & 7);
             break;
@@ -1112,6 +1173,21 @@ $root.common = (function () {
       return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
+    /**
+     * Gets the default type url for Tx
+     * @function getTypeUrl
+     * @memberof common.Tx
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    Tx.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+      if (typeUrlPrefix === undefined) {
+        typeUrlPrefix = "type.googleapis.com";
+      }
+      return typeUrlPrefix + "/common.Tx";
+    };
+
     return Tx;
   })();
 
@@ -1223,15 +1299,17 @@ $root.common = (function () {
       while (reader.pos < end) {
         var tag = reader.uint32();
         switch (tag >>> 3) {
-          case 1:
+          case 1: {
             if (!(message.coins && message.coins.length)) message.coins = [];
             message.coins.push(
               $root.common.Coin.decode(reader, reader.uint32())
             );
             break;
-          case 2:
+          }
+          case 2: {
             message.poolDeduct = reader.string();
             break;
+          }
           default:
             reader.skipType(tag & 7);
             break;
@@ -1343,7 +1421,216 @@ $root.common = (function () {
       return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
+    /**
+     * Gets the default type url for Fee
+     * @function getTypeUrl
+     * @memberof common.Fee
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    Fee.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+      if (typeUrlPrefix === undefined) {
+        typeUrlPrefix = "type.googleapis.com";
+      }
+      return typeUrlPrefix + "/common.Fee";
+    };
+
     return Fee;
+  })();
+
+  common.ProtoUint = (function () {
+    /**
+     * Properties of a ProtoUint.
+     * @memberof common
+     * @interface IProtoUint
+     * @property {string|null} [value] ProtoUint value
+     */
+
+    /**
+     * Constructs a new ProtoUint.
+     * @memberof common
+     * @classdesc Represents a ProtoUint.
+     * @implements IProtoUint
+     * @constructor
+     * @param {common.IProtoUint=} [properties] Properties to set
+     */
+    function ProtoUint(properties) {
+      if (properties)
+        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ProtoUint value.
+     * @member {string} value
+     * @memberof common.ProtoUint
+     * @instance
+     */
+    ProtoUint.prototype.value = "";
+
+    /**
+     * Creates a new ProtoUint instance using the specified properties.
+     * @function create
+     * @memberof common.ProtoUint
+     * @static
+     * @param {common.IProtoUint=} [properties] Properties to set
+     * @returns {common.ProtoUint} ProtoUint instance
+     */
+    ProtoUint.create = function create(properties) {
+      return new ProtoUint(properties);
+    };
+
+    /**
+     * Encodes the specified ProtoUint message. Does not implicitly {@link common.ProtoUint.verify|verify} messages.
+     * @function encode
+     * @memberof common.ProtoUint
+     * @static
+     * @param {common.IProtoUint} message ProtoUint message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ProtoUint.encode = function encode(message, writer) {
+      if (!writer) writer = $Writer.create();
+      if (message.value != null && Object.hasOwnProperty.call(message, "value"))
+        writer.uint32(/* id 1, wireType 2 =*/ 10).string(message.value);
+      return writer;
+    };
+
+    /**
+     * Encodes the specified ProtoUint message, length delimited. Does not implicitly {@link common.ProtoUint.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof common.ProtoUint
+     * @static
+     * @param {common.IProtoUint} message ProtoUint message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ProtoUint.encodeDelimited = function encodeDelimited(message, writer) {
+      return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ProtoUint message from the specified reader or buffer.
+     * @function decode
+     * @memberof common.ProtoUint
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {common.ProtoUint} ProtoUint
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ProtoUint.decode = function decode(reader, length) {
+      if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
+      var end = length === undefined ? reader.len : reader.pos + length,
+        message = new $root.common.ProtoUint();
+      while (reader.pos < end) {
+        var tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1: {
+            message.value = reader.string();
+            break;
+          }
+          default:
+            reader.skipType(tag & 7);
+            break;
+        }
+      }
+      return message;
+    };
+
+    /**
+     * Decodes a ProtoUint message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof common.ProtoUint
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {common.ProtoUint} ProtoUint
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ProtoUint.decodeDelimited = function decodeDelimited(reader) {
+      if (!(reader instanceof $Reader)) reader = new $Reader(reader);
+      return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ProtoUint message.
+     * @function verify
+     * @memberof common.ProtoUint
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ProtoUint.verify = function verify(message) {
+      if (typeof message !== "object" || message === null)
+        return "object expected";
+      if (message.value != null && message.hasOwnProperty("value"))
+        if (!$util.isString(message.value)) return "value: string expected";
+      return null;
+    };
+
+    /**
+     * Creates a ProtoUint message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof common.ProtoUint
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {common.ProtoUint} ProtoUint
+     */
+    ProtoUint.fromObject = function fromObject(object) {
+      if (object instanceof $root.common.ProtoUint) return object;
+      var message = new $root.common.ProtoUint();
+      if (object.value != null) message.value = String(object.value);
+      return message;
+    };
+
+    /**
+     * Creates a plain object from a ProtoUint message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof common.ProtoUint
+     * @static
+     * @param {common.ProtoUint} message ProtoUint
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ProtoUint.toObject = function toObject(message, options) {
+      if (!options) options = {};
+      var object = {};
+      if (options.defaults) object.value = "";
+      if (message.value != null && message.hasOwnProperty("value"))
+        object.value = message.value;
+      return object;
+    };
+
+    /**
+     * Converts this ProtoUint to JSON.
+     * @function toJSON
+     * @memberof common.ProtoUint
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ProtoUint.prototype.toJSON = function toJSON() {
+      return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for ProtoUint
+     * @function getTypeUrl
+     * @memberof common.ProtoUint
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    ProtoUint.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+      if (typeUrlPrefix === undefined) {
+        typeUrlPrefix = "type.googleapis.com";
+      }
+      return typeUrlPrefix + "/common.ProtoUint";
+    };
+
+    return ProtoUint;
   })();
 
   return common;
@@ -1476,18 +1763,21 @@ $root.types = (function () {
       while (reader.pos < end) {
         var tag = reader.uint32();
         switch (tag >>> 3) {
-          case 1:
+          case 1: {
             if (!(message.coins && message.coins.length)) message.coins = [];
             message.coins.push(
               $root.common.Coin.decode(reader, reader.uint32())
             );
             break;
-          case 2:
+          }
+          case 2: {
             message.memo = reader.string();
             break;
-          case 3:
+          }
+          case 3: {
             message.signer = reader.bytes();
             break;
+          }
           default:
             reader.skipType(tag & 7);
             break;
@@ -1573,7 +1863,7 @@ $root.types = (function () {
             )),
             0
           );
-        else if (object.signer.length) message.signer = object.signer;
+        else if (object.signer.length >= 0) message.signer = object.signer;
       return message;
     };
 
@@ -1628,6 +1918,21 @@ $root.types = (function () {
      */
     MsgDeposit.prototype.toJSON = function toJSON() {
       return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for MsgDeposit
+     * @function getTypeUrl
+     * @memberof types.MsgDeposit
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    MsgDeposit.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+      if (typeUrlPrefix === undefined) {
+        typeUrlPrefix = "type.googleapis.com";
+      }
+      return typeUrlPrefix + "/types.MsgDeposit";
     };
 
     return MsgDeposit;
@@ -1755,18 +2060,21 @@ $root.types = (function () {
       while (reader.pos < end) {
         var tag = reader.uint32();
         switch (tag >>> 3) {
-          case 1:
+          case 1: {
             message.fromAddress = reader.bytes();
             break;
-          case 2:
+          }
+          case 2: {
             message.toAddress = reader.bytes();
             break;
-          case 3:
+          }
+          case 3: {
             if (!(message.amount && message.amount.length)) message.amount = [];
             message.amount.push(
               $root.cosmos.base.v1beta1.Coin.decode(reader, reader.uint32())
             );
             break;
+          }
           default:
             reader.skipType(tag & 7);
             break;
@@ -1849,7 +2157,7 @@ $root.types = (function () {
             )),
             0
           );
-        else if (object.fromAddress.length)
+        else if (object.fromAddress.length >= 0)
           message.fromAddress = object.fromAddress;
       if (object.toAddress != null)
         if (typeof object.toAddress === "string")
@@ -1860,7 +2168,8 @@ $root.types = (function () {
             )),
             0
           );
-        else if (object.toAddress.length) message.toAddress = object.toAddress;
+        else if (object.toAddress.length >= 0)
+          message.toAddress = object.toAddress;
       if (object.amount) {
         if (!Array.isArray(object.amount))
           throw TypeError(".types.MsgSend.amount: array expected");
@@ -1947,7 +2256,523 @@ $root.types = (function () {
       return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
+    /**
+     * Gets the default type url for MsgSend
+     * @function getTypeUrl
+     * @memberof types.MsgSend
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    MsgSend.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+      if (typeUrlPrefix === undefined) {
+        typeUrlPrefix = "type.googleapis.com";
+      }
+      return typeUrlPrefix + "/types.MsgSend";
+    };
+
     return MsgSend;
+  })();
+
+  types.MsgSetIPAddress = (function () {
+    /**
+     * Properties of a MsgSetIPAddress.
+     * @memberof types
+     * @interface IMsgSetIPAddress
+     * @property {string|null} [ipAddress] MsgSetIPAddress ipAddress
+     * @property {Uint8Array|null} [signer] MsgSetIPAddress signer
+     */
+
+    /**
+     * Constructs a new MsgSetIPAddress.
+     * @memberof types
+     * @classdesc Represents a MsgSetIPAddress.
+     * @implements IMsgSetIPAddress
+     * @constructor
+     * @param {types.IMsgSetIPAddress=} [properties] Properties to set
+     */
+    function MsgSetIPAddress(properties) {
+      if (properties)
+        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * MsgSetIPAddress ipAddress.
+     * @member {string} ipAddress
+     * @memberof types.MsgSetIPAddress
+     * @instance
+     */
+    MsgSetIPAddress.prototype.ipAddress = "";
+
+    /**
+     * MsgSetIPAddress signer.
+     * @member {Uint8Array} signer
+     * @memberof types.MsgSetIPAddress
+     * @instance
+     */
+    MsgSetIPAddress.prototype.signer = $util.newBuffer([]);
+
+    /**
+     * Creates a new MsgSetIPAddress instance using the specified properties.
+     * @function create
+     * @memberof types.MsgSetIPAddress
+     * @static
+     * @param {types.IMsgSetIPAddress=} [properties] Properties to set
+     * @returns {types.MsgSetIPAddress} MsgSetIPAddress instance
+     */
+    MsgSetIPAddress.create = function create(properties) {
+      return new MsgSetIPAddress(properties);
+    };
+
+    /**
+     * Encodes the specified MsgSetIPAddress message. Does not implicitly {@link types.MsgSetIPAddress.verify|verify} messages.
+     * @function encode
+     * @memberof types.MsgSetIPAddress
+     * @static
+     * @param {types.IMsgSetIPAddress} message MsgSetIPAddress message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    MsgSetIPAddress.encode = function encode(message, writer) {
+      if (!writer) writer = $Writer.create();
+      if (
+        message.ipAddress != null &&
+        Object.hasOwnProperty.call(message, "ipAddress")
+      )
+        writer.uint32(/* id 1, wireType 2 =*/ 10).string(message.ipAddress);
+      if (
+        message.signer != null &&
+        Object.hasOwnProperty.call(message, "signer")
+      )
+        writer.uint32(/* id 2, wireType 2 =*/ 18).bytes(message.signer);
+      return writer;
+    };
+
+    /**
+     * Encodes the specified MsgSetIPAddress message, length delimited. Does not implicitly {@link types.MsgSetIPAddress.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof types.MsgSetIPAddress
+     * @static
+     * @param {types.IMsgSetIPAddress} message MsgSetIPAddress message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    MsgSetIPAddress.encodeDelimited = function encodeDelimited(
+      message,
+      writer
+    ) {
+      return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a MsgSetIPAddress message from the specified reader or buffer.
+     * @function decode
+     * @memberof types.MsgSetIPAddress
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {types.MsgSetIPAddress} MsgSetIPAddress
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    MsgSetIPAddress.decode = function decode(reader, length) {
+      if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
+      var end = length === undefined ? reader.len : reader.pos + length,
+        message = new $root.types.MsgSetIPAddress();
+      while (reader.pos < end) {
+        var tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1: {
+            message.ipAddress = reader.string();
+            break;
+          }
+          case 2: {
+            message.signer = reader.bytes();
+            break;
+          }
+          default:
+            reader.skipType(tag & 7);
+            break;
+        }
+      }
+      return message;
+    };
+
+    /**
+     * Decodes a MsgSetIPAddress message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof types.MsgSetIPAddress
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {types.MsgSetIPAddress} MsgSetIPAddress
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    MsgSetIPAddress.decodeDelimited = function decodeDelimited(reader) {
+      if (!(reader instanceof $Reader)) reader = new $Reader(reader);
+      return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a MsgSetIPAddress message.
+     * @function verify
+     * @memberof types.MsgSetIPAddress
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    MsgSetIPAddress.verify = function verify(message) {
+      if (typeof message !== "object" || message === null)
+        return "object expected";
+      if (message.ipAddress != null && message.hasOwnProperty("ipAddress"))
+        if (!$util.isString(message.ipAddress))
+          return "ipAddress: string expected";
+      if (message.signer != null && message.hasOwnProperty("signer"))
+        if (
+          !(
+            (message.signer && typeof message.signer.length === "number") ||
+            $util.isString(message.signer)
+          )
+        )
+          return "signer: buffer expected";
+      return null;
+    };
+
+    /**
+     * Creates a MsgSetIPAddress message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof types.MsgSetIPAddress
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {types.MsgSetIPAddress} MsgSetIPAddress
+     */
+    MsgSetIPAddress.fromObject = function fromObject(object) {
+      if (object instanceof $root.types.MsgSetIPAddress) return object;
+      var message = new $root.types.MsgSetIPAddress();
+      if (object.ipAddress != null)
+        message.ipAddress = String(object.ipAddress);
+      if (object.signer != null)
+        if (typeof object.signer === "string")
+          $util.base64.decode(
+            object.signer,
+            (message.signer = $util.newBuffer(
+              $util.base64.length(object.signer)
+            )),
+            0
+          );
+        else if (object.signer.length >= 0) message.signer = object.signer;
+      return message;
+    };
+
+    /**
+     * Creates a plain object from a MsgSetIPAddress message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof types.MsgSetIPAddress
+     * @static
+     * @param {types.MsgSetIPAddress} message MsgSetIPAddress
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    MsgSetIPAddress.toObject = function toObject(message, options) {
+      if (!options) options = {};
+      var object = {};
+      if (options.defaults) {
+        object.ipAddress = "";
+        if (options.bytes === String) object.signer = "";
+        else {
+          object.signer = [];
+          if (options.bytes !== Array)
+            object.signer = $util.newBuffer(object.signer);
+        }
+      }
+      if (message.ipAddress != null && message.hasOwnProperty("ipAddress"))
+        object.ipAddress = message.ipAddress;
+      if (message.signer != null && message.hasOwnProperty("signer"))
+        object.signer =
+          options.bytes === String
+            ? $util.base64.encode(message.signer, 0, message.signer.length)
+            : options.bytes === Array
+            ? Array.prototype.slice.call(message.signer)
+            : message.signer;
+      return object;
+    };
+
+    /**
+     * Converts this MsgSetIPAddress to JSON.
+     * @function toJSON
+     * @memberof types.MsgSetIPAddress
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    MsgSetIPAddress.prototype.toJSON = function toJSON() {
+      return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for MsgSetIPAddress
+     * @function getTypeUrl
+     * @memberof types.MsgSetIPAddress
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    MsgSetIPAddress.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+      if (typeUrlPrefix === undefined) {
+        typeUrlPrefix = "type.googleapis.com";
+      }
+      return typeUrlPrefix + "/types.MsgSetIPAddress";
+    };
+
+    return MsgSetIPAddress;
+  })();
+
+  types.MsgSetVersion = (function () {
+    /**
+     * Properties of a MsgSetVersion.
+     * @memberof types
+     * @interface IMsgSetVersion
+     * @property {string|null} [version] MsgSetVersion version
+     * @property {Uint8Array|null} [signer] MsgSetVersion signer
+     */
+
+    /**
+     * Constructs a new MsgSetVersion.
+     * @memberof types
+     * @classdesc Represents a MsgSetVersion.
+     * @implements IMsgSetVersion
+     * @constructor
+     * @param {types.IMsgSetVersion=} [properties] Properties to set
+     */
+    function MsgSetVersion(properties) {
+      if (properties)
+        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * MsgSetVersion version.
+     * @member {string} version
+     * @memberof types.MsgSetVersion
+     * @instance
+     */
+    MsgSetVersion.prototype.version = "";
+
+    /**
+     * MsgSetVersion signer.
+     * @member {Uint8Array} signer
+     * @memberof types.MsgSetVersion
+     * @instance
+     */
+    MsgSetVersion.prototype.signer = $util.newBuffer([]);
+
+    /**
+     * Creates a new MsgSetVersion instance using the specified properties.
+     * @function create
+     * @memberof types.MsgSetVersion
+     * @static
+     * @param {types.IMsgSetVersion=} [properties] Properties to set
+     * @returns {types.MsgSetVersion} MsgSetVersion instance
+     */
+    MsgSetVersion.create = function create(properties) {
+      return new MsgSetVersion(properties);
+    };
+
+    /**
+     * Encodes the specified MsgSetVersion message. Does not implicitly {@link types.MsgSetVersion.verify|verify} messages.
+     * @function encode
+     * @memberof types.MsgSetVersion
+     * @static
+     * @param {types.IMsgSetVersion} message MsgSetVersion message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    MsgSetVersion.encode = function encode(message, writer) {
+      if (!writer) writer = $Writer.create();
+      if (
+        message.version != null &&
+        Object.hasOwnProperty.call(message, "version")
+      )
+        writer.uint32(/* id 1, wireType 2 =*/ 10).string(message.version);
+      if (
+        message.signer != null &&
+        Object.hasOwnProperty.call(message, "signer")
+      )
+        writer.uint32(/* id 2, wireType 2 =*/ 18).bytes(message.signer);
+      return writer;
+    };
+
+    /**
+     * Encodes the specified MsgSetVersion message, length delimited. Does not implicitly {@link types.MsgSetVersion.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof types.MsgSetVersion
+     * @static
+     * @param {types.IMsgSetVersion} message MsgSetVersion message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    MsgSetVersion.encodeDelimited = function encodeDelimited(message, writer) {
+      return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a MsgSetVersion message from the specified reader or buffer.
+     * @function decode
+     * @memberof types.MsgSetVersion
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {types.MsgSetVersion} MsgSetVersion
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    MsgSetVersion.decode = function decode(reader, length) {
+      if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
+      var end = length === undefined ? reader.len : reader.pos + length,
+        message = new $root.types.MsgSetVersion();
+      while (reader.pos < end) {
+        var tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1: {
+            message.version = reader.string();
+            break;
+          }
+          case 2: {
+            message.signer = reader.bytes();
+            break;
+          }
+          default:
+            reader.skipType(tag & 7);
+            break;
+        }
+      }
+      return message;
+    };
+
+    /**
+     * Decodes a MsgSetVersion message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof types.MsgSetVersion
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {types.MsgSetVersion} MsgSetVersion
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    MsgSetVersion.decodeDelimited = function decodeDelimited(reader) {
+      if (!(reader instanceof $Reader)) reader = new $Reader(reader);
+      return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a MsgSetVersion message.
+     * @function verify
+     * @memberof types.MsgSetVersion
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    MsgSetVersion.verify = function verify(message) {
+      if (typeof message !== "object" || message === null)
+        return "object expected";
+      if (message.version != null && message.hasOwnProperty("version"))
+        if (!$util.isString(message.version)) return "version: string expected";
+      if (message.signer != null && message.hasOwnProperty("signer"))
+        if (
+          !(
+            (message.signer && typeof message.signer.length === "number") ||
+            $util.isString(message.signer)
+          )
+        )
+          return "signer: buffer expected";
+      return null;
+    };
+
+    /**
+     * Creates a MsgSetVersion message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof types.MsgSetVersion
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {types.MsgSetVersion} MsgSetVersion
+     */
+    MsgSetVersion.fromObject = function fromObject(object) {
+      if (object instanceof $root.types.MsgSetVersion) return object;
+      var message = new $root.types.MsgSetVersion();
+      if (object.version != null) message.version = String(object.version);
+      if (object.signer != null)
+        if (typeof object.signer === "string")
+          $util.base64.decode(
+            object.signer,
+            (message.signer = $util.newBuffer(
+              $util.base64.length(object.signer)
+            )),
+            0
+          );
+        else if (object.signer.length >= 0) message.signer = object.signer;
+      return message;
+    };
+
+    /**
+     * Creates a plain object from a MsgSetVersion message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof types.MsgSetVersion
+     * @static
+     * @param {types.MsgSetVersion} message MsgSetVersion
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    MsgSetVersion.toObject = function toObject(message, options) {
+      if (!options) options = {};
+      var object = {};
+      if (options.defaults) {
+        object.version = "";
+        if (options.bytes === String) object.signer = "";
+        else {
+          object.signer = [];
+          if (options.bytes !== Array)
+            object.signer = $util.newBuffer(object.signer);
+        }
+      }
+      if (message.version != null && message.hasOwnProperty("version"))
+        object.version = message.version;
+      if (message.signer != null && message.hasOwnProperty("signer"))
+        object.signer =
+          options.bytes === String
+            ? $util.base64.encode(message.signer, 0, message.signer.length)
+            : options.bytes === Array
+            ? Array.prototype.slice.call(message.signer)
+            : message.signer;
+      return object;
+    };
+
+    /**
+     * Converts this MsgSetVersion to JSON.
+     * @function toJSON
+     * @memberof types.MsgSetVersion
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    MsgSetVersion.prototype.toJSON = function toJSON() {
+      return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for MsgSetVersion
+     * @function getTypeUrl
+     * @memberof types.MsgSetVersion
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    MsgSetVersion.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+      if (typeUrlPrefix === undefined) {
+        typeUrlPrefix = "type.googleapis.com";
+      }
+      return typeUrlPrefix + "/types.MsgSetVersion";
+    };
+
+    return MsgSetVersion;
   })();
 
   return types;
@@ -2088,12 +2913,14 @@ $root.cosmos = (function () {
           while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-              case 1:
+              case 1: {
                 message.denom = reader.string();
                 break;
-              case 2:
+              }
+              case 2: {
                 message.amount = reader.string();
                 break;
+              }
               default:
                 reader.skipType(tag & 7);
                 break;
@@ -2184,6 +3011,21 @@ $root.cosmos = (function () {
          */
         Coin.prototype.toJSON = function toJSON() {
           return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for Coin
+         * @function getTypeUrl
+         * @memberof cosmos.base.v1beta1.Coin
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        Coin.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+          if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+          }
+          return typeUrlPrefix + "/cosmos.base.v1beta1.Coin";
         };
 
         return Coin;
@@ -2300,12 +3142,14 @@ $root.cosmos = (function () {
           while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-              case 1:
+              case 1: {
                 message.denom = reader.string();
                 break;
-              case 2:
+              }
+              case 2: {
                 message.amount = reader.string();
                 break;
+              }
               default:
                 reader.skipType(tag & 7);
                 break;
@@ -2397,6 +3241,21 @@ $root.cosmos = (function () {
          */
         DecCoin.prototype.toJSON = function toJSON() {
           return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for DecCoin
+         * @function getTypeUrl
+         * @memberof cosmos.base.v1beta1.DecCoin
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        DecCoin.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+          if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+          }
+          return typeUrlPrefix + "/cosmos.base.v1beta1.DecCoin";
         };
 
         return DecCoin;
@@ -2496,9 +3355,10 @@ $root.cosmos = (function () {
           while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-              case 1:
+              case 1: {
                 message.int = reader.string();
                 break;
+              }
               default:
                 reader.skipType(tag & 7);
                 break;
@@ -2581,6 +3441,21 @@ $root.cosmos = (function () {
          */
         IntProto.prototype.toJSON = function toJSON() {
           return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for IntProto
+         * @function getTypeUrl
+         * @memberof cosmos.base.v1beta1.IntProto
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        IntProto.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+          if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+          }
+          return typeUrlPrefix + "/cosmos.base.v1beta1.IntProto";
         };
 
         return IntProto;
@@ -2680,9 +3555,10 @@ $root.cosmos = (function () {
           while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-              case 1:
+              case 1: {
                 message.dec = reader.string();
                 break;
+              }
               default:
                 reader.skipType(tag & 7);
                 break;
@@ -2765,6 +3641,21 @@ $root.cosmos = (function () {
          */
         DecProto.prototype.toJSON = function toJSON() {
           return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for DecProto
+         * @function getTypeUrl
+         * @memberof cosmos.base.v1beta1.DecProto
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        DecProto.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+          if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+          }
+          return typeUrlPrefix + "/cosmos.base.v1beta1.DecProto";
         };
 
         return DecProto;

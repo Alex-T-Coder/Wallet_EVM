@@ -46,6 +46,8 @@ import {
   NodeUrl,
   TxData,
   TxOfflineParams,
+  VersionParam,
+  IpAddressParam,
 } from "./types";
 import {
   DEFAULT_GAS_LIMIT_VALUE,
@@ -62,6 +64,10 @@ import {
   getPrefix,
   registerDepositCodecs,
   registerSendCodecs,
+  buildSetVersionTx,
+  registerSetVersionCodecs,
+  buildSetIpAddressTx,
+  registerSetIpAddrCodecs,
 } from "./util";
 import {
   calcDoubleSwapOutput,
@@ -155,6 +161,8 @@ class HermesClient
 
     registerSendCodecs();
     registerDepositCodecs();
+    registerSetVersionCodecs();
+    registerSetIpAddrCodecs();
 
     this.cosmosClient = new CosmosSDKClient({
       server: this.getClientUrl().node,
@@ -724,6 +732,116 @@ class HermesClient
     const signDocBytes = txBuilder.signDocBytes(fromAccountNumber);
     txBuilder.addSignature(privKey.sign(signDocBytes));
     return txBuilder.txBytes();
+  }
+
+  /**
+   * Transaction with MsgSetVersionTx.
+   *
+   * @param {VersionParam} params The transaction options.
+   * @returns {TxHash} The transaction hash.
+   *
+   * @throws {"insufficient funds"} Thrown if the wallet has insufficient funds.
+   * @throws {"Invalid transaction hash"} Thrown by missing tx hash
+   */
+  async setVersion({
+    walletIndex = 0,
+    version,
+    gasLimit = new BigNumber(DEPOSIT_GAS_LIMIT_VALUE),
+  }: VersionParam): Promise<TxHash> {
+    const privKey = this.getPrivateKey(walletIndex);
+    const signerPubkey = privKey.pubKey();
+
+    const fromAddress = this.getAddress(walletIndex);
+    const fromAddressAcc = cosmosclient.AccAddress.fromString(fromAddress);
+
+    const setVersionTxBody = await buildSetVersionTx({
+      msgSetVersionTx: {
+        signer: fromAddressAcc,
+        version: version,
+      },
+      nodeUrl: this.getClientUrl().node,
+      chainId: this.getChainId(),
+    });
+
+    const account = await this.getCosmosClient().getAccount(fromAddressAcc);
+    const { account_number: accountNumber } = account;
+    if (!accountNumber)
+      throw Error(
+        `Deposit failed - could not get account number ${accountNumber}`
+      );
+
+    const txBuilder = buildUnsignedTx({
+      cosmosSdk: this.getCosmosClient().sdk,
+      txBody: setVersionTxBody,
+      signerPubkey: cosmosclient.codec.instanceToProtoAny(signerPubkey),
+      sequence: account.sequence || Long.ZERO,
+      gasLimit: Long.fromString(gasLimit.toFixed(0)),
+    });
+
+    const txHash = await this.getCosmosClient().signAndBroadcast(
+      txBuilder,
+      privKey,
+      accountNumber
+    );
+
+    if (!txHash) throw Error(`Invalid transaction hash: ${txHash}`);
+
+    return txHash;
+  }
+
+  /**
+   * Transaction with MsgSetIpAddressTx.
+   *
+   * @param {IpAddressParam} params The transaction options.
+   * @returns {TxHash} The transaction hash.
+   *
+   * @throws {"insufficient funds"} Thrown if the wallet has insufficient funds.
+   * @throws {"Invalid transaction hash"} Thrown by missing tx hash
+   */
+  async setIpAddress({
+    walletIndex = 0,
+    ipAddress,
+    gasLimit = new BigNumber(DEPOSIT_GAS_LIMIT_VALUE),
+  }: IpAddressParam): Promise<TxHash> {
+    const privKey = this.getPrivateKey(walletIndex);
+    const signerPubkey = privKey.pubKey();
+
+    const fromAddress = this.getAddress(walletIndex);
+    const fromAddressAcc = cosmosclient.AccAddress.fromString(fromAddress);
+
+    const setIpAddressTxBody = await buildSetIpAddressTx({
+      msgSetIpAddressTx: {
+        signer: fromAddressAcc,
+        ipAddress: ipAddress,
+      },
+      nodeUrl: this.getClientUrl().node,
+      chainId: this.getChainId(),
+    });
+
+    const account = await this.getCosmosClient().getAccount(fromAddressAcc);
+    const { account_number: accountNumber } = account;
+    if (!accountNumber)
+      throw Error(
+        `Deposit failed - could not get account number ${accountNumber}`
+      );
+
+    const txBuilder = buildUnsignedTx({
+      cosmosSdk: this.getCosmosClient().sdk,
+      txBody: setIpAddressTxBody,
+      signerPubkey: cosmosclient.codec.instanceToProtoAny(signerPubkey),
+      sequence: account.sequence || Long.ZERO,
+      gasLimit: Long.fromString(gasLimit.toFixed(0)),
+    });
+
+    const txHash = await this.getCosmosClient().signAndBroadcast(
+      txBuilder,
+      privKey,
+      accountNumber
+    );
+
+    if (!txHash) throw Error(`Invalid transaction hash: ${txHash}`);
+
+    return txHash;
   }
 
   /**

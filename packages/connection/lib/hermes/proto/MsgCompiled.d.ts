@@ -1,4 +1,5 @@
 import * as $protobuf from "protobufjs";
+import Long = require("long");
 /** Namespace common. */
 export namespace common {
   /** Properties of an Asset. */
@@ -119,6 +120,13 @@ export namespace common {
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for Asset
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
   }
 
   /** Properties of a Coin. */
@@ -233,6 +241,13 @@ export namespace common {
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for Coin
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
   }
 
   /** Properties of a PubKeySet. */
@@ -341,6 +356,13 @@ export namespace common {
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for PubKeySet
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
   }
 
   /** Properties of a Tx. */
@@ -479,6 +501,13 @@ export namespace common {
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for Tx
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
   }
 
   /** Properties of a Fee. */
@@ -587,6 +616,122 @@ export namespace common {
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for Fee
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+  }
+
+  /** Properties of a ProtoUint. */
+  interface IProtoUint {
+    /** ProtoUint value */
+    value?: string | null;
+  }
+
+  /** Represents a ProtoUint. */
+  class ProtoUint implements IProtoUint {
+    /**
+     * Constructs a new ProtoUint.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: common.IProtoUint);
+
+    /** ProtoUint value. */
+    public value: string;
+
+    /**
+     * Creates a new ProtoUint instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ProtoUint instance
+     */
+    public static create(properties?: common.IProtoUint): common.ProtoUint;
+
+    /**
+     * Encodes the specified ProtoUint message. Does not implicitly {@link common.ProtoUint.verify|verify} messages.
+     * @param message ProtoUint message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(
+      message: common.IProtoUint,
+      writer?: $protobuf.Writer
+    ): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ProtoUint message, length delimited. Does not implicitly {@link common.ProtoUint.verify|verify} messages.
+     * @param message ProtoUint message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(
+      message: common.IProtoUint,
+      writer?: $protobuf.Writer
+    ): $protobuf.Writer;
+
+    /**
+     * Decodes a ProtoUint message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ProtoUint
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(
+      reader: $protobuf.Reader | Uint8Array,
+      length?: number
+    ): common.ProtoUint;
+
+    /**
+     * Decodes a ProtoUint message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ProtoUint
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(
+      reader: $protobuf.Reader | Uint8Array
+    ): common.ProtoUint;
+
+    /**
+     * Verifies a ProtoUint message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): string | null;
+
+    /**
+     * Creates a ProtoUint message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ProtoUint
+     */
+    public static fromObject(object: { [k: string]: any }): common.ProtoUint;
+
+    /**
+     * Creates a plain object from a ProtoUint message. Also converts values to other types if specified.
+     * @param message ProtoUint
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(
+      message: common.ProtoUint,
+      options?: $protobuf.IConversionOptions
+    ): { [k: string]: any };
+
+    /**
+     * Converts this ProtoUint to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for ProtoUint
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
   }
 }
 
@@ -704,6 +849,13 @@ export namespace types {
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for MsgDeposit
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
   }
 
   /** Properties of a MsgSend. */
@@ -818,6 +970,249 @@ export namespace types {
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for MsgSend
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+  }
+
+  /** Properties of a MsgSetIPAddress. */
+  interface IMsgSetIPAddress {
+    /** MsgSetIPAddress ipAddress */
+    ipAddress?: string | null;
+
+    /** MsgSetIPAddress signer */
+    signer?: Uint8Array | null;
+  }
+
+  /** Represents a MsgSetIPAddress. */
+  class MsgSetIPAddress implements IMsgSetIPAddress {
+    /**
+     * Constructs a new MsgSetIPAddress.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: types.IMsgSetIPAddress);
+
+    /** MsgSetIPAddress ipAddress. */
+    public ipAddress: string;
+
+    /** MsgSetIPAddress signer. */
+    public signer: Uint8Array;
+
+    /**
+     * Creates a new MsgSetIPAddress instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns MsgSetIPAddress instance
+     */
+    public static create(
+      properties?: types.IMsgSetIPAddress
+    ): types.MsgSetIPAddress;
+
+    /**
+     * Encodes the specified MsgSetIPAddress message. Does not implicitly {@link types.MsgSetIPAddress.verify|verify} messages.
+     * @param message MsgSetIPAddress message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(
+      message: types.IMsgSetIPAddress,
+      writer?: $protobuf.Writer
+    ): $protobuf.Writer;
+
+    /**
+     * Encodes the specified MsgSetIPAddress message, length delimited. Does not implicitly {@link types.MsgSetIPAddress.verify|verify} messages.
+     * @param message MsgSetIPAddress message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(
+      message: types.IMsgSetIPAddress,
+      writer?: $protobuf.Writer
+    ): $protobuf.Writer;
+
+    /**
+     * Decodes a MsgSetIPAddress message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns MsgSetIPAddress
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(
+      reader: $protobuf.Reader | Uint8Array,
+      length?: number
+    ): types.MsgSetIPAddress;
+
+    /**
+     * Decodes a MsgSetIPAddress message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns MsgSetIPAddress
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(
+      reader: $protobuf.Reader | Uint8Array
+    ): types.MsgSetIPAddress;
+
+    /**
+     * Verifies a MsgSetIPAddress message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): string | null;
+
+    /**
+     * Creates a MsgSetIPAddress message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns MsgSetIPAddress
+     */
+    public static fromObject(object: {
+      [k: string]: any;
+    }): types.MsgSetIPAddress;
+
+    /**
+     * Creates a plain object from a MsgSetIPAddress message. Also converts values to other types if specified.
+     * @param message MsgSetIPAddress
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(
+      message: types.MsgSetIPAddress,
+      options?: $protobuf.IConversionOptions
+    ): { [k: string]: any };
+
+    /**
+     * Converts this MsgSetIPAddress to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for MsgSetIPAddress
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+  }
+
+  /** Properties of a MsgSetVersion. */
+  interface IMsgSetVersion {
+    /** MsgSetVersion version */
+    version?: string | null;
+
+    /** MsgSetVersion signer */
+    signer?: Uint8Array | null;
+  }
+
+  /** Represents a MsgSetVersion. */
+  class MsgSetVersion implements IMsgSetVersion {
+    /**
+     * Constructs a new MsgSetVersion.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: types.IMsgSetVersion);
+
+    /** MsgSetVersion version. */
+    public version: string;
+
+    /** MsgSetVersion signer. */
+    public signer: Uint8Array;
+
+    /**
+     * Creates a new MsgSetVersion instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns MsgSetVersion instance
+     */
+    public static create(
+      properties?: types.IMsgSetVersion
+    ): types.MsgSetVersion;
+
+    /**
+     * Encodes the specified MsgSetVersion message. Does not implicitly {@link types.MsgSetVersion.verify|verify} messages.
+     * @param message MsgSetVersion message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(
+      message: types.IMsgSetVersion,
+      writer?: $protobuf.Writer
+    ): $protobuf.Writer;
+
+    /**
+     * Encodes the specified MsgSetVersion message, length delimited. Does not implicitly {@link types.MsgSetVersion.verify|verify} messages.
+     * @param message MsgSetVersion message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(
+      message: types.IMsgSetVersion,
+      writer?: $protobuf.Writer
+    ): $protobuf.Writer;
+
+    /**
+     * Decodes a MsgSetVersion message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns MsgSetVersion
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(
+      reader: $protobuf.Reader | Uint8Array,
+      length?: number
+    ): types.MsgSetVersion;
+
+    /**
+     * Decodes a MsgSetVersion message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns MsgSetVersion
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(
+      reader: $protobuf.Reader | Uint8Array
+    ): types.MsgSetVersion;
+
+    /**
+     * Verifies a MsgSetVersion message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): string | null;
+
+    /**
+     * Creates a MsgSetVersion message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns MsgSetVersion
+     */
+    public static fromObject(object: { [k: string]: any }): types.MsgSetVersion;
+
+    /**
+     * Creates a plain object from a MsgSetVersion message. Also converts values to other types if specified.
+     * @param message MsgSetVersion
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(
+      message: types.MsgSetVersion,
+      options?: $protobuf.IConversionOptions
+    ): { [k: string]: any };
+
+    /**
+     * Converts this MsgSetVersion to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for MsgSetVersion
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
   }
 }
 
@@ -937,6 +1332,13 @@ export namespace cosmos {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for Coin
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
       }
 
       /** Properties of a DecCoin. */
@@ -1049,6 +1451,13 @@ export namespace cosmos {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DecCoin
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
       }
 
       /** Properties of an IntProto. */
@@ -1155,6 +1564,13 @@ export namespace cosmos {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for IntProto
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
       }
 
       /** Properties of a DecProto. */
@@ -1261,6 +1677,13 @@ export namespace cosmos {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DecProto
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
       }
     }
   }

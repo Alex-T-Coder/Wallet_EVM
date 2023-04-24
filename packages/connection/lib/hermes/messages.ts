@@ -78,3 +78,21 @@ export type TxResult = {
     node_tss_times: null;
   };
 };
+
+export class MsgSetVersionTx {
+  version: string;
+  signer: cosmosclient.AccAddress;
+  constructor(signer: cosmosclient.AccAddress, version: string) {
+    this.signer = signer;
+    this.version = version;
+  }
+}
+
+export class MsgSetIpAddressTx {
+  ipAddress: string;
+  signer: cosmosclient.AccAddress;
+  constructor(signer: cosmosclient.AccAddress, ipAddress: string) {
+    this.signer = signer;
+    this.ipAddress = ipAddress;
+  }
+}

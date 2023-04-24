@@ -26,7 +26,7 @@ import axios from "axios";
 import * as bech32Buffer from "bech32-buffer";
 import Long from "long";
 
-import { MsgNativeTx } from "./messages";
+import { MsgNativeTx, MsgSetIpAddressTx, MsgSetVersionTx } from "./messages";
 import types from "./proto/MsgCompiled";
 import { ChainId, ExplorerUrls, NodeInfoResponse, TxData } from "./types";
 
@@ -116,6 +116,16 @@ export const getPrefix = (network: Network) => {
 };
 
 /**
+ * Register type for encoding `MsgSetVersion` messages
+ */
+export const registerSetVersionCodecs = () => {
+  cosmosclient.codec.register(
+    "/types.MsgSetVersion",
+    types.types.MsgSetVersion
+  );
+};
+
+/**
  * Register type for encoding `MsgDeposit` messages
  */
 export const registerDepositCodecs = () => {
@@ -127,6 +137,16 @@ export const registerDepositCodecs = () => {
  */
 export const registerSendCodecs = () => {
   cosmosclient.codec.register("/types.MsgSend", types.types.MsgSend);
+};
+
+/**
+ * Register type for encoding `MsgSetIpAddress` messages
+ */
+export const registerSetIpAddrCodecs = () => {
+  cosmosclient.codec.register(
+    "/types.MsgSetIPAddress",
+    types.types.MsgSetIPAddress
+  );
 };
 
 /**
@@ -359,6 +379,91 @@ export const buildDepositTx = async ({
   return new proto.cosmos.tx.v1beta1.TxBody({
     messages: [cosmosclient.codec.instanceToProtoAny(depositMsg)],
     memo: msgNativeTx.memo,
+  });
+};
+
+/**
+ * Structure a MsgSetVersion
+ *
+ * @param {MsgSetVersionTx} msgSetVersionTx Msg of type `MsgSetVersionTx`.
+ * @param {string} nodeUrl Node url
+ * @param {chainId} ChainId Chain id of the network
+ *
+ * @returns {Tx} The transaction details of the given transaction id.
+ *
+ * @throws {"Invalid client url"} Thrown if the client url is an invalid one.
+ */
+export const buildSetVersionTx = async ({
+  msgSetVersionTx,
+  nodeUrl,
+  chainId,
+}: {
+  msgSetVersionTx: MsgSetVersionTx;
+  nodeUrl: string;
+  chainId: ChainId;
+}): Promise<proto.cosmos.tx.v1beta1.TxBody> => {
+  const networkChainId = await getChainId(nodeUrl);
+  if (!networkChainId || chainId !== networkChainId) {
+    throw new Error(
+      `Invalid network (asked: ${chainId} / returned: ${networkChainId}`
+    );
+  }
+
+  const signerAddr = msgSetVersionTx.signer.toString();
+  const signerDecoded = bech32Buffer.decode(signerAddr);
+
+  const msgSetVersionObj = {
+    version: msgSetVersionTx.version,
+    signer: signerDecoded.data,
+  };
+
+  const versionMsg = types.types.MsgSetVersion.fromObject(msgSetVersionObj);
+
+  return new proto.cosmos.tx.v1beta1.TxBody({
+    messages: [cosmosclient.codec.instanceToProtoAny(versionMsg)],
+  });
+};
+
+/**
+ * Structure a MsgSetIpAddress
+ *
+ * @param {MsgSetIpAddressTx} msgSetIpAddressTx Msg of type `MsgSetIpAddressTx`.
+ * @param {string} nodeUrl Node url
+ * @param {chainId} ChainId Chain id of the network
+ *
+ * @returns {Tx} The transaction details of the given transaction id.
+ *
+ * @throws {"Invalid client url"} Thrown if the client url is an invalid one.
+ */
+export const buildSetIpAddressTx = async ({
+  msgSetIpAddressTx,
+  nodeUrl,
+  chainId,
+}: {
+  msgSetIpAddressTx: MsgSetIpAddressTx;
+  nodeUrl: string;
+  chainId: ChainId;
+}): Promise<proto.cosmos.tx.v1beta1.TxBody> => {
+  const networkChainId = await getChainId(nodeUrl);
+  if (!networkChainId || chainId !== networkChainId) {
+    throw new Error(
+      `Invalid network (asked: ${chainId} / returned: ${networkChainId}`
+    );
+  }
+
+  const signerAddr = msgSetIpAddressTx.signer.toString();
+  const signerDecoded = bech32Buffer.decode(signerAddr);
+
+  const msgSetIpAddressObj = {
+    ipAddress: msgSetIpAddressTx.ipAddress,
+    signer: signerDecoded.data,
+  };
+
+  const ipAddressMsg =
+    types.types.MsgSetIPAddress.fromObject(msgSetIpAddressObj);
+
+  return new proto.cosmos.tx.v1beta1.TxBody({
+    messages: [cosmosclient.codec.instanceToProtoAny(ipAddressMsg)],
   });
 };
 
