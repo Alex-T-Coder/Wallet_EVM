@@ -26,7 +26,12 @@ import axios from "axios";
 import * as bech32Buffer from "bech32-buffer";
 import Long from "long";
 
-import { MsgNativeTx, MsgSetIpAddressTx, MsgSetVersionTx } from "./messages";
+import {
+  MsgNativeTx,
+  MsgSetIpAddressTx,
+  MsgSetPubkeysTx,
+  MsgSetVersionTx,
+} from "./messages";
 import types from "./proto/MsgCompiled";
 import { ChainId, ExplorerUrls, NodeInfoResponse, TxData } from "./types";
 
@@ -122,6 +127,16 @@ export const registerSetVersionCodecs = () => {
   cosmosclient.codec.register(
     "/types.MsgSetVersion",
     types.types.MsgSetVersion
+  );
+};
+
+/**
+ * Register type for encoding `MsgSetNodeKeys` messages
+ */
+export const registerSetNodePubkeysCodecs = () => {
+  cosmosclient.codec.register(
+    "/types.MsgSetNodeKeys",
+    types.types.MsgSetNodeKeys
   );
 };
 
@@ -421,6 +436,52 @@ export const buildSetVersionTx = async ({
 
   return new proto.cosmos.tx.v1beta1.TxBody({
     messages: [cosmosclient.codec.instanceToProtoAny(versionMsg)],
+  });
+};
+
+/**
+ * Structure a MsgSetNodeKeys
+ *
+ * @param {MsgSetPubkeysTx} msgSetPubkeysTx Msg of type `MsgSetPubkeysTx`.
+ * @param {string} nodeUrl Node url
+ * @param {chainId} ChainId Chain id of the network
+ *
+ * @returns {Tx} The transaction details of the given transaction id.
+ *
+ * @throws {"Invalid client url"} Thrown if the client url is an invalid one.
+ */
+export const buildSetPubkeysTx = async ({
+  msgSetNodePubkeysTx,
+  nodeUrl,
+  chainId,
+}: {
+  msgSetNodePubkeysTx: MsgSetPubkeysTx;
+  nodeUrl: string;
+  chainId: ChainId;
+}): Promise<proto.cosmos.tx.v1beta1.TxBody> => {
+  const networkChainId = await getChainId(nodeUrl);
+  if (!networkChainId || chainId !== networkChainId) {
+    throw new Error(
+      `Invalid network (asked: ${chainId} / returned: ${networkChainId}`
+    );
+  }
+
+  const signerAddr = msgSetNodePubkeysTx.signer.toString();
+  const signerDecoded = bech32Buffer.decode(signerAddr);
+
+  const msgSetNodePubkeysObj = {
+    pubKeySetSet: {
+      secp256k1: msgSetNodePubkeysTx.secp256k1Pubkey,
+      ed25519: msgSetNodePubkeysTx.ed25519Pubkey,
+    },
+    validatorConsPubKey: msgSetNodePubkeysTx.validatorConsPubkey,
+    signer: signerDecoded.data,
+  };
+
+  const nodePubkeysMsg =
+    types.types.MsgSetNodeKeys.fromObject(msgSetNodePubkeysObj);
+  return new proto.cosmos.tx.v1beta1.TxBody({
+    messages: [cosmosclient.codec.instanceToProtoAny(nodePubkeysMsg)],
   });
 };
 

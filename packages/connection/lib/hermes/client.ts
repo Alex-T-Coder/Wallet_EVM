@@ -48,6 +48,7 @@ import {
   TxOfflineParams,
   VersionParam,
   IpAddressParam,
+  NodePubkeyParam,
 } from "./types";
 import {
   DEFAULT_GAS_LIMIT_VALUE,
@@ -68,6 +69,8 @@ import {
   registerSetVersionCodecs,
   buildSetIpAddressTx,
   registerSetIpAddrCodecs,
+  buildSetPubkeysTx,
+  registerSetNodePubkeysCodecs,
 } from "./util";
 import {
   calcDoubleSwapOutput,
@@ -162,6 +165,7 @@ class HermesClient
     registerSendCodecs();
     registerDepositCodecs();
     registerSetVersionCodecs();
+    registerSetNodePubkeysCodecs();
     registerSetIpAddrCodecs();
 
     this.cosmosClient = new CosmosSDKClient({
@@ -732,6 +736,65 @@ class HermesClient
     const signDocBytes = txBuilder.signDocBytes(fromAccountNumber);
     txBuilder.addSignature(privKey.sign(signDocBytes));
     return txBuilder.txBytes();
+  }
+
+  /**
+   * Transaction with MsgSetNodePubkeysTx.
+   *
+   * @param {NodePubkeyParam} params The transaction options.
+   * @returns {TxHash} The transaction hash.
+   *
+   * @throws {"insufficient funds"} Thrown if the wallet has insufficient funds.
+   * @throws {"Invalid transaction hash"} Thrown by missing tx hash
+   */
+  async setPubkeys({
+    walletIndex = 0,
+    secp256k1Pubkey,
+    ed25519Pubkey,
+    validatorConsPubkey,
+    gasLimit = new BigNumber(DEPOSIT_GAS_LIMIT_VALUE),
+  }: NodePubkeyParam): Promise<TxHash> {
+    const privKey = this.getPrivateKey(walletIndex);
+    const signerPubkey = privKey.pubKey();
+
+    const fromAddress = this.getAddress(walletIndex);
+    const fromAddressAcc = cosmosclient.AccAddress.fromString(fromAddress);
+
+    const setVersionTxBody = await buildSetPubkeysTx({
+      msgSetNodePubkeysTx: {
+        secp256k1Pubkey,
+        ed25519Pubkey,
+        validatorConsPubkey,
+        signer: fromAddressAcc,
+      },
+      nodeUrl: this.getClientUrl().node,
+      chainId: this.getChainId(),
+    });
+
+    const account = await this.getCosmosClient().getAccount(fromAddressAcc);
+    const { account_number: accountNumber } = account;
+    if (!accountNumber)
+      throw Error(
+        `Deposit failed - could not get account number ${accountNumber}`
+      );
+
+    const txBuilder = buildUnsignedTx({
+      cosmosSdk: this.getCosmosClient().sdk,
+      txBody: setVersionTxBody,
+      signerPubkey: cosmosclient.codec.instanceToProtoAny(signerPubkey),
+      sequence: account.sequence || Long.ZERO,
+      gasLimit: Long.fromString(gasLimit.toFixed(0)),
+    });
+
+    const txHash = await this.getCosmosClient().signAndBroadcast(
+      txBuilder,
+      privKey,
+      accountNumber
+    );
+
+    if (!txHash) throw Error(`Invalid transaction hash: ${txHash}`);
+
+    return txHash;
   }
 
   /**
