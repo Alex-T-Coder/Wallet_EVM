@@ -100,4 +100,38 @@ export default class HermesChain extends HermesInit {
       return Promise.reject(error);
     }
   }
+
+  async bondAddress(amount: number, recipient: string): Promise<string> {
+    try {
+      const baseAmt = assetToBase(assetAmount(amount, DOJ_DECIMAL));
+      const memo = `BOND:${recipient}`;
+      const bondAddresslHash = await this.h4sConnect.deposit({
+        amount: baseAmt,
+        memo,
+      });
+      return bondAddresslHash;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async setVersion(version: string) {
+    try {
+      const setVersionHash = await this.h4sConnect.setVersion({ version });
+      return setVersionHash;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async setIpAddress(ipAddress: string) {
+    try {
+      const setIpAddressHash = await this.h4sConnect.setIpAddress({
+        ipAddress,
+      });
+      return setIpAddressHash;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
 }
