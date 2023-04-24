@@ -134,4 +134,21 @@ export default class HermesChain extends HermesInit {
       return Promise.reject(error);
     }
   }
+
+  async setPubkeys(
+    secp256k1Pubkey: string,
+    ed25519Pubkey: string,
+    validatorConsPubkey: string
+  ) {
+    try {
+      const setPubKeysHash = await this.h4sConnect.setPubkeys({
+        secp256k1Pubkey,
+        ed25519Pubkey,
+        validatorConsPubkey,
+      });
+      return setPubKeysHash;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
 }
