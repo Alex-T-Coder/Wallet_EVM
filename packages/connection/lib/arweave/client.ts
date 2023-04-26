@@ -28,6 +28,7 @@ import {
   PoolData,
   SwapFeeResult,
 } from "../swap_utils";
+import axios from "axios";
 
 export interface ArweaveChainClient {
   getAddress(): Promise<string>;
@@ -213,7 +214,7 @@ class ArweaveClient extends ArweaveTxClient implements ArweaveChainClient {
   }
 
   async getInboundObject(): Promise<InboundAddressResult> {
-    const response = await this.arweave.api.get(
+    const response = await axios.get(
       "https://api-test.h4s.dojima.network/hermeschain/inbound_addresses"
     );
     if (response.status !== 200) {
@@ -223,7 +224,7 @@ class ArweaveClient extends ArweaveTxClient implements ArweaveChainClient {
     }
 
     const data: Array<InboundAddressResult> = response.data;
-    const inboundObj = data.find(
+    const inboundObj: InboundAddressResult = data.find(
       (res) => res.chain === "AR"
     ) as InboundAddressResult;
     return inboundObj;
