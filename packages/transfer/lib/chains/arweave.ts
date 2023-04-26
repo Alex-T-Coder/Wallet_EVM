@@ -57,7 +57,7 @@ export default class ArweaveChain extends ArweaveInit {
       average: LPDefaultGasFee,
       fast: LPDefaultGasFee,
     };
-    const result = await getUsdtTokenPriceResult(arw_LPgasfee, "arweave");
+    const result = await getUsdtTokenPriceResult(arw_LPgasfee, "ar");
     return result;
   }
 

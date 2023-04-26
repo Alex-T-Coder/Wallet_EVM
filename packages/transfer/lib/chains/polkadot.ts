@@ -17,7 +17,7 @@ export default class PolkadotChain extends PolkadotInit {
       recipient,
       amount,
     });
-    const result = await getUsdtTokenPriceResult(dot_gasFee, "polkadot");
+    const result = await getUsdtTokenPriceResult(dot_gasFee, "dot");
     return result;
   }
 

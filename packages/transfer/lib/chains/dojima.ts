@@ -16,7 +16,7 @@ export default class DojimaChain extends DojimaInit {
       amount,
       memo ? memo : undefined
     );
-    const result = await getUsdtTokenPriceResult(gasFee, "dojima");
+    const result = await getUsdtTokenPriceResult(gasFee, "doj");
     return result;
   }
 

@@ -23,7 +23,7 @@ export default class HermesChain extends HermesInit {
       average: Number(baseToAsset(baseAmount(gasFee.fast.amount())).amount()),
       fast: Number(baseToAsset(baseAmount(gasFee.fastest.amount())).amount()),
     };
-    const result = await getUsdtTokenPriceResult(h4s_gasFee, "hermes");
+    const result = await getUsdtTokenPriceResult(h4s_gasFee, "h4s");
     return result;
   }
 

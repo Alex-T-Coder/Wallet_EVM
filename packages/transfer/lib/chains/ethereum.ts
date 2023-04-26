@@ -18,7 +18,7 @@ export default class EthereumChain extends EthereumInit {
       amount,
       memo ? memo : undefined
     );
-    const result = await getUsdtTokenPriceResult(gasFee, "ethereum");
+    const result = await getUsdtTokenPriceResult(gasFee, "eth");
     return result;
   }
 

@@ -22,7 +22,7 @@ export default class BitcoinChain extends BitcoinInit {
       average: rates.fast / Math.pow(10, BTC_DECIMAL),
       fast: rates.fastest / Math.pow(10, BTC_DECIMAL),
     };
-    const result = await getUsdtTokenPriceResult(btc_gasPrice, "bitcoin");
+    const result = await getUsdtTokenPriceResult(btc_gasPrice, "btc");
     return result;
   }
 

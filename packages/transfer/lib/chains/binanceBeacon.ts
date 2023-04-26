@@ -66,7 +66,7 @@ export default class BinanceBeaconChain extends BinanceBeaconInit {
       average: LPDefaultGasFee,
       fast: LPDefaultGasFee,
     };
-    const result = await getUsdtTokenPriceResult(bnb_LPgasfee, "binancecoin");
+    const result = await getUsdtTokenPriceResult(bnb_LPgasfee, "bnb");
     return result;
   }
 

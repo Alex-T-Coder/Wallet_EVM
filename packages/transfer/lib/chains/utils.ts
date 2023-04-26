@@ -1,5 +1,9 @@
-import { CoinGecko } from "@dojima-wallet/prices";
-import { GasfeeResult, PoolDataResult, UsdtTokenGasFeeResult } from "./types";
+import {
+  AssetsDetailedBexCurrentMarketDataResultObject,
+  GasfeeResult,
+  PoolDataResult,
+  UsdtTokenGasFeeResult,
+} from "./types";
 import BigNumber from "bignumber.js";
 import axios from "axios";
 
@@ -10,15 +14,16 @@ export const getUsdtTokenPriceResult = async (
   gasFee: GasfeeResult,
   asset: string
 ): Promise<UsdtTokenGasFeeResult> => {
-  const pricesInst = new CoinGecko();
   let usdt_price: number;
-  if (asset === "dojima" || asset === "hermes") {
+  if (asset === "doj" || asset === "h4s") {
     usdt_price = 0.0111;
   } else {
-    const pricesData = await pricesInst.getAssestsCurrentMarketData({
-      assets: asset,
-    });
-    usdt_price = pricesData.current_price;
+    const response = await axios.get(
+      `https://fiber-test.h4s.dojima.network/api/v1/coinmarket/${asset}`
+    );
+    const result: AssetsDetailedBexCurrentMarketDataResultObject =
+      response.data;
+    usdt_price = result.data.current_price;
   }
   if (usdt_price) {
     return {
