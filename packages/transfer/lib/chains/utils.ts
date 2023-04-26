@@ -21,9 +21,11 @@ export const getUsdtTokenPriceResult = async (
     const response = await axios.get(
       `https://fiber-test.h4s.dojima.network/api/v1/coinmarket/${asset}`
     );
-    const result: AssetsDetailedBexCurrentMarketDataResultObject =
-      response.data;
-    usdt_price = result.data.current_price;
+    if (response.status === 200) {
+      const result: AssetsDetailedBexCurrentMarketDataResultObject =
+        response.data;
+      usdt_price = result.data.current_price;
+    }
   }
   if (usdt_price) {
     return {

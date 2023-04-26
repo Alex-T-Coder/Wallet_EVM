@@ -69,7 +69,7 @@ export default class EthereumChain extends EthereumInit {
       average: LPDefaultGasFee,
       fast: LPDefaultGasFee,
     };
-    const result = await getUsdtTokenPriceResult(eth_LPgasfee, "ethereum");
+    const result = await getUsdtTokenPriceResult(eth_LPgasfee, "eth");
     return result;
   }
 

@@ -58,7 +58,7 @@ export default class PolkadotChain extends PolkadotInit {
       average: LPDefaultGasFee,
       fast: LPDefaultGasFee,
     };
-    const result = await getUsdtTokenPriceResult(dot_LPgasfee, "polkadot");
+    const result = await getUsdtTokenPriceResult(dot_LPgasfee, "dot");
     return result;
   }
 

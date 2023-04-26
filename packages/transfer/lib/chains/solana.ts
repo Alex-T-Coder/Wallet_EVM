@@ -60,7 +60,7 @@ export default class SolanaChain extends SolanaInit {
       average: LPDefaultGasFee,
       fast: LPDefaultGasFee,
     };
-    const result = await getUsdtTokenPriceResult(sol_LPgasfee, "solana");
+    const result = await getUsdtTokenPriceResult(sol_LPgasfee, "sol");
     return result;
   }
 
