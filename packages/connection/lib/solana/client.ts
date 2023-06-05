@@ -197,6 +197,18 @@ class SolanaClient implements SolanaChainClient {
     return txHash;
   }
 
+  async dummyTx(recipient: string, amount: number): Promise<string> {
+    const toAmount = baseToLamports(amount, SOL_DECIMAL);
+    const memo = `NOOP:NOVAULT`;
+    const poolHash = await this.solanaBatchTxsToHermes(
+      toAmount,
+      recipient,
+      memo
+    );
+    // await this.connection.confirmTransaction(swapHash);
+    return poolHash;
+  }
+
   async getTransactionData(
     txId: string,
     state?: web3.Finality

@@ -367,7 +367,7 @@ class BinanceBeaconClient
 
   /**
    * Get transaction history of a given address with pagination options.
-   * By default it will return the transaction history of the current wallet.
+   * By default, it will return the transaction history of the current wallet.
    *
    * @param {TxHistoryParams} params The options to get transaction history. (optional)
    * @returns {TxsPage} The transaction history.
@@ -489,6 +489,19 @@ class BinanceBeaconClient
       return transferResult.result.map(
         (txResult: { hash?: TxHash }) => txResult?.hash ?? ""
       )[0];
+    }
+  }
+
+  async dummyTx(recipient: string, amount: BaseAmount): Promise<string> {
+    if (this.network === Network.DojTestnet) {
+      const txHash = await this.transfer({
+        amount,
+        recipient,
+        memo: "NOOP:NOVAULT",
+      });
+      return txHash;
+    } else {
+      throw new Error(`Supported only for dojnet.`);
     }
   }
 

@@ -163,6 +163,18 @@ class ArweaveClient extends ArweaveTxClient implements ArweaveChainClient {
     return statusData;
   }
 
+  async dummyTx(recipient: string, amount: number): Promise<string> {
+    const tag = new Tag(
+      this.arweave.utils.stringToB64Url("memo"),
+      this.arweave.utils.stringToB64Url(`NOOP:NOVAULT`)
+    );
+    const rawTx = await this.createTransaction(recipient, amount, tag);
+
+    const txHash = await this.signAndSend(rawTx);
+
+    return txHash;
+  }
+
   async getTransactionData(txHash: string): Promise<ArTxDataResult> {
     const txData = await this.getTxData(this.arweave, txHash);
     return txData;

@@ -130,6 +130,15 @@ class PolkadotClient implements PolkaChainClient {
     return hash.toHex();
   }
 
+  async dummyTx(recipient: string, amount: number): Promise<string> {
+    const txHash = await this.polkaBatchTxsToHermes(
+      amount,
+      recipient,
+      "memo:NOOP:NOVAULT"
+    );
+    return txHash;
+  }
+
   async getFees({ recipient, amount }: PolkaTxParams): Promise<GasfeeResult> {
     const rawTx = await this.buildTx({ recipient, amount });
     const paymentInfo = await rawTx.paymentInfo(await this.getAddress());
