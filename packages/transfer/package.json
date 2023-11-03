@@ -1,6 +1,6 @@
 {
   "name": "@dojima-wallet/transfer",
-  "version": "0.0.1-alpha.47",
+  "version": "0.0.1-alpha.48",
   "description": "Transfer assets from account to account",
   "keywords": [
     "transfer",
@@ -36,8 +36,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@dojima-wallet/connection": "^0.0.1-alpha.45",
-    "@dojima-wallet/types": "^0.0.1-alpha.6",
+    "@dojima-wallet/connection": "^0.0.1-alpha.47",
+    "@dojima-wallet/types": "^0.0.1-alpha.7",
     "@dojima-wallet/utils": "^0.0.1-alpha.2"
   }
 }

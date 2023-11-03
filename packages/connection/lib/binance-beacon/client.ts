@@ -117,17 +117,19 @@ class BinanceBeaconClient
       [Network.Mainnet]: "44'/931'/0'/0/",
       [Network.Stagenet]: "44'/931'/0'/0/",
       [Network.Testnet]: "44'/931'/0'/0/",
-      [Network.DojTestnet]: "44'/931'/0'/0/",
     },
     dojClientUrl = "",
   }: ChainClientParams & DojBnbClientParams) {
     super(Chain.Binance, { network, rootDerivationPaths, phrase });
     this.bncClient = new BncClient(this.getClientUrl());
     this.bncClient.chooseNetwork(this.getNetwork());
-    if (network === Network.DojTestnet && dojClientUrl === "") {
-      throw Error(`'dojClientUrl' params can't be empty for 'dojtestnet'`);
+    if (
+      (network === Network.Testnet || network === Network.Stagenet) &&
+      dojClientUrl === ""
+    ) {
+      throw Error(`'dojClientUrl' params can't be empty for 'testnet'`);
     }
-    if (network === Network.DojTestnet) {
+    if (network === Network.Testnet || network === Network.Stagenet) {
       this.dojTestnetUrl = dojClientUrl;
     }
   }
@@ -151,10 +153,9 @@ class BinanceBeaconClient
   getNetwork(): Network.Mainnet | Network.Testnet {
     switch (super.getNetwork()) {
       case Network.Mainnet:
-      case Network.Stagenet:
         return Network.Mainnet;
       case Network.Testnet:
-      case Network.DojTestnet:
+      case Network.Stagenet:
         return Network.Testnet;
     }
   }
@@ -289,7 +290,7 @@ class BinanceBeaconClient
    * @returns {Balance[]} The balance of the address.
    */
   async getBalance(address: Address, assets?: Asset[]): Promise<Balance[]> {
-    if (this.network === Network.DojTestnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       const dojTestnetInst = new BnbDojTestnetClient(`${this.dojTestnetUrl}`);
       const balance = await dojTestnetInst.getBalance(address);
       return [
@@ -466,7 +467,7 @@ class BinanceBeaconClient
     recipient,
     memo,
   }: TxParams): Promise<TxHash> {
-    if (this.network === Network.DojTestnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       const dojTestnetInst = new BnbDojTestnetClient(`${this.dojTestnetUrl}`);
       return await dojTestnetInst.transfer(
         recipient,
@@ -493,7 +494,7 @@ class BinanceBeaconClient
   }
 
   async dummyTx(recipient: string, amount: BaseAmount): Promise<string> {
-    if (this.network === Network.DojTestnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       const txHash = await this.transfer({
         amount,
         recipient,
@@ -527,7 +528,7 @@ class BinanceBeaconClient
    * @returns {Fees} The current fee.
    */
   async getFees(): Promise<Fees> {
-    if (this.network === Network.DojTestnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       const fee = baseAmount(0);
 
       return {
@@ -561,7 +562,7 @@ class BinanceBeaconClient
    * @returns {Fees} The current fee for multi-send transaction.
    */
   async getMultiSendFees(): Promise<Fees> {
-    if (this.network === Network.DojTestnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       const fee = baseAmount(0);
 
       return {
@@ -589,7 +590,7 @@ class BinanceBeaconClient
    * @returns {SingleAndMultiFees} The current fee for both single and multi-send transaction.
    */
   async getSingleAndMultiFees(): Promise<{ single: Fees; multi: Fees }> {
-    if (this.network === Network.DojTestnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       const fee = baseAmount(0);
       return {
         single: {
@@ -694,7 +695,7 @@ class BinanceBeaconClient
     inboundAddress: string,
     memo: string
   ): Promise<string> {
-    if (this.network === Network.DojTestnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       const dojTestnetInst = new BnbDojTestnetClient(`${this.dojTestnetUrl}`);
       return await dojTestnetInst.transfer(
         inboundAddress,

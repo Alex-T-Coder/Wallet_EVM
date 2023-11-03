@@ -18,7 +18,7 @@ import {
 import {
   AR_DECIMAL,
   defaultArMainnetConfig,
-  defaultArTestnetConfig,
+  // defaultArTestnetConfig,
 } from "./utils";
 import {
   calcDoubleSwapOutput,
@@ -64,14 +64,14 @@ class ArweaveClient extends ArweaveTxClient implements ArweaveChainClient {
     }
     this.network = network;
     this.apiConfig = config;
-    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
-      this.apiConfig = defaultArTestnetConfig;
-    }
+    // if (this.network === Network.Testnet || this.network === Network.Stagenet) {
+    //   this.apiConfig = defaultArTestnetConfig;
+    // }
     if (
-      this.network === Network.DojTestnet &&
+      (this.network === Network.Testnet || this.network === Network.Stagenet) &&
       this.apiConfig === defaultArMainnetConfig
     ) {
-      throw Error(`'config' params can't be empty for 'dojtestnet'`);
+      throw Error(`'config' params can't be empty for 'testnet'`);
     }
     this.arweave = Arweave.init(this.apiConfig);
   }

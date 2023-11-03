@@ -61,12 +61,12 @@ class SolanaClient implements SolanaChainClient {
     this.network = network;
     this.cluster = this.getCluster();
     if (
-      this.network === Network.DojTestnet &&
+      (this.network === Network.Testnet || this.network === Network.Stagenet) &&
       endpoint === defaultSolEndpoint
     ) {
-      throw Error(`'endpoint' params can't be empty for 'doj-testnet'`);
+      throw Error(`'endpoint' params can't be empty for testnet or stagenet`);
     }
-    if (this.network === Network.DojTestnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       this.connection = new web3.Connection(endpoint, "confirmed");
     } else {
       this.connection = new web3.Connection(
@@ -81,7 +81,6 @@ class SolanaClient implements SolanaChainClient {
       case Network.Mainnet:
         return "mainnet-beta";
       case Network.Stagenet:
-        return "devnet";
       case Network.Testnet:
         return "testnet";
     }

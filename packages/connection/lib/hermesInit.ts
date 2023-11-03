@@ -11,7 +11,7 @@ export default class HermesInit {
     } else {
       this.h4sConnect = new HermesClient({
         phrase: mnemonic,
-        network: Network.DojTestnet,
+        network: network,
       });
     }
   }

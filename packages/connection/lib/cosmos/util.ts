@@ -248,9 +248,8 @@ export const getDefaultClientUrls = (): ClientUrls => {
   // https://lcd-cosmos.cosmostation.io/
   // https://lcd-cosmoshub.keplr.app/
   return {
-    [Network.DojTestnet]: "https://rest.sentry-02.theta-testnet.polypore.xyz",
     [Network.Testnet]: "https://rest.sentry-02.theta-testnet.polypore.xyz",
-    [Network.Stagenet]: mainClientUrl,
+    [Network.Stagenet]: "https://rest.sentry-02.theta-testnet.polypore.xyz",
     [Network.Mainnet]: mainClientUrl,
   };
 };
@@ -263,9 +262,8 @@ export const getDefaultClientUrls = (): ClientUrls => {
 export const getDefaultChainIds = (): ChainIds => {
   const mainChainId = "cosmoshub-4";
   return {
-    [Network.DojTestnet]: "theta-testnet-001",
+    [Network.Stagenet]: "theta-testnet-001",
     [Network.Testnet]: "theta-testnet-001",
-    [Network.Stagenet]: mainChainId,
     [Network.Mainnet]: mainChainId,
   };
 };
@@ -274,7 +272,6 @@ export const getDefaultRootDerivationPaths = (): RootDerivationPaths => ({
   [Network.Mainnet]: `44'/118'/0'/0/`,
   [Network.Testnet]: `44'/118'/0'/0/`,
   [Network.Stagenet]: `44'/118'/0'/0/`,
-  [Network.DojTestnet]: `44'/118'/0'/0/`,
 });
 
 export const protoFee = ({
@@ -376,14 +373,12 @@ export const getChainId = async (url: string): Promise<ChainId> => {
  */
 export const getChainIds = async (urls: ClientUrls): Promise<ChainIds> => {
   return Promise.all([
-    getChainId(urls[Network.DojTestnet]),
     getChainId(urls[Network.Testnet]),
     getChainId(urls[Network.Stagenet]),
     getChainId(urls[Network.Mainnet]),
-  ]).then(([testnetId, stagenetId, mainnetId, dojtestnetId]) => ({
+  ]).then(([testnetId, stagenetId, mainnetId]) => ({
     testnet: testnetId,
     stagenet: stagenetId,
     mainnet: mainnetId,
-    dojtestnet: dojtestnetId,
   }));
 };

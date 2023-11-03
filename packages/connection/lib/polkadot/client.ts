@@ -52,16 +52,12 @@ class PolkadotClient implements PolkaChainClient {
     }
     this.network = network;
     if (
-      this.network === Network.DojTestnet &&
+      (this.network === Network.Testnet || this.network === Network.Stagenet) &&
       provider === defaultDotProvider
     ) {
-      throw Error(`'provider' params can't be empty for 'doj-testnet'`);
+      throw Error(`'provider' params can't be empty for 'testnet'`);
     }
-    if (this.network === Network.Testnet) {
-      this.provider = testnetDotProvider;
-    } else {
-      this.provider = provider;
-    }
+    this.provider = provider;
   }
 
   rpcProvider(): WsProvider {
@@ -114,7 +110,9 @@ class PolkadotClient implements PolkaChainClient {
   }
 
   getDecimalFromNetwork() {
-    return this.network === Network.DojTestnet ? 10 : DOT_DECIMAL;
+    return this.network === (Network.Testnet || Network.Stagenet)
+      ? 10
+      : DOT_DECIMAL;
   }
 
   async buildTx({ recipient, amount }: PolkaTxParams): Promise<rawTxType> {

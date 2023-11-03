@@ -1,4 +1,4 @@
-import BitcoinTxs from "./bitcoin";
+// import BitcoinTxs from "./bitcoin";
 import DojimaTxs from "./dojima";
 import EthereumTxs from "./ethereum";
 import HermesTxs from "./hermes";
@@ -34,7 +34,7 @@ export {
 };
 
 export {
-  BitcoinTxs,
+  // BitcoinTxs,
   DojimaTxs,
   EthereumTxs,
   HermesTxs,

@@ -57,12 +57,6 @@ class EthereumClient {
     }
     this.network = network;
     if (
-      this.network === Network.DojTestnet &&
-      rpcUrl === defaultEthInfuraRpcUrl
-    ) {
-      throw Error(`'rpcUrl' param can't be empty for 'doj-testnet'`);
-    }
-    if (
       (this.network === Network.Testnet || this.network === Network.Stagenet) &&
       rpcUrl === defaultEthInfuraRpcUrl
     ) {
@@ -70,7 +64,7 @@ class EthereumClient {
         `'rpcUrl/infuraKey' param can't be empty for 'testnet' or 'stagenet'`
       );
     }
-    if (this.network === Network.DojTestnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       this.rpcUrl = rpcUrl;
       this.web3 = new Web3(this.rpcUrl);
     } else {
@@ -173,7 +167,8 @@ class EthereumClient {
   }
 
   async getTransactionsHistory(params: EthTxHistoryParams) {
-    if (this.network === Network.DojTestnet) return null;
+    if (this.network === Network.Testnet || this.network === Network.Stagenet)
+      return null;
     else {
       let requestUrl = `${this.api}?module=account&action=txlist`;
 

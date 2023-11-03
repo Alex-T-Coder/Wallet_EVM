@@ -1,6 +1,6 @@
 {
   "name": "@dojima-wallet/connection",
-  "version": "0.0.1-alpha.45",
+  "version": "0.0.1-alpha.47",
   "description": "Initialise and connection for layer 1&2 blockchain",
   "keywords": [
     "connection",
@@ -41,7 +41,7 @@
   "dependencies": {
     "@binance-chain/javascript-sdk": "^4.2.0",
     "@cosmos-client/core": "0.45.13",
-    "@dojima-wallet/types": "^0.0.1-alpha.6",
+    "@dojima-wallet/types": "^0.0.1-alpha.7",
     "@dojima-wallet/utils": "^0.0.1-alpha.2",
     "@polkadot/api": "^9.10.2",
     "@project-serum/anchor": "0.23.0",
@@ -59,6 +59,7 @@
     "arweave-mnemonic-keys": "^0.0.9",
     "axios": "^0.27.2",
     "bech32": "^2.0.0",
+    "bech32-buffer": "^0.2.1",
     "bignumber.js": "^9.1.1",
     "bip39": "^3.0.4",
     "bitcoinjs-lib": "^5.2.0",
@@ -72,7 +73,6 @@
     "lodash": "^4.17.21",
     "long": "^4.0.0",
     "moment": "^2.29.4",
-    "bech32-buffer": "^0.2.1",
     "nock": "^13.0.5",
     "protobufjs": "^7.1.2",
     "uuid": "^8.3.2",

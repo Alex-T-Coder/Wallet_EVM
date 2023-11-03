@@ -49,19 +49,16 @@ const txUrl = `${DEFAULT_EXPLORER_URL}/tx`;
 const addressUrl = `${DEFAULT_EXPLORER_URL}/address`;
 export const defaultExplorerUrls: ExplorerUrls = {
   root: {
-    [Network.DojTestnet]: `${DEFAULT_EXPLORER_URL}?network=testnet`,
     [Network.Testnet]: `${DEFAULT_EXPLORER_URL}?network=testnet`,
-    [Network.Stagenet]: `${DEFAULT_EXPLORER_URL}?network=stagenet`,
+    [Network.Stagenet]: `${DEFAULT_EXPLORER_URL}?network=testnet`,
     [Network.Mainnet]: DEFAULT_EXPLORER_URL,
   },
   tx: {
-    [Network.DojTestnet]: txUrl,
     [Network.Testnet]: txUrl,
     [Network.Stagenet]: txUrl,
     [Network.Mainnet]: txUrl,
   },
   address: {
-    [Network.DojTestnet]: addressUrl,
     [Network.Testnet]: addressUrl,
     [Network.Stagenet]: addressUrl,
     [Network.Mainnet]: addressUrl,
@@ -115,7 +112,6 @@ export const getPrefix = (network: Network) => {
     case Network.Mainnet:
     case Network.Stagenet:
     case Network.Testnet:
-    case Network.DojTestnet:
       return "dojima";
   }
 };
@@ -662,10 +658,8 @@ export const getExplorerAddressUrl = ({
   switch (network) {
     case Network.Mainnet:
       return url;
-    case Network.Stagenet:
-      return `${url}?network=stagenet`;
     case Network.Testnet:
-    case Network.DojTestnet:
+    case Network.Stagenet:
       return `${url}?network=testnet`;
   }
 };
@@ -692,9 +686,7 @@ export const getExplorerTxUrl = ({
     case Network.Mainnet:
       return url;
     case Network.Stagenet:
-      return `${url}?network=stagenet`;
     case Network.Testnet:
-    case Network.DojTestnet:
       return `${url}?network=testnet`;
   }
 };

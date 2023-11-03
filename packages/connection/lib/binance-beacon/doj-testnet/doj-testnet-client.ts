@@ -25,9 +25,10 @@ class BnbDojTestnetClient {
       if (balanceObj) {
         if (balanceObj.balances && balanceObj.balances.length > 0) {
           const bal = balanceObj.balances.find(
-            (res) => res.denom === AssetBNB.symbol
+            (res) => res.denom.toLowerCase() === AssetBNB.symbol.toLowerCase()
           );
-          balance = bal.amount / Math.pow(10, BNB_DECIMAL);
+          if (bal) balance = bal.amount / Math.pow(10, BNB_DECIMAL);
+          else balance = 0;
         } else {
           balance = 0;
         }

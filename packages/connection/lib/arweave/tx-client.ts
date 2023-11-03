@@ -105,11 +105,11 @@ export default class ArweaveTxClient {
             value: res.node.quantity.ar,
             gas_price: res.node.fee.ar,
             date:
-              res.node.block && res.node.block.timestamp !== (null || undefined)
+              res.node.block && res.node.block.timestamp !== undefined
                 ? convertTimestampToDateFormat(res.node.block.timestamp)
                 : "-",
             time:
-              res.node.block && res.node.block.timestamp !== (null || undefined)
+              res.node.block && res.node.block.timestamp !== undefined
                 ? convertTimestampToTimeFormat(res.node.block.timestamp)
                 : "-",
           };
@@ -124,11 +124,11 @@ export default class ArweaveTxClient {
             value: res.node.quantity.ar,
             gas_price: res.node.fee.ar,
             date:
-              res.node.block && res.node.block.timestamp !== (null || undefined)
+              res.node.block && res.node.block.timestamp !== undefined
                 ? convertTimestampToDateFormat(res.node.block.timestamp)
                 : "-",
             time:
-              res.node.block && res.node.block.timestamp !== (null || undefined)
+              res.node.block && res.node.block.timestamp !== undefined
                 ? convertTimestampToTimeFormat(res.node.block.timestamp)
                 : "-",
             signature: res.node.signature,
@@ -156,11 +156,11 @@ export default class ArweaveTxClient {
             value: res.node.quantity.ar,
             gas_price: res.node.fee.ar,
             date:
-              res.node.block && res.node.block.timestamp !== (null || undefined)
+              res.node.block && res.node.block.timestamp !== undefined
                 ? convertTimestampToDateFormat(res.node.block.timestamp)
                 : "-",
             time:
-              res.node.block && res.node.block.timestamp !== (null || undefined)
+              res.node.block && res.node.block.timestamp !== undefined
                 ? convertTimestampToTimeFormat(res.node.block.timestamp)
                 : "-",
           };
@@ -175,11 +175,11 @@ export default class ArweaveTxClient {
             value: res.node.quantity.ar,
             gas_price: res.node.fee.ar,
             date:
-              res.node.block && res.node.block.timestamp !== (null || undefined)
+              res.node.block && res.node.block.timestamp !== undefined
                 ? convertTimestampToDateFormat(res.node.block.timestamp)
                 : "-",
             time:
-              res.node.block && res.node.block.timestamp !== (null || undefined)
+              res.node.block && res.node.block.timestamp !== undefined
                 ? convertTimestampToTimeFormat(res.node.block.timestamp)
                 : "-",
             signature: res.node.signature,
