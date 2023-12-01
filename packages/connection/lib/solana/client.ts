@@ -37,9 +37,12 @@ export interface SolanaChainClient {
 
 export type ChainEndpointParams = {
   endpoint?: string;
+  apiKey?: string;
 };
 
 export const defaultSolEndpoint = "mainnet-beta";
+
+export const alchemySolRpcUrl = "https://solana-mainnet.g.alchemy.com/v2/";
 
 class SolanaClient implements SolanaChainClient {
   protected network: Network;
@@ -50,7 +53,8 @@ class SolanaClient implements SolanaChainClient {
   constructor({
     phrase,
     network = Network.Mainnet,
-    endpoint = defaultSolEndpoint,
+    endpoint = alchemySolRpcUrl,
+    apiKey = "",
   }: ChainClientParams & ChainEndpointParams) {
     if (phrase) {
       if (!validatePhrase(phrase)) {
@@ -62,15 +66,22 @@ class SolanaClient implements SolanaChainClient {
     this.cluster = this.getCluster();
     if (
       (this.network === Network.Testnet || this.network === Network.Stagenet) &&
-      endpoint === defaultSolEndpoint
+      endpoint === alchemySolRpcUrl
     ) {
       throw Error(`'endpoint' params can't be empty for testnet or stagenet`);
+    }
+    if (this.network === Network.Mainnet && apiKey === "") {
+      throw Error(`apiKey can't be empty for mainnet`);
     }
     if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       this.connection = new web3.Connection(endpoint, "confirmed");
     } else {
+      // this.connection = new web3.Connection(
+      //   web3.clusterApiUrl(this.cluster),
+      //   "confirmed"
+      // );
       this.connection = new web3.Connection(
-        web3.clusterApiUrl(this.cluster),
+        `${alchemySolRpcUrl}${apiKey}`,
         "confirmed"
       );
     }
@@ -109,14 +120,18 @@ class SolanaClient implements SolanaChainClient {
     faucetEndpoint: string,
     address: string
   ): Promise<string> {
-    const faucetConnection = new web3.Connection(
-      `${faucetEndpoint}`,
-      "confirmed"
-    );
-    const pubKey = new web3.PublicKey(address);
-    const amt = baseToLamports(2, SOL_DECIMAL);
-    const requestHash = await faucetConnection.requestAirdrop(pubKey, amt);
-    return requestHash;
+    if (this.network === Network.Mainnet) {
+      return "Method not allowed for mainnet";
+    } else {
+      const faucetConnection = new web3.Connection(
+        `${faucetEndpoint}`,
+        "confirmed"
+      );
+      const pubKey = new web3.PublicKey(address);
+      const amt = baseToLamports(2, SOL_DECIMAL);
+      const requestHash = await faucetConnection.requestAirdrop(pubKey, amt);
+      return requestHash;
+    }
   }
 
   async getBalance(address: string): Promise<number> {

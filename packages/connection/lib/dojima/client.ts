@@ -4,11 +4,7 @@ import BigNumber from "bignumber.js";
 import * as ethers from "ethers";
 import Web3 from "web3";
 
-import {
-  DOJ_DECIMAL,
-  defaultDojInfuraRpcUrl,
-  defaultInfuraApiKey,
-} from "./const";
+import { DOJ_DECIMAL, defaultDojInfuraRpcUrl } from "./const";
 import { DojTransferParams, DojTxData, GasfeeResult } from "./types";
 
 export type DojRpcParams = {
@@ -27,7 +23,6 @@ class DojimaClient {
     phrase,
     network = Network.Mainnet,
     rpcUrl = defaultDojInfuraRpcUrl,
-    infuraApiKey = defaultInfuraApiKey,
   }: ChainClientParams & DojRpcParams) {
     if (phrase) {
       if (!validatePhrase(phrase)) {
@@ -40,7 +35,7 @@ class DojimaClient {
       throw Error(`'rpcUrl' param can't be empty for 'testnet' or 'stagenet'`);
     }
     if (this.network === Network.Mainnet) {
-      this.rpcUrl = `${rpcUrl}${infuraApiKey}`;
+      this.rpcUrl = `${rpcUrl}`;
       this.web3 = new Web3(new Web3.providers.HttpProvider(this.rpcUrl));
     } else {
       this.rpcUrl = rpcUrl;

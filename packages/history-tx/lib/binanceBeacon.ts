@@ -3,15 +3,15 @@ import { Network } from "@dojima-wallet/types";
 import { BnbTxs, BnbTxDataType } from "./types";
 
 export default class BinanceBeaconTxs extends BinanceBeaconInit {
-  protected isDojTestnet = false;
+  protected isTestnet = false;
   constructor(mnemonic: string, network: Network) {
     super(mnemonic, network);
     if (network === Network.Testnet || network === Network.Stagenet)
-      this.isDojTestnet = true;
+      this.isTestnet = true;
   }
 
   async getTransactionData(hash: string) {
-    if (this.isDojTestnet) {
+    if (this.isTestnet) {
       return null;
     } else {
       const data = await this.bnbBConnect.getTransactionData(hash);
@@ -39,7 +39,7 @@ export default class BinanceBeaconTxs extends BinanceBeaconInit {
     limit?: number,
     startTime?: Date
   ) {
-    if (this.isDojTestnet) {
+    if (this.isTestnet) {
       return null;
     } else {
       const txs = await this.bnbBConnect.getTransactions({

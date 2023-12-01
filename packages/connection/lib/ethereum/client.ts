@@ -7,11 +7,7 @@ import * as ethers from "ethers";
 import Web3 from "web3";
 import moment from "moment";
 
-import {
-  ETH_DECIMAL,
-  defaultEthInfuraRpcUrl,
-  defaultInfuraApiKey,
-} from "./const";
+import { ETH_DECIMAL, defaultEthInfuraRpcUrl } from "./const";
 import {
   EthTransferParams,
   EthTxData,
@@ -47,7 +43,7 @@ class EthereumClient {
     phrase,
     network = Network.Mainnet,
     rpcUrl = defaultEthInfuraRpcUrl,
-    infuraApiKey = defaultInfuraApiKey,
+    infuraApiKey = "",
   }: ChainClientParams & EthRpcParams) {
     if (phrase) {
       if (!validatePhrase(phrase)) {
@@ -60,9 +56,10 @@ class EthereumClient {
       (this.network === Network.Testnet || this.network === Network.Stagenet) &&
       rpcUrl === defaultEthInfuraRpcUrl
     ) {
-      throw Error(
-        `'rpcUrl/infuraKey' param can't be empty for 'testnet' or 'stagenet'`
-      );
+      throw Error(`'rpcUrl' param can't be empty for 'testnet' or 'stagenet'`);
+    }
+    if (this.network === Network.Mainnet && infuraApiKey === "") {
+      throw Error(`infuraApiKey can't be empty for mainnet`);
     }
     if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       this.rpcUrl = rpcUrl;

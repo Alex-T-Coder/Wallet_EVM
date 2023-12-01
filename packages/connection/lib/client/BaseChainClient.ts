@@ -46,13 +46,13 @@ export abstract class BaseChainClient implements ChainClient {
     this.network = params.network;
     this.feeBounds = params.feeBounds || { lower: 1, upper: Infinity };
     // Fire off a warning in the console to indicate that stagenet and real assets are being used.
-    if (this.network === Network.Stagenet)
+    if (this.network === Network.Mainnet)
       console.warn(
-        "WARNING: This is using stagenet! Real assets are being used!"
+        "WARNING: This is using Mainnet! Real assets are being used!"
       );
     if (params.rootDerivationPaths)
       this.rootDerivationPaths = params.rootDerivationPaths;
-    //NOTE: we don't call this.setPhrase() to vaoid generating an address and paying the perf penalty
+    //NOTE: we don't call this.setPhrase() to avoid generating an address and paying the perf penalty
     if (params.phrase) {
       if (!validatePhrase(params.phrase)) {
         throw new Error("Invalid phrase");
@@ -74,10 +74,10 @@ export abstract class BaseChainClient implements ChainClient {
       throw new Error("Network must be provided");
     }
     this.network = network;
-    // Fire off a warning in the console to indicate that stagenet and real assets are being used.
-    if (this.network === Network.Stagenet)
+    // Fire off a warning in the console to indicate that mainnet and real assets are being used.
+    if (this.network === Network.Mainnet)
       console.warn(
-        "WARNING: This is using stagenet! Real assets are being used!"
+        "WARNING: This is using Mainnet! Real assets are being used!"
       );
   }
 

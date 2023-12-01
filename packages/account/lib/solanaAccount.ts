@@ -2,8 +2,8 @@ import { SolanaInit } from "@dojima-wallet/connection";
 import { Network } from "@dojima-wallet/types";
 
 export default class SolanaAccount extends SolanaInit {
-  constructor(mnemonic: string, network: Network) {
-    super(mnemonic, network);
+  constructor(mnemonic: string, network: Network, apiKey?: string) {
+    super(mnemonic, network, apiKey);
   }
 
   async getAddress(): Promise<string> {

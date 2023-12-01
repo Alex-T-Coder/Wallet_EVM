@@ -12,7 +12,7 @@ export default class DojimaInit {
       this.dojConnect = new DojimaClient({
         phrase: mnemonic,
         network: network,
-        rpcUrl: "https://api-test.d11k.dojima.network:8545/",
+        rpcUrl: "https://api-test.d11k.dojima.network/",
       });
     }
   }

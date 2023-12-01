@@ -5,11 +5,11 @@ import { EthTxDataType, EthTxs } from "./types";
 // import axios from "axios";
 
 export default class EthereumTxs extends EthereumInit {
-  protected isDojTestnet = false;
-  constructor(mnemonic: string, network: Network) {
-    super(mnemonic, network);
+  protected isTestnet = false;
+  constructor(mnemonic: string, network: Network, apiKey?: string) {
+    super(mnemonic, network, apiKey);
     if (network === Network.Testnet || network === Network.Stagenet)
-      this.isDojTestnet = true;
+      this.isTestnet = true;
   }
 
   async getTransactionData(hash: string): Promise<EthTxDataType> {
@@ -42,7 +42,7 @@ export default class EthereumTxs extends EthereumInit {
     startBlock?: number,
     endBlock?: number
   ): Promise<EthTxs> {
-    if (this.isDojTestnet) {
+    if (this.isTestnet) {
       return null;
     } else {
       try {
