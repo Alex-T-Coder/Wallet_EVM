@@ -250,7 +250,7 @@ export const getDefaultClientUrls = (): ClientUrls => {
   // https://lcd-cosmoshub.keplr.app/
   return {
     [Network.Testnet]: "https://rest.sentry-02.theta-testnet.polypore.xyz",
-    [Network.Stagenet]: "https://rest.sentry-02.theta-testnet.polypore.xyz",
+    [Network.Stagenet]: mainClientUrl,
     [Network.Mainnet]: mainClientUrl,
   };
 };
@@ -263,8 +263,8 @@ export const getDefaultClientUrls = (): ClientUrls => {
 export const getDefaultChainIds = (): ChainIds => {
   const mainChainId = "cosmoshub-4";
   return {
-    [Network.Stagenet]: "theta-testnet-001",
     [Network.Testnet]: "theta-testnet-001",
+    [Network.Stagenet]: mainChainId,
     [Network.Mainnet]: mainChainId,
   };
 };

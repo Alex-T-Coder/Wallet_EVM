@@ -51,10 +51,7 @@ class PolkadotClient implements PolkaChainClient {
       this.phrase = phrase;
     }
     this.network = network;
-    if (
-      (this.network === Network.Testnet || this.network === Network.Stagenet) &&
-      provider === defaultDotProvider
-    ) {
+    if (this.network === Network.Testnet && provider === defaultDotProvider) {
       throw Error(`'provider' params can't be empty for 'testnet'`);
     }
     this.provider = provider;
@@ -110,9 +107,7 @@ class PolkadotClient implements PolkaChainClient {
   }
 
   getDecimalFromNetwork() {
-    return this.network === (Network.Testnet || Network.Stagenet)
-      ? 10
-      : DOT_DECIMAL;
+    return this.network === Network.Testnet ? 10 : DOT_DECIMAL;
   }
 
   async buildTx({ recipient, amount }: PolkaTxParams): Promise<rawTxType> {

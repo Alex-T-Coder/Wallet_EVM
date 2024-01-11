@@ -52,16 +52,16 @@ class EthereumClient {
       this.phrase = phrase;
     }
     this.network = network;
-    if (
-      (this.network === Network.Testnet || this.network === Network.Stagenet) &&
-      rpcUrl === defaultEthInfuraRpcUrl
-    ) {
-      throw Error(`'rpcUrl' param can't be empty for 'testnet' or 'stagenet'`);
+    if (this.network === Network.Testnet && rpcUrl === defaultEthInfuraRpcUrl) {
+      throw Error(`'rpcUrl' param can't be empty for testnet`);
     }
-    if (this.network === Network.Mainnet && infuraApiKey === "") {
+    if (
+      (this.network === Network.Mainnet || this.network === Network.Stagenet) &&
+      infuraApiKey === ""
+    ) {
       throw Error(`infuraApiKey can't be empty for mainnet`);
     }
-    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
+    if (this.network === Network.Testnet) {
       this.rpcUrl = rpcUrl;
       this.web3 = new Web3(this.rpcUrl);
     } else {
@@ -69,9 +69,8 @@ class EthereumClient {
       this.web3 = new Web3(new Web3.providers.HttpProvider(this.rpcUrl));
     }
     this.account = ethers.Wallet.fromMnemonic(this.phrase);
-    if (this.network === Network.Testnet || this.network === Network.Stagenet)
-      this.api = "https://api-goerli.etherscan.io/api";
-    else this.api = "https://api.etherscan.io/api";
+    if (this.network === Network.Mainnet || this.network === Network.Stagenet)
+      this.api = "https://api.etherscan.io/api";
   }
 
   getAddress(): string {
@@ -164,8 +163,7 @@ class EthereumClient {
   }
 
   async getTransactionsHistory(params: EthTxHistoryParams) {
-    if (this.network === Network.Testnet || this.network === Network.Stagenet)
-      return null;
+    if (this.network === Network.Testnet) return null;
     else {
       let requestUrl = `${this.api}?module=account&action=txlist`;
 

@@ -4,7 +4,7 @@ import { DojimaClient } from "./dojima";
 export default class DojimaInit {
   dojConnect: DojimaClient;
   constructor(mnemonic: string, network: Network) {
-    if (network === Network.Mainnet) {
+    if (network === Network.Mainnet || network === Network.Stagenet) {
       this.dojConnect = new DojimaClient({
         phrase: mnemonic,
       });

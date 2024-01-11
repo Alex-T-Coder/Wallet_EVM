@@ -4,7 +4,7 @@ import { PolkadotClient } from "./polkadot";
 export default class PolkaClient {
   dotConnect: PolkadotClient;
   constructor(mnemonic: string, network: Network) {
-    if (network === Network.Testnet || network === Network.Stagenet) {
+    if (network === Network.Testnet) {
       this.dotConnect = new PolkadotClient({
         phrase: mnemonic,
         network: network,

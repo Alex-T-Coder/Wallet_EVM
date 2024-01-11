@@ -4,7 +4,7 @@ import { SolanaClient } from "./solana";
 export default class SolanaInit {
   solConnect: SolanaClient;
   constructor(mnemonic: string, network: Network, apiKey?: string) {
-    if (network === Network.Testnet || network === Network.Stagenet) {
+    if (network === Network.Testnet) {
       this.solConnect = new SolanaClient({
         phrase: mnemonic,
         network: network,

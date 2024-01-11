@@ -16,7 +16,7 @@ import {
   TxType as BinanceTxType,
 } from "./types/binance";
 import { Transfer, TransferEvent } from "./types/binance-ws";
-import { BNB_DECIMAL, DerivePath } from "./types/common";
+import { BNB_DECIMAL, DerivePath } from "./types";
 
 /**
  * Get `hash` from transfer event sent by Binance chain.
@@ -153,9 +153,9 @@ export const getDefaultFees = (): Fees => {
 export const getPrefix = (network: Network) => {
   switch (network) {
     case Network.Mainnet:
+    case Network.Stagenet:
       return "bnb";
     case Network.Testnet:
-    case Network.Stagenet:
       return "tbnb";
   }
 };

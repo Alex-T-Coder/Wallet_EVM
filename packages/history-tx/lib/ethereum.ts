@@ -8,8 +8,7 @@ export default class EthereumTxs extends EthereumInit {
   protected isTestnet = false;
   constructor(mnemonic: string, network: Network, apiKey?: string) {
     super(mnemonic, network, apiKey);
-    if (network === Network.Testnet || network === Network.Stagenet)
-      this.isTestnet = true;
+    if (network === Network.Testnet) this.isTestnet = true;
   }
 
   async getTransactionData(hash: string): Promise<EthTxDataType> {

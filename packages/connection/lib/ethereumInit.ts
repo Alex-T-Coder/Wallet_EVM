@@ -4,7 +4,7 @@ import { Network } from "@dojima-wallet/types";
 export default class EthereumInit {
   ethConnect: EthereumClient;
   constructor(mnemonic: string, network: Network, apiKey?: string) {
-    if (network === Network.Testnet || network === Network.Stagenet) {
+    if (network === Network.Testnet) {
       this.ethConnect = new EthereumClient({
         phrase: mnemonic,
         network: network,
@@ -16,7 +16,7 @@ export default class EthereumInit {
         infuraApiKey: apiKey,
       });
     }
-    // if (network === Network.Testnet || network === Network.Stagenet) {
+    // if (network === Network.Testnet) {
     //   this.ethConnect = new EthereumClient({
     //     phrase: mnemonic,
     //     network: Network.Testnet,

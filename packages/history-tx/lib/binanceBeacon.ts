@@ -6,8 +6,7 @@ export default class BinanceBeaconTxs extends BinanceBeaconInit {
   protected isTestnet = false;
   constructor(mnemonic: string, network: Network) {
     super(mnemonic, network);
-    if (network === Network.Testnet || network === Network.Stagenet)
-      this.isTestnet = true;
+    if (network === Network.Testnet) this.isTestnet = true;
   }
 
   async getTransactionData(hash: string) {

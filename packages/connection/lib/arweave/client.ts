@@ -68,7 +68,7 @@ class ArweaveClient extends ArweaveTxClient implements ArweaveChainClient {
     //   this.apiConfig = defaultArTestnetConfig;
     // }
     if (
-      (this.network === Network.Testnet || this.network === Network.Stagenet) &&
+      this.network === Network.Testnet &&
       this.apiConfig === defaultArMainnetConfig
     ) {
       throw Error(`'config' params can't be empty for 'testnet'`);

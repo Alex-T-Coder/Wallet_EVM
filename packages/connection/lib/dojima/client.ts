@@ -31,10 +31,10 @@ class DojimaClient {
       this.phrase = phrase;
     }
     this.network = network;
-    if (this.network !== Network.Mainnet && rpcUrl === defaultDojInfuraRpcUrl) {
-      throw Error(`'rpcUrl' param can't be empty for 'testnet' or 'stagenet'`);
+    if (this.network === Network.Testnet && rpcUrl === defaultDojInfuraRpcUrl) {
+      throw Error(`'rpcUrl' param can't be empty for 'testnet'`);
     }
-    if (this.network === Network.Mainnet) {
+    if (this.network === Network.Mainnet || this.network === Network.Stagenet) {
       this.rpcUrl = `${rpcUrl}`;
       this.web3 = new Web3(new Web3.providers.HttpProvider(this.rpcUrl));
     } else {
