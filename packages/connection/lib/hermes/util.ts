@@ -111,9 +111,10 @@ export const getPrefix = (network: Network) => {
   switch (network) {
     case Network.Mainnet:
     case Network.Stagenet:
-      return "dojima";
     case Network.Testnet:
-      return "tdojima";
+      return "dojima";
+    // case Network.Testnet:
+    // return "tdojima";
   }
 };
 

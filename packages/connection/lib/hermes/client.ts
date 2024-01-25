@@ -140,6 +140,7 @@ class HermesClient
       [Network.Mainnet]: "44'/931'/0'/0/",
       [Network.Stagenet]: "44'/931'/0'/0/",
       [Network.Testnet]: "44'/931'/0'/0/",
+      // [Network.Testnet]: "44'/1001'/0'/0/",
     },
     chainIds = {
       [Network.Mainnet]: "hermeschain",

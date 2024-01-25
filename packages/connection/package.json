@@ -1,6 +1,6 @@
 {
   "name": "@dojima-wallet/connection",
-  "version": "0.0.1-alpha.56",
+  "version": "0.0.1-alpha.60",
   "description": "Initialise and connection for layer 1&2 blockchain",
   "keywords": [
     "connection",
