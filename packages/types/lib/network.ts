@@ -1,4 +1,4 @@
-export type NetworkType = "mainnet" | "testnet" | "devnet";
+export type NetworkType = "mainnet" | "testnet" | "stagenet";
 export enum Network {
   Mainnet = "mainnet",
   Stagenet = "stagenet",
