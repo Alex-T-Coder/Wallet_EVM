@@ -4,13 +4,15 @@ import { BnbTxs, BnbTxDataType } from "./types";
 
 export default class BinanceBeaconTxs extends BinanceBeaconInit {
   protected isTestnet = false;
+  protected isStagenet = false;
   constructor(mnemonic: string, network: Network) {
     super(mnemonic, network);
     if (network === Network.Testnet) this.isTestnet = true;
+    if (network === Network.Stagenet) this.isStagenet = true;
   }
 
   async getTransactionData(hash: string) {
-    if (this.isTestnet) {
+    if (this.isTestnet || this.isStagenet) {
       return null;
     } else {
       const data = await this.bnbBConnect.getTransactionData(hash);
@@ -38,7 +40,7 @@ export default class BinanceBeaconTxs extends BinanceBeaconInit {
     limit?: number,
     startTime?: Date
   ) {
-    if (this.isTestnet) {
+    if (this.isTestnet || this.isStagenet) {
       return null;
     } else {
       const txs = await this.bnbBConnect.getTransactions({

@@ -154,3 +154,17 @@ export type AssetsDetailedBexCurrentMarketDataResultObject = {
   message: string;
   status: string;
 };
+
+export type WazirxMarketDataType = {
+  symbol: string;
+  baseAsset: string;
+  quoteAsset: string;
+  openPrice: string;
+  lowPrice: string;
+  highPrice: string;
+  lastPrice: string;
+  volume: string;
+  bidPrice: string;
+  askPrice: string;
+  at: number;
+};

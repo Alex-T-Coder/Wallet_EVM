@@ -1,10 +1,9 @@
 import { ChainClientParams, Network } from "../client";
 import { validatePhrase } from "../crypto";
-import { InboundAddressResult, SwapAssetList } from "@dojima-wallet/utils";
+import { SwapAssetList } from "@dojima-wallet/utils";
 import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
 import "@polkadot/api-augment";
 import { KeyringPair } from "@polkadot/keyring/types";
-import axios from "axios";
 import BigNumber from "bignumber.js";
 
 import { GasfeeResult, PolkaTxParams, rawTxType } from "./types";
@@ -13,6 +12,8 @@ import {
   calcDoubleSwapSlip,
   calcSwapOutput,
   calcSwapSlip,
+  getStagenetInboundObject,
+  getTestnetInboundObject,
   PoolData,
   SwapFeeResult,
 } from "../swap_utils";
@@ -51,8 +52,13 @@ class PolkadotClient implements PolkaChainClient {
       this.phrase = phrase;
     }
     this.network = network;
-    if (this.network === Network.Testnet && provider === defaultDotProvider) {
-      throw Error(`'provider' params can't be empty for 'testnet'`);
+    if (
+      (this.network === Network.Testnet || this.network === Network.Stagenet) &&
+      provider === defaultDotProvider
+    ) {
+      throw Error(
+        `'provider' params can't be empty for 'testnet' or 'stagenet'`
+      );
     }
     this.provider = provider;
   }
@@ -177,35 +183,46 @@ class PolkadotClient implements PolkaChainClient {
     return;
   }
 
-  async getInboundObject(): Promise<InboundAddressResult> {
-    const response = await axios.get(
-      "https://api-test.h4s.dojima.network/hermeschain/inbound_addresses"
-    );
-    if (response.status !== 200) {
-      throw new Error(
-        `Unable to retrieve inbound addresses. Dojima gateway responded with status ${response.status}.`
-      );
-    }
-
-    const data: Array<InboundAddressResult> = response.data;
-    const inboundObj = data.find(
-      (res) => res.chain === "DOT"
-    ) as InboundAddressResult;
-    return inboundObj;
-  }
-
   async getPolkadotInboundAddress(): Promise<string> {
-    const inboundObj = await this.getInboundObject();
-    return inboundObj.address;
+    switch (this.network) {
+      case Network.Testnet: {
+        const inboundObj = await getTestnetInboundObject("DOT");
+        return inboundObj.address;
+      }
+      case Network.Stagenet: {
+        const inboundObj = await getStagenetInboundObject("DOT");
+        return inboundObj.address;
+      }
+      case Network.Mainnet: {
+        return "";
+      }
+    }
   }
 
   async getDefaultLiquidityPoolGasFee(): Promise<number> {
-    const inboundObj = await this.getInboundObject();
+    switch (this.network) {
+      case Network.Testnet: {
+        const inboundObj = await getTestnetInboundObject("DOT");
 
-    const gasFee =
-      Number(inboundObj.gas_rate) / Math.pow(10, this.getDecimalFromNetwork());
+        const gasFee =
+          Number(inboundObj.gas_rate) /
+          Math.pow(10, this.getDecimalFromNetwork());
 
-    return gasFee;
+        return gasFee;
+      }
+      case Network.Stagenet: {
+        const inboundObj = await getStagenetInboundObject("DOT");
+
+        const gasFee =
+          Number(inboundObj.gas_rate) /
+          Math.pow(10, this.getDecimalFromNetwork());
+
+        return gasFee;
+      }
+      case Network.Mainnet: {
+        return 0;
+      }
+    }
   }
 
   async polkaBatchTxsToHermes(

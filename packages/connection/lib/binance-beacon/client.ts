@@ -28,7 +28,6 @@ import {
   assetToString,
   baseAmount,
   baseToAsset,
-  InboundAddressResult,
   SwapAssetList,
 } from "@dojima-wallet/utils";
 import axios from "axios";
@@ -49,6 +48,8 @@ import {
   calcDoubleSwapSlip,
   calcSwapOutput,
   calcSwapSlip,
+  getStagenetInboundObject,
+  getTestnetInboundObject,
   PoolData,
   SwapFeeResult,
 } from "../swap_utils";
@@ -123,10 +124,15 @@ class BinanceBeaconClient
     super(Chain.Binance, { network, rootDerivationPaths, phrase });
     this.bncClient = new BncClient(this.getClientUrl());
     this.bncClient.chooseNetwork(this.getNetwork());
-    if (network === Network.Testnet && dojClientUrl === "") {
-      throw Error(`'dojClientUrl' params can't be empty for 'testnet'`);
+    if (
+      (network === Network.Testnet || network === Network.Stagenet) &&
+      dojClientUrl === ""
+    ) {
+      throw Error(
+        `'dojClientUrl' params can't be empty for 'testnet' / 'stagenet'`
+      );
     }
-    if (network === Network.Testnet) {
+    if (network === Network.Testnet || network === Network.Stagenet) {
       this.dojTestnetUrl = dojClientUrl;
     }
   }
@@ -287,7 +293,7 @@ class BinanceBeaconClient
    * @returns {Balance[]} The balance of the address.
    */
   async getBalance(address: Address, assets?: Asset[]): Promise<Balance[]> {
-    if (this.network === Network.Testnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       const dojTestnetInst = new BnbDojTestnetClient(`${this.dojTestnetUrl}`);
       const balance = await dojTestnetInst.getBalance(address);
       return [
@@ -380,7 +386,7 @@ class BinanceBeaconClient
    * @returns {TxsPage} The transaction history.
    */
   async getTransactions(params?: TxHistoryParams): Promise<TxsPage> {
-    if (this.network === Network.Mainnet || this.network === Network.Stagenet) {
+    if (this.network === Network.Mainnet) {
       return await this.searchTransactions({
         address: params && params.address,
         limit: params && params.limit?.toString(),
@@ -401,7 +407,7 @@ class BinanceBeaconClient
    * @returns {Tx} The transaction details of the given transaction id.
    */
   async getTransactionData(txId: string): Promise<Tx> {
-    if (this.network === Network.Mainnet || this.network === Network.Stagenet) {
+    if (this.network === Network.Mainnet) {
       const txResult: TransactionResult = (
         await axios.get(`${this.getClientUrl()}/api/v1/tx/${txId}?format=json`)
       ).data;
@@ -481,7 +487,7 @@ class BinanceBeaconClient
     recipient,
     memo,
   }: TxParams): Promise<TxHash> {
-    if (this.network === Network.Testnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       const dojTestnetInst = new BnbDojTestnetClient(`${this.dojTestnetUrl}`);
       return await dojTestnetInst.transfer(
         recipient,
@@ -508,7 +514,7 @@ class BinanceBeaconClient
   }
 
   async dummyTx(recipient: string, amount: BaseAmount): Promise<string> {
-    if (this.network === Network.Testnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       const txHash = await this.transfer({
         amount,
         recipient,
@@ -542,7 +548,7 @@ class BinanceBeaconClient
    * @returns {Fees} The current fee.
    */
   async getFees(): Promise<Fees> {
-    if (this.network === Network.Testnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       const fee = baseAmount(0);
 
       return {
@@ -576,7 +582,7 @@ class BinanceBeaconClient
    * @returns {Fees} The current fee for multi-send transaction.
    */
   async getMultiSendFees(): Promise<Fees> {
-    if (this.network === Network.Testnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       const fee = baseAmount(0);
 
       return {
@@ -604,7 +610,7 @@ class BinanceBeaconClient
    * @returns {SingleAndMultiFees} The current fee for both single and multi-send transaction.
    */
   async getSingleAndMultiFees(): Promise<{ single: Fees; multi: Fees }> {
-    if (this.network === Network.Testnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       const fee = baseAmount(0);
       return {
         single: {
@@ -674,34 +680,42 @@ class BinanceBeaconClient
     return;
   }
 
-  async getInboundObject(): Promise<InboundAddressResult> {
-    const response = await axios.get(
-      "https://api-test.h4s.dojima.network/hermeschain/inbound_addresses"
-    );
-    if (response.status !== 200) {
-      throw new Error(
-        `Unable to retrieve inbound addresses. Dojima gateway responded with status ${response.status}.`
-      );
-    }
-
-    const data: Array<InboundAddressResult> = response.data;
-    const inboundObj: InboundAddressResult = data.find(
-      (res) => res.chain === "BNB"
-    );
-    return inboundObj;
-  }
-
   async getBinanceInboundAddress(): Promise<string> {
-    const inboundObj = await this.getInboundObject();
-    return inboundObj.address;
+    switch (this.network) {
+      case Network.Testnet: {
+        const inboundObj = await getTestnetInboundObject("BNB");
+        return inboundObj.address;
+      }
+      case Network.Stagenet: {
+        const inboundObj = await getStagenetInboundObject("BNB");
+        return inboundObj.address;
+      }
+      case Network.Mainnet: {
+        return "";
+      }
+    }
   }
 
   async getDefaultLiquidityPoolGasFee(): Promise<number> {
-    const inboundObj = await this.getInboundObject();
+    switch (this.network) {
+      case Network.Testnet: {
+        const inboundObj = await getTestnetInboundObject("BNB");
 
-    const gasFee = Number(inboundObj.gas_rate) / Math.pow(10, BNB_DECIMAL);
+        const gasFee = Number(inboundObj.gas_rate) / Math.pow(10, BNB_DECIMAL);
 
-    return gasFee;
+        return gasFee;
+      }
+      case Network.Stagenet: {
+        const inboundObj = await getStagenetInboundObject("BNB");
+
+        const gasFee = Number(inboundObj.gas_rate) / Math.pow(10, BNB_DECIMAL);
+
+        return gasFee;
+      }
+      case Network.Mainnet: {
+        return 0;
+      }
+    }
   }
 
   async poolAddOrSwap(
@@ -709,7 +723,7 @@ class BinanceBeaconClient
     inboundAddress: string,
     memo: string
   ): Promise<string> {
-    if (this.network === Network.Testnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       const dojTestnetInst = new BnbDojTestnetClient(`${this.dojTestnetUrl}`);
       return await dojTestnetInst.transfer(
         inboundAddress,

@@ -12,7 +12,7 @@ export type SwapAssetList =
   | "AVAX.AVAX"
   | "BTC.BTC"
   | "BNB.BNB"
-  | "D11K.DOJ"
+  | "DOJ.DOJ"
   | "DOT.DOT"
   | "ETH.ETH"
   | "SOL.SOL";

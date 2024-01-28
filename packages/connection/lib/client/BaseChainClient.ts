@@ -17,8 +17,10 @@ import {
   TxsPage,
 } from "./types";
 
-const MAINNET_HERMESNODE_API_BASE = "";
-const STAGENET_HERMESNODE_API_BASE = "";
+const MAINNET_HERMESNODE_API_BASE =
+  "https://api.h4s.dojima.network/hermeschain";
+const STAGENET_HERMESNODE_API_BASE =
+  "https://api.h4s.dojima.network/hermeschain";
 const TESTNET_HERMESNODE_API_BASE =
   "https://api-test.h4s.dojima.network/hermeschain";
 // const DOJTESTNET_HERMESNODE_API_BASE = "http://localhost:1317/hermeschain";
@@ -44,10 +46,15 @@ export abstract class BaseChainClient implements ChainClient {
     this.chain = chain;
     this.network = params.network;
     this.feeBounds = params.feeBounds || { lower: 1, upper: Infinity };
-    // Fire off a warning in the console to indicate that stagenet and real assets are being used.
-    if (this.network === Network.Mainnet || this.network === Network.Stagenet)
+    // Fire off a warning in the console to indicate that mainnet and real assets are being used.
+    if (this.network === Network.Mainnet)
       console.warn(
         "WARNING: This is using Mainnet! Real assets are being used!"
+      );
+    // Fire off a warning in the console to indicate that stagenet and real assets are being used.
+    if (this.network === Network.Stagenet)
+      console.warn(
+        "WARNING: This is using Stagenet! Real assets are being used!"
       );
     if (params.rootDerivationPaths)
       this.rootDerivationPaths = params.rootDerivationPaths;
@@ -74,9 +81,14 @@ export abstract class BaseChainClient implements ChainClient {
     }
     this.network = network;
     // Fire off a warning in the console to indicate that mainnet and real assets are being used.
-    if (this.network === Network.Mainnet || this.network === Network.Stagenet)
+    if (this.network === Network.Mainnet)
       console.warn(
         "WARNING: This is using Mainnet! Real assets are being used!"
+      );
+    // Fire off a warning in the console to indicate that stagenet and real assets are being used.
+    if (this.network === Network.Stagenet)
+      console.warn(
+        "WARNING: This is using Stagenet! Real assets are being used!"
       );
   }
 

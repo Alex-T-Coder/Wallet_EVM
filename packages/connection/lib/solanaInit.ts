@@ -10,6 +10,12 @@ export default class SolanaInit {
         network: network,
         endpoint: "https://sol-test.h4s.dojima.network",
       });
+    } else if (network === Network.Stagenet) {
+      this.solConnect = new SolanaClient({
+        phrase: mnemonic,
+        network: network,
+        endpoint: "https://sol.h4s.dojima.network",
+      });
     } else {
       this.solConnect = new SolanaClient({
         phrase: mnemonic,

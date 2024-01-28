@@ -1,8 +1,7 @@
 import { ChainClientParams, Network } from "../client";
 import { validatePhrase } from "../crypto";
-import { InboundAddressResult, SwapAssetList } from "@dojima-wallet/utils";
+import { SwapAssetList } from "@dojima-wallet/utils";
 import * as web3 from "@solana/web3.js";
-import axios from "axios";
 import * as bip39 from "bip39";
 import { derivePath } from "ed25519-hd-key";
 
@@ -21,6 +20,8 @@ import {
   calcDoubleSwapSlip,
   calcSwapOutput,
   calcSwapSlip,
+  getStagenetInboundObject,
+  getTestnetInboundObject,
   PoolData,
   SwapFeeResult,
 } from "../swap_utils";
@@ -64,13 +65,16 @@ class SolanaClient implements SolanaChainClient {
     }
     this.network = network;
     this.cluster = this.getCluster();
-    if (this.network === Network.Testnet && endpoint === alchemySolRpcUrl) {
-      throw Error(`'endpoint' params can't be empty for testnet`);
+    if (
+      (this.network === Network.Testnet || this.network === Network.Stagenet) &&
+      endpoint === alchemySolRpcUrl
+    ) {
+      throw Error(`'endpoint' params can't be empty for testnet or stagenet`);
     }
     if (this.network === Network.Mainnet && apiKey === "") {
       throw Error(`apiKey can't be empty for mainnet`);
     }
-    if (this.network === Network.Testnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       this.connection = new web3.Connection(endpoint, "confirmed");
     } else {
       // this.connection = new web3.Connection(
@@ -87,8 +91,9 @@ class SolanaClient implements SolanaChainClient {
   getCluster(): web3.Cluster {
     switch (this.network) {
       case Network.Mainnet:
-      case Network.Stagenet:
         return "mainnet-beta";
+      case Network.Stagenet:
+        return "devnet";
       case Network.Testnet:
         return "testnet";
     }
@@ -117,7 +122,7 @@ class SolanaClient implements SolanaChainClient {
     faucetEndpoint: string,
     address: string
   ): Promise<string> {
-    if (this.network === Network.Mainnet || this.network === Network.Stagenet) {
+    if (this.network === Network.Mainnet) {
       return "Method not allowed for mainnet";
     } else {
       const faucetConnection = new web3.Connection(
@@ -329,34 +334,42 @@ class SolanaClient implements SolanaChainClient {
     return;
   }
 
-  async getInboundObject(): Promise<InboundAddressResult> {
-    const response = await axios.get(
-      "https://api-test.h4s.dojima.network/hermeschain/inbound_addresses"
-    );
-    if (response.status !== 200) {
-      throw new Error(
-        `Unable to retrieve inbound addresses. Dojima gateway responded with status ${response.status}.`
-      );
-    }
-
-    const data: Array<InboundAddressResult> = response.data;
-    const inboundObj = data.find(
-      (res) => res.chain === "SOL"
-    ) as InboundAddressResult;
-    return inboundObj;
-  }
-
   async getSolanaInboundAddress(): Promise<string> {
-    const inboundObj = await this.getInboundObject();
-    return inboundObj.address;
+    switch (this.network) {
+      case Network.Testnet: {
+        const inboundObj = await getTestnetInboundObject("SOL");
+        return inboundObj.address;
+      }
+      case Network.Stagenet: {
+        const inboundObj = await getStagenetInboundObject("SOL");
+        return inboundObj.address;
+      }
+      case Network.Mainnet: {
+        return "";
+      }
+    }
   }
 
   async getDefaultLiquidityPoolGasFee(): Promise<number> {
-    const inboundObj = await this.getInboundObject();
+    switch (this.network) {
+      case Network.Testnet: {
+        const inboundObj = await getTestnetInboundObject("SOL");
 
-    const gasFee = Number(inboundObj.gas_rate) / Math.pow(10, SOL_DECIMAL);
+        const gasFee = Number(inboundObj.gas_rate) / Math.pow(10, SOL_DECIMAL);
 
-    return gasFee;
+        return gasFee;
+      }
+      case Network.Stagenet: {
+        const inboundObj = await getStagenetInboundObject("SOL");
+
+        const gasFee = Number(inboundObj.gas_rate) / Math.pow(10, SOL_DECIMAL);
+
+        return gasFee;
+      }
+      case Network.Mainnet: {
+        return 0;
+      }
+    }
   }
 
   async getProvider() {

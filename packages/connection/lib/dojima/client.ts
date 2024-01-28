@@ -4,8 +4,19 @@ import BigNumber from "bignumber.js";
 import * as ethers from "ethers";
 import Web3 from "web3";
 
-import { DOJ_DECIMAL, defaultDojInfuraRpcUrl } from "./const";
+import { DOJ_DECIMAL, defaultDojRpcUrl } from "./const";
 import { DojTransferParams, DojTxData, GasfeeResult } from "./types";
+import {
+  calcDoubleSwapOutput,
+  calcDoubleSwapSlip,
+  calcSwapOutput,
+  calcSwapSlip,
+  getStagenetInboundObject,
+  getTestnetInboundObject,
+  PoolData,
+  SwapFeeResult,
+} from "../swap_utils";
+import { SwapAssetList } from "@dojima-wallet/utils";
 
 export type DojRpcParams = {
   rpcUrl?: string;
@@ -22,7 +33,7 @@ class DojimaClient {
   constructor({
     phrase,
     network = Network.Mainnet,
-    rpcUrl = defaultDojInfuraRpcUrl,
+    rpcUrl = defaultDojRpcUrl,
   }: ChainClientParams & DojRpcParams) {
     if (phrase) {
       if (!validatePhrase(phrase)) {
@@ -31,16 +42,14 @@ class DojimaClient {
       this.phrase = phrase;
     }
     this.network = network;
-    if (this.network === Network.Testnet && rpcUrl === defaultDojInfuraRpcUrl) {
-      throw Error(`'rpcUrl' param can't be empty for 'testnet'`);
+    if (
+      (this.network === Network.Testnet || this.network === Network.Stagenet) &&
+      rpcUrl === defaultDojRpcUrl
+    ) {
+      throw Error(`'rpcUrl' param can't be empty for 'testnet' or 'stagenet`);
     }
-    if (this.network === Network.Mainnet || this.network === Network.Stagenet) {
-      this.rpcUrl = `${rpcUrl}`;
-      this.web3 = new Web3(new Web3.providers.HttpProvider(this.rpcUrl));
-    } else {
-      this.rpcUrl = rpcUrl;
-      this.web3 = new Web3(this.rpcUrl);
-    }
+    this.rpcUrl = rpcUrl;
+    this.web3 = new Web3(new Web3.providers.HttpProvider(this.rpcUrl));
     this.account = ethers.Wallet.fromMnemonic(this.phrase);
   }
 
@@ -104,6 +113,16 @@ class DojimaClient {
     return transactionResult.transactionHash;
   }
 
+  async dummyTx(recipient: string, amount: number): Promise<string> {
+    const memo = `NOOP:NOVAULT`;
+    const poolHash = await this.transfer({
+      recipient,
+      amount,
+      memo,
+    });
+    return poolHash;
+  }
+
   async getTransactionData(hash: string): Promise<DojTxData> {
     const data = await this.web3.eth.getTransaction(hash);
     if (data) {
@@ -121,6 +140,109 @@ class DojimaClient {
     } else {
       throw new Error(`Failed to get transaction data (tx-hash: ${hash})`);
     }
+  }
+
+  getSwapOutput(inputAmount: number, pool: PoolData, toDoj: boolean): number {
+    const input = inputAmount * Math.pow(10, DOJ_DECIMAL);
+    return calcSwapOutput(input, pool, toDoj);
+  }
+
+  getDoubleSwapOutput(
+    inputAmount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    const input = inputAmount * Math.pow(10, DOJ_DECIMAL);
+    return calcDoubleSwapOutput(input, pool1, pool2);
+  }
+
+  getSwapSlip(inputAmount: number, pool: PoolData, toDoj: boolean): number {
+    const input = inputAmount * Math.pow(10, DOJ_DECIMAL);
+    return calcSwapSlip(input, pool, toDoj);
+  }
+
+  getDoubleSwapSlip(
+    inputAmount: number,
+    pool1: PoolData,
+    pool2: PoolData
+  ): number {
+    const input = inputAmount * Math.pow(10, DOJ_DECIMAL);
+    return calcDoubleSwapSlip(input, pool1, pool2);
+  }
+
+  async getSwapFeesData(): Promise<SwapFeeResult> {
+    return;
+  }
+
+  async getDojimaInboundAddress(): Promise<string> {
+    switch (this.network) {
+      case Network.Testnet: {
+        const inboundObj = await getTestnetInboundObject("DOJ");
+        return inboundObj.address;
+      }
+      case Network.Stagenet: {
+        const inboundObj = await getStagenetInboundObject("DOJ");
+        return inboundObj.address;
+      }
+      case Network.Mainnet: {
+        return "";
+      }
+    }
+  }
+
+  async getDefaultLiquidityPoolGasFee(): Promise<number> {
+    switch (this.network) {
+      case Network.Testnet: {
+        const inboundObj = await getTestnetInboundObject("DOJ");
+
+        const gasFee = Number(inboundObj.gas_rate) / Math.pow(10, DOJ_DECIMAL);
+
+        return gasFee;
+      }
+      case Network.Stagenet: {
+        const inboundObj = await getStagenetInboundObject("DOJ");
+
+        const gasFee = Number(inboundObj.gas_rate) / Math.pow(10, DOJ_DECIMAL);
+
+        return gasFee;
+      }
+      case Network.Mainnet: {
+        return 0;
+      }
+    }
+  }
+
+  async addLiquidityPool(
+    amount: number,
+    inboundAddress: string,
+    dojAddress?: string
+  ): Promise<string> {
+    const memo = dojAddress ? `ADD:DOJ.DOJ:${dojAddress}` : `ADD:DOJ.DOJ`;
+
+    const txHash = await this.transfer({
+      amount,
+      recipient: inboundAddress,
+      memo,
+    });
+
+    return txHash;
+  }
+
+  async swap(
+    amount: number,
+    token: SwapAssetList,
+    inboundAddress: string,
+    recipient: string
+  ): Promise<string> {
+    const memo = `SWAP:${token}:${recipient}`;
+
+    const txHash = await this.transfer({
+      amount,
+      recipient: inboundAddress,
+      memo,
+    });
+
+    return txHash;
   }
 }
 

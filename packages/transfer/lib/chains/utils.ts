@@ -1,8 +1,8 @@
 import {
-  AssetsDetailedBexCurrentMarketDataResultObject,
   GasfeeResult,
   PoolDataResult,
   UsdtTokenGasFeeResult,
+  WazirxMarketDataType,
 } from "./types";
 import BigNumber from "bignumber.js";
 import axios from "axios";
@@ -19,12 +19,11 @@ export const getUsdtTokenPriceResult = async (
     usdt_price = 0.0111;
   } else {
     const response = await axios.get(
-      `https://fiber-test.h4s.dojima.network/api/v1/coinmarket/${asset}`
+      `https://api.wazirx.com/sapi/v1/ticker/24hr?symbol=${asset}usdt`
     );
     if (response.status === 200) {
-      const result: AssetsDetailedBexCurrentMarketDataResultObject =
-        response.data;
-      usdt_price = result.data.current_price;
+      const result: WazirxMarketDataType = response.data;
+      usdt_price = Number(result.lastPrice);
     }
   }
   if (usdt_price) {

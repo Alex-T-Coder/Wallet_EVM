@@ -4,15 +4,15 @@ import { DojimaClient } from "./dojima";
 export default class DojimaInit {
   dojConnect: DojimaClient;
   constructor(mnemonic: string, network: Network) {
-    if (network === Network.Mainnet || network === Network.Stagenet) {
-      this.dojConnect = new DojimaClient({
-        phrase: mnemonic,
-      });
-    } else {
+    if (network === Network.Testnet) {
       this.dojConnect = new DojimaClient({
         phrase: mnemonic,
         network: network,
         rpcUrl: "https://api-test.d11k.dojima.network/",
+      });
+    } else {
+      this.dojConnect = new DojimaClient({
+        phrase: mnemonic,
       });
     }
   }

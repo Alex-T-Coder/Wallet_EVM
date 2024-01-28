@@ -10,6 +10,12 @@ export default class EthereumInit {
         network: network,
         rpcUrl: "https://eth-test.h4s.dojima.network/",
       });
+    } else if (network === Network.Stagenet) {
+      this.ethConnect = new EthereumClient({
+        phrase: mnemonic,
+        network: network,
+        rpcUrl: "https://eth.h4s.dojima.network/",
+      });
     } else {
       this.ethConnect = new EthereumClient({
         phrase: mnemonic,

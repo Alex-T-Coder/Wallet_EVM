@@ -43,25 +43,27 @@ export const MAX_TX_COUNT = 100;
 
 const DENOM_DOJ_NATIVE = "doj";
 
-const DEFAULT_EXPLORER_URL = "https://api-test.h4s.dojima.network";
+const DEFAULT_MAINNET_EXPLORER_URL = "https://api.h4s.dojima.network";
+const DEFAULT_STAGENET_EXPLORER_URL = "https://api.h4s.dojima.network";
+const DEFAULT_TESTNET_EXPLORER_URL = "https://api-test.h4s.dojima.network";
 // const DEFAULT_EXPLORER_URL = "http://localhost:1317";
-const txUrl = `${DEFAULT_EXPLORER_URL}/tx`;
-const addressUrl = `${DEFAULT_EXPLORER_URL}/address`;
+// const txUrl = `${DEFAULT_EXPLORER_URL}/tx`;
+// const addressUrl = `${DEFAULT_EXPLORER_URL}/address`;
 export const defaultExplorerUrls: ExplorerUrls = {
   root: {
-    [Network.Testnet]: `${DEFAULT_EXPLORER_URL}?network=testnet`,
-    [Network.Stagenet]: DEFAULT_EXPLORER_URL,
-    [Network.Mainnet]: DEFAULT_EXPLORER_URL,
+    [Network.Testnet]: `${DEFAULT_TESTNET_EXPLORER_URL}?network=testnet`,
+    [Network.Stagenet]: `${DEFAULT_STAGENET_EXPLORER_URL}?network=stagenet`,
+    [Network.Mainnet]: DEFAULT_MAINNET_EXPLORER_URL,
   },
   tx: {
-    [Network.Testnet]: txUrl,
-    [Network.Stagenet]: txUrl,
-    [Network.Mainnet]: txUrl,
+    [Network.Testnet]: `${DEFAULT_TESTNET_EXPLORER_URL}/tx`,
+    [Network.Stagenet]: `${DEFAULT_STAGENET_EXPLORER_URL}/tx`,
+    [Network.Mainnet]: `${DEFAULT_MAINNET_EXPLORER_URL}/tx`,
   },
   address: {
-    [Network.Testnet]: addressUrl,
-    [Network.Stagenet]: addressUrl,
-    [Network.Mainnet]: addressUrl,
+    [Network.Testnet]: `${DEFAULT_TESTNET_EXPLORER_URL}/address`,
+    [Network.Stagenet]: `${DEFAULT_STAGENET_EXPLORER_URL}/address`,
+    [Network.Mainnet]: `${DEFAULT_MAINNET_EXPLORER_URL}/address`,
   },
 };
 
@@ -110,11 +112,13 @@ export const isBroadcastSuccess = (response: unknown): boolean =>
 export const getPrefix = (network: Network) => {
   switch (network) {
     case Network.Mainnet:
+      return "dojima";
     case Network.Stagenet:
+      return "sdojima";
     case Network.Testnet:
       return "dojima";
     // case Network.Testnet:
-    // return "tdojima";
+    //   return "tdojima";
   }
 };
 
@@ -659,8 +663,9 @@ export const getExplorerAddressUrl = ({
   const url = `${urls.address[network]}/${address}`;
   switch (network) {
     case Network.Mainnet:
-    case Network.Stagenet:
       return url;
+    case Network.Stagenet:
+      return `${url}?network=stagenet`;
     case Network.Testnet:
       return `${url}?network=testnet`;
   }
@@ -686,8 +691,9 @@ export const getExplorerTxUrl = ({
   const url = `${urls.tx[network]}/${txID}`;
   switch (network) {
     case Network.Mainnet:
-    case Network.Stagenet:
       return url;
+    case Network.Stagenet:
+      return `${url}?network=stagenet`;
     case Network.Testnet:
       return `${url}?network=testnet`;
   }

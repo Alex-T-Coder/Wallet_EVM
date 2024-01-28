@@ -1,6 +1,6 @@
 import { ChainClientParams, Network } from "../client";
 import { validatePhrase } from "../crypto";
-import { InboundAddressResult, SwapAssetList } from "@dojima-wallet/utils";
+import { SwapAssetList } from "@dojima-wallet/utils";
 import axios from "axios";
 import BigNumber from "bignumber.js";
 import * as ethers from "ethers";
@@ -22,6 +22,8 @@ import {
   calcDoubleSwapSlip,
   calcSwapOutput,
   calcSwapSlip,
+  getStagenetInboundObject,
+  getTestnetInboundObject,
   PoolData,
   SwapFeeResult,
 } from "../swap_utils";
@@ -52,16 +54,16 @@ class EthereumClient {
       this.phrase = phrase;
     }
     this.network = network;
-    if (this.network === Network.Testnet && rpcUrl === defaultEthInfuraRpcUrl) {
-      throw Error(`'rpcUrl' param can't be empty for testnet`);
-    }
     if (
-      (this.network === Network.Mainnet || this.network === Network.Stagenet) &&
-      infuraApiKey === ""
+      (this.network === Network.Testnet || this.network === Network.Stagenet) &&
+      rpcUrl === defaultEthInfuraRpcUrl
     ) {
+      throw Error(`'rpcUrl' param can't be empty for testnet or stagenet`);
+    }
+    if (this.network === Network.Mainnet && infuraApiKey === "") {
       throw Error(`infuraApiKey can't be empty for mainnet`);
     }
-    if (this.network === Network.Testnet) {
+    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
       this.rpcUrl = rpcUrl;
       this.web3 = new Web3(this.rpcUrl);
     } else {
@@ -69,7 +71,7 @@ class EthereumClient {
       this.web3 = new Web3(new Web3.providers.HttpProvider(this.rpcUrl));
     }
     this.account = ethers.Wallet.fromMnemonic(this.phrase);
-    if (this.network === Network.Mainnet || this.network === Network.Stagenet)
+    if (this.network === Network.Mainnet)
       this.api = "https://api.etherscan.io/api";
   }
 
@@ -163,7 +165,8 @@ class EthereumClient {
   }
 
   async getTransactionsHistory(params: EthTxHistoryParams) {
-    if (this.network === Network.Testnet) return null;
+    if (this.network === Network.Testnet || this.network === Network.Stagenet)
+      return null;
     else {
       let requestUrl = `${this.api}?module=account&action=txlist`;
 
@@ -273,34 +276,42 @@ class EthereumClient {
     return;
   }
 
-  async getInboundObject(): Promise<InboundAddressResult> {
-    const response = await axios.get(
-      "https://api-test.h4s.dojima.network/hermeschain/inbound_addresses"
-    );
-    if (response.status !== 200) {
-      throw new Error(
-        `Unable to retrieve inbound addresses. Dojima gateway responded with status ${response.status}.`
-      );
-    }
-
-    const data: Array<InboundAddressResult> = response.data;
-    const inboundObj: InboundAddressResult = data.find(
-      (res) => res.chain === "ETH"
-    ) as InboundAddressResult;
-    return inboundObj;
-  }
-
   async getEthereumInboundAddress(): Promise<string> {
-    const inboundObj = await this.getInboundObject();
-    return inboundObj.address;
+    switch (this.network) {
+      case Network.Testnet: {
+        const inboundObj = await getTestnetInboundObject("ETH");
+        return inboundObj.address;
+      }
+      case Network.Stagenet: {
+        const inboundObj = await getStagenetInboundObject("ETH");
+        return inboundObj.address;
+      }
+      case Network.Mainnet: {
+        return "";
+      }
+    }
   }
 
   async getDefaultLiquidityPoolGasFee(): Promise<number> {
-    const inboundObj = await this.getInboundObject();
+    switch (this.network) {
+      case Network.Testnet: {
+        const inboundObj = await getTestnetInboundObject("ETH");
 
-    const gasFee = Number(inboundObj.gas_rate) / Math.pow(10, ETH_DECIMAL);
+        const gasFee = Number(inboundObj.gas_rate) / Math.pow(10, ETH_DECIMAL);
 
-    return gasFee;
+        return gasFee;
+      }
+      case Network.Stagenet: {
+        const inboundObj = await getStagenetInboundObject("ETH");
+
+        const gasFee = Number(inboundObj.gas_rate) / Math.pow(10, ETH_DECIMAL);
+
+        return gasFee;
+      }
+      case Network.Mainnet: {
+        return 0;
+      }
+    }
   }
 
   async addLiquidityPool(

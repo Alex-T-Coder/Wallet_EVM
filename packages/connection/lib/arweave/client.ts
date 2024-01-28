@@ -1,6 +1,6 @@
 import { ChainClientParams, Network } from "../client";
 import { validatePhrase } from "../crypto";
-import { InboundAddressResult, SwapAssetList } from "@dojima-wallet/utils";
+import { SwapAssetList } from "@dojima-wallet/utils";
 import Arweave from "arweave";
 import { getKeyFromMnemonic } from "arweave-mnemonic-keys";
 import { ApiConfig } from "arweave/node/lib/api";
@@ -25,10 +25,11 @@ import {
   calcDoubleSwapSlip,
   calcSwapOutput,
   calcSwapSlip,
+  getStagenetInboundObject,
+  getTestnetInboundObject,
   PoolData,
   SwapFeeResult,
 } from "../swap_utils";
-import axios from "axios";
 
 export interface ArweaveChainClient {
   getAddress(): Promise<string>;
@@ -68,10 +69,10 @@ class ArweaveClient extends ArweaveTxClient implements ArweaveChainClient {
     //   this.apiConfig = defaultArTestnetConfig;
     // }
     if (
-      this.network === Network.Testnet &&
+      (this.network === Network.Testnet || this.network === Network.Stagenet) &&
       this.apiConfig === defaultArMainnetConfig
     ) {
-      throw Error(`'config' params can't be empty for 'testnet'`);
+      throw Error(`'config' params can't be empty for 'testnet' / 'stagenet'`);
     }
     this.arweave = Arweave.init(this.apiConfig);
   }
@@ -225,35 +226,44 @@ class ArweaveClient extends ArweaveTxClient implements ArweaveChainClient {
     return;
   }
 
-  async getInboundObject(): Promise<InboundAddressResult> {
-    const response = await axios.get(
-      "https://api-test.h4s.dojima.network/hermeschain/inbound_addresses"
-    );
-    if (response.status !== 200) {
-      throw new Error(
-        `Unable to retrieve inbound addresses. Dojima gateway responded with status ${response.status}.`
-      );
-    }
-
-    const data: Array<InboundAddressResult> = response.data;
-    const inboundObj: InboundAddressResult = data.find(
-      (res) => res.chain === "AR"
-    ) as InboundAddressResult;
-    return inboundObj;
-  }
-
   async getArweaveInboundAddress(): Promise<string> {
-    const inboundObj = await this.getInboundObject();
-    return inboundObj.address;
+    switch (this.network) {
+      case Network.Testnet: {
+        const inboundObj = await getTestnetInboundObject("AR");
+        return inboundObj.address;
+      }
+      case Network.Stagenet: {
+        const inboundObj = await getStagenetInboundObject("AR");
+        return inboundObj.address;
+      }
+      case Network.Mainnet: {
+        return "";
+      }
+    }
   }
 
   async getDefaultLiquidityPoolGasFee(): Promise<number> {
-    const inboundObj = await this.getInboundObject();
+    switch (this.network) {
+      case Network.Testnet: {
+        const inboundObj = await getTestnetInboundObject("AR");
 
-    /** Convert from Winston to Ar. (1 Ar = 10^12) */
-    const arGasFee = this.arweave.ar.winstonToAr(inboundObj.gas_rate);
+        /** Convert from Winston to Ar. (1 Ar = 10^12) */
+        const arGasFee = this.arweave.ar.winstonToAr(inboundObj.gas_rate);
 
-    return Number(arGasFee);
+        return Number(arGasFee);
+      }
+      case Network.Stagenet: {
+        const inboundObj = await getStagenetInboundObject("AR");
+
+        /** Convert from Winston to Ar. (1 Ar = 10^12) */
+        const arGasFee = this.arweave.ar.winstonToAr(inboundObj.gas_rate);
+
+        return Number(arGasFee);
+      }
+      case Network.Mainnet: {
+        return 0;
+      }
+    }
   }
 
   async addLiquidityPool(
