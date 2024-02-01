@@ -52,13 +52,8 @@ class PolkadotClient implements PolkaChainClient {
       this.phrase = phrase;
     }
     this.network = network;
-    if (
-      (this.network === Network.Testnet || this.network === Network.Stagenet) &&
-      provider === defaultDotProvider
-    ) {
-      throw Error(
-        `'provider' params can't be empty for 'testnet' or 'stagenet'`
-      );
+    if (this.network === Network.Testnet && provider === defaultDotProvider) {
+      throw Error(`'provider' params can't be empty for 'testnet'`);
     }
     this.provider = provider;
   }

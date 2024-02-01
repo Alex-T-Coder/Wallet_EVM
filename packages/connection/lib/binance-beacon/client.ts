@@ -124,15 +124,10 @@ class BinanceBeaconClient
     super(Chain.Binance, { network, rootDerivationPaths, phrase });
     this.bncClient = new BncClient(this.getClientUrl());
     this.bncClient.chooseNetwork(this.getNetwork());
-    if (
-      (network === Network.Testnet || network === Network.Stagenet) &&
-      dojClientUrl === ""
-    ) {
-      throw Error(
-        `'dojClientUrl' params can't be empty for 'testnet' / 'stagenet'`
-      );
+    if (network === Network.Testnet && dojClientUrl === "") {
+      throw Error(`'dojClientUrl' params can't be empty for 'testnet'`);
     }
-    if (network === Network.Testnet || network === Network.Stagenet) {
+    if (network === Network.Testnet) {
       this.dojTestnetUrl = dojClientUrl;
     }
   }
@@ -293,7 +288,7 @@ class BinanceBeaconClient
    * @returns {Balance[]} The balance of the address.
    */
   async getBalance(address: Address, assets?: Asset[]): Promise<Balance[]> {
-    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
+    if (this.network === Network.Testnet) {
       const dojTestnetInst = new BnbDojTestnetClient(`${this.dojTestnetUrl}`);
       const balance = await dojTestnetInst.getBalance(address);
       return [
@@ -386,7 +381,7 @@ class BinanceBeaconClient
    * @returns {TxsPage} The transaction history.
    */
   async getTransactions(params?: TxHistoryParams): Promise<TxsPage> {
-    if (this.network === Network.Mainnet) {
+    if (this.network === Network.Mainnet || this.network === Network.Stagenet) {
       return await this.searchTransactions({
         address: params && params.address,
         limit: params && params.limit?.toString(),
@@ -407,7 +402,7 @@ class BinanceBeaconClient
    * @returns {Tx} The transaction details of the given transaction id.
    */
   async getTransactionData(txId: string): Promise<Tx> {
-    if (this.network === Network.Mainnet) {
+    if (this.network === Network.Mainnet || this.network === Network.Stagenet) {
       const txResult: TransactionResult = (
         await axios.get(`${this.getClientUrl()}/api/v1/tx/${txId}?format=json`)
       ).data;
@@ -487,7 +482,7 @@ class BinanceBeaconClient
     recipient,
     memo,
   }: TxParams): Promise<TxHash> {
-    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
+    if (this.network === Network.Testnet) {
       const dojTestnetInst = new BnbDojTestnetClient(`${this.dojTestnetUrl}`);
       return await dojTestnetInst.transfer(
         recipient,
@@ -514,7 +509,7 @@ class BinanceBeaconClient
   }
 
   async dummyTx(recipient: string, amount: BaseAmount): Promise<string> {
-    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
+    if (this.network === Network.Testnet) {
       const txHash = await this.transfer({
         amount,
         recipient,
@@ -548,7 +543,7 @@ class BinanceBeaconClient
    * @returns {Fees} The current fee.
    */
   async getFees(): Promise<Fees> {
-    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
+    if (this.network === Network.Testnet) {
       const fee = baseAmount(0);
 
       return {
@@ -582,7 +577,7 @@ class BinanceBeaconClient
    * @returns {Fees} The current fee for multi-send transaction.
    */
   async getMultiSendFees(): Promise<Fees> {
-    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
+    if (this.network === Network.Testnet) {
       const fee = baseAmount(0);
 
       return {
@@ -610,7 +605,7 @@ class BinanceBeaconClient
    * @returns {SingleAndMultiFees} The current fee for both single and multi-send transaction.
    */
   async getSingleAndMultiFees(): Promise<{ single: Fees; multi: Fees }> {
-    if (this.network === Network.Testnet || this.network === Network.Stagenet) {
+    if (this.network === Network.Testnet) {
       const fee = baseAmount(0);
       return {
         single: {

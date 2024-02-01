@@ -6,11 +6,11 @@ import { EthTxDataType, EthTxs } from "./types";
 
 export default class EthereumTxs extends EthereumInit {
   protected isTestnet = false;
-  protected isStagenet = false;
+  // protected isStagenet = false;
   constructor(mnemonic: string, network: Network, apiKey?: string) {
     super(mnemonic, network, apiKey);
     if (network === Network.Testnet) this.isTestnet = true;
-    if (network === Network.Stagenet) this.isStagenet = true;
+    // if (network === Network.Stagenet) this.isStagenet = true;
   }
 
   async getTransactionData(hash: string): Promise<EthTxDataType> {
@@ -43,7 +43,7 @@ export default class EthereumTxs extends EthereumInit {
     startBlock?: number,
     endBlock?: number
   ): Promise<EthTxs> {
-    if (this.isTestnet || this.isStagenet) {
+    if (this.isTestnet) {
       return null;
     } else {
       try {

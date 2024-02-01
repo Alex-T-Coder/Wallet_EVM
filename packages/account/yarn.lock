@@ -3,9 +3,9 @@
 
 
 "@babel/runtime@^7.10.4", "@babel/runtime@^7.17.2", "@babel/runtime@^7.20.13", "@babel/runtime@^7.20.6", "@babel/runtime@^7.23.4":
-  version "7.23.8"
-  resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.23.8.tgz#8ee6fe1ac47add7122902f257b8ddf55c898f650"
-  integrity sha512-Y7KbAP984rn1VGMbGqKmBLio9V7y5Je9GvU4rQPCPinCyNfUcToxIXl06d59URp/F3LwinvODxab5N/G6qggkw==
+  version "7.23.9"
+  resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.23.9.tgz#47791a15e4603bb5f905bc0753801cf21d6345f7"
+  integrity sha512-0CX6F+BI2s9dkUqr08KFrAIZgNFj75rdBU/DjCyYLIaV/quFjkk6T+EJ2LkZHyZTbEV4L5p97mNkUsHl2wLFAw==
   dependencies:
     regenerator-runtime "^0.14.0"
 
@@ -69,15 +69,15 @@
     secp256k1 "^4.0.2"
     tweetnacl "^1.0.3"
 
-"@dojima-wallet/connection@0.0.1-alpha.60":
-  version "0.0.1-alpha.60"
-  resolved "https://registry.npmjs.org/@dojima-wallet/connection/-/connection-0.0.1-alpha.60.tgz#ffdac9e6d500231581951abc9ff8525184940eb6"
-  integrity sha512-qeQYT7pLUhP3eqFaQK9ATOFlMl3NuYJnrOpLYXFBbLE7W4+f8UJOvKUp/27e+nTyuGmL7q0OVWtEJ3VAjTPOag==
+"@dojima-wallet/connection@0.0.1-alpha.66":
+  version "0.0.1-alpha.66"
+  resolved "https://registry.npmjs.org/@dojima-wallet/connection/-/connection-0.0.1-alpha.66.tgz#493f16ec0343bb05a1b81b3332938e45e8073c73"
+  integrity sha512-MQs1993dsZH7OXDgFR0X8lwfHX+xU3ui9rN6drKce8JvGUVOlOjmle4we23G5wCfVr8oVQdnI5S15WikFG2xMQ==
   dependencies:
     "@binance-chain/javascript-sdk" "^4.2.0"
     "@cosmos-client/core" "0.45.13"
-    "@dojima-wallet/types" "^0.0.1-alpha.7"
-    "@dojima-wallet/utils" "^0.0.1-alpha.2"
+    "@dojima-wallet/types" "^0.0.1-alpha.8"
+    "@dojima-wallet/utils" "^0.0.1-alpha.7"
     "@polkadot/api" "^9.10.2"
     "@project-serum/anchor" "0.23.0"
     "@solana/web3.js" "^1.75.0"
@@ -114,15 +114,15 @@
     web3 "^1.8.1"
     wif "^2.0.6"
 
-"@dojima-wallet/types@^0.0.1-alpha.7":
-  version "0.0.1-alpha.7"
-  resolved "https://registry.npmjs.org/@dojima-wallet/types/-/types-0.0.1-alpha.7.tgz#859c0a8452eadda296767b606fd5e7ebb25cc54a"
-  integrity sha512-il8og5Jk/5yPGHQKv769P0R6Nm5cPxZ/2fjOh/HBt8qx3LN3o1llHeF0aMhypXsVTeSajtOOlDo8g3ES6GM1SQ==
+"@dojima-wallet/types@^0.0.1-alpha.8":
+  version "0.0.1-alpha.8"
+  resolved "https://registry.npmjs.org/@dojima-wallet/types/-/types-0.0.1-alpha.8.tgz#9c346a0602f5da11fa2d80b7710ad1038125fac9"
+  integrity sha512-ypvpAz+FLSPMjbtu9Onk1CKeKdCCuLmQAz+qvxL5a06JWy+cK/yx2GwabitokVATbpVs3A2ALowZr1rDVNTSDA==
 
-"@dojima-wallet/utils@^0.0.1-alpha.2":
-  version "0.0.1-alpha.2"
-  resolved "https://registry.npmjs.org/@dojima-wallet/utils/-/utils-0.0.1-alpha.2.tgz#cd5381ce318be66716153a6ad733fd34a2518ae0"
-  integrity sha512-Dl4dTfMu4v2kVzWE669tx1zcPD68NrYJchvF3U4FAPMANRmVUlSNEBh4gAUKYogd5udEFRgpaZ86eOtYaps5dg==
+"@dojima-wallet/utils@^0.0.1-alpha.7":
+  version "0.0.1-alpha.7"
+  resolved "https://registry.npmjs.org/@dojima-wallet/utils/-/utils-0.0.1-alpha.7.tgz#0f6187bc0576a57931b73ffd3bbb38c3e4afbbe3"
+  integrity sha512-85koCoBcZth5VHV8I6NXz2sq0+syo2a4Lu0cdZ6FS1Axp+1/rgbbHlPcSYp31o0m5d0ekstmHBqQEuXvTLVBxA==
   dependencies:
     bignumber.js "^9.1.1"
     moment "^2.29.3"
@@ -1283,9 +1283,9 @@
     form-data "^4.0.0"
 
 "@types/node@*", "@types/node@>=13.7.0":
-  version "20.11.6"
-  resolved "https://registry.npmjs.org/@types/node/-/node-20.11.6.tgz#6adf4241460e28be53836529c033a41985f85b6e"
-  integrity sha512-+EOokTnksGVgip2PbYbr3xnR7kZigh4LbybAfBAw5BpnQ+FqBYUsvCEjYd70IXKlbohQ64mzEYmMtlWUY8q//Q==
+  version "20.11.16"
+  resolved "https://registry.npmjs.org/@types/node/-/node-20.11.16.tgz#4411f79411514eb8e2926f036c86c9f0e4ec6708"
+  integrity sha512-gKb0enTmRCzXSSUJDq6/sPcqrfCv2mkkG6Jt/clpn5eiCbKTY+SgZUxo+p8ZKMof5dCp9vHQUAB7wOUTod22wQ==
   dependencies:
     undici-types "~5.26.4"
 
@@ -1523,10 +1523,10 @@ asynckit@^0.4.0:
   resolved "https://registry.npmjs.org/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
 
-available-typed-arrays@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz#92f95616501069d07d10edb2fc37d3e1c65123b7"
-  integrity sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==
+available-typed-arrays@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.npmjs.org/available-typed-arrays/-/available-typed-arrays-1.0.6.tgz#ac812d8ce5a6b976d738e1c45f08d0b00bc7d725"
+  integrity sha512-j1QzY8iPNPG4o4xmO3ptzpRxTciqD3MgEHtifP/YnJpIo58Xu+ne4BejlbkuaLfXn/nz6HFiw29bLpj2PNMdGg==
 
 aws-sign2@~0.7.0:
   version "0.7.0"
@@ -1938,7 +1938,7 @@ cacheable-request@^7.0.2:
     normalize-url "^6.0.1"
     responselike "^2.0.0"
 
-call-bind@^1.0.0, call-bind@^1.0.2, call-bind@^1.0.4:
+call-bind@^1.0.0, call-bind@^1.0.2, call-bind@^1.0.5:
   version "1.0.5"
   resolved "https://registry.npmjs.org/call-bind/-/call-bind-1.0.5.tgz#6fa2b7845ce0ea49bf4d8b9ef64727a2c2e2e513"
   integrity sha512-C3nQxfFZxFRVoJoGKKI8y3MOEo129NQ+FgQ08iye+Mk4zNZZGdjfs06bVTr+DBSlA66Q2VEcMki/cUCP4SercQ==
@@ -2998,17 +2998,15 @@ has-proto@^1.0.1:
   resolved "https://registry.npmjs.org/has-proto/-/has-proto-1.0.1.tgz#1885c1305538958aff469fef37937c22795408e0"
   integrity sha512-7qE+iP+O+bgF9clE5+UoBFzE65mlBiVj3tKCrlNQ0Ogwm0BjpT/gK4SlLYDMybDh5I3TCTKnPPa0oMG7JDYrhg==
 
-has-symbols@^1.0.2, has-symbols@^1.0.3:
+has-symbols@^1.0.3:
   version "1.0.3"
   resolved "https://registry.npmjs.org/has-symbols/-/has-symbols-1.0.3.tgz#bb7b2c4349251dce87b125f7bdf874aa7c8b39f8"
   integrity sha512-l3LCuF6MgDNwTDKkdYGEihYjt5pRPbEg46rtlmnSPlUbgmB8LOIrKJbYYFBSbnPaJexMKtiPO8hmeRjRz2Td+A==
 
-has-tostringtag@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/has-tostringtag/-/has-tostringtag-1.0.0.tgz#7e133818a7d394734f941e73c3d3f9291e658b25"
-  integrity sha512-kFjcSNhnlGV1kyoGk7OXKSawH5JOb/LzUc5w9B02hOTO0dfFRjbHQKvg1d6cf3HbeUmtU9VbbV3qzZ2Teh97WQ==
-  dependencies:
-    has-symbols "^1.0.2"
+has-tostringtag@^1.0.0, has-tostringtag@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/has-tostringtag/-/has-tostringtag-1.0.1.tgz#5d242715a441a1c9a46d543e6dbead8defdfc226"
+  integrity sha512-6J4rC9ROz0UkOpjn0BRtSSqlewDTDYJNQvy8N8RSrPCduUWId1o9BQPEVII/KKBqRk/ZIQff1YbRkUDCH2N5Sg==
 
 has-unicode@^2.0.0:
   version "2.0.1"
@@ -3694,9 +3692,9 @@ no-case@^3.0.4:
     tslib "^2.0.3"
 
 nock@^13.0.5, nock@^13.3.0:
-  version "13.5.0"
-  resolved "https://registry.npmjs.org/nock/-/nock-13.5.0.tgz#82cd33b0dba6095d3f5a28d0ff2edac970fa05ec"
-  integrity sha512-9hc1eCS2HtOz+sE9W7JQw/tXJktg0zoPSu48s/pYe73e25JW9ywiowbqnUSd7iZPeVawLcVpPZeZS312fwSY+g==
+  version "13.5.1"
+  resolved "https://registry.npmjs.org/nock/-/nock-13.5.1.tgz#4e40f9877ad0d43b7cdb474261c190f3715dd806"
+  integrity sha512-+s7b73fzj5KnxbKH4Oaqz07tQ8degcMilU4rrmnKvI//b0JMBU4wEXFQ8zqr+3+L4eWSfU3H/UoIVGUV0tue1Q==
   dependencies:
     debug "^4.1.0"
     json-stringify-safe "^5.0.1"
@@ -5132,15 +5130,15 @@ whatwg-url@^5.0.0:
     webidl-conversions "^3.0.0"
 
 which-typed-array@^1.1.11, which-typed-array@^1.1.2:
-  version "1.1.13"
-  resolved "https://registry.npmjs.org/which-typed-array/-/which-typed-array-1.1.13.tgz#870cd5be06ddb616f504e7b039c4c24898184d36"
-  integrity sha512-P5Nra0qjSncduVPEAr7xhoF5guty49ArDTwzJ/yNuPIbZppyRxFQsRCWrocxIY+CnMVG+qfbU2FmDKyvSGClow==
+  version "1.1.14"
+  resolved "https://registry.npmjs.org/which-typed-array/-/which-typed-array-1.1.14.tgz#1f78a111aee1e131ca66164d8bdc3ab062c95a06"
+  integrity sha512-VnXFiIW8yNn9kIHN88xvZ4yOWchftKDsRJ8fEPacX/wl1lOvBrhsJ/OeJCXq7B0AaijRuqgzSKalJoPk+D8MPg==
   dependencies:
-    available-typed-arrays "^1.0.5"
-    call-bind "^1.0.4"
+    available-typed-arrays "^1.0.6"
+    call-bind "^1.0.5"
     for-each "^0.3.3"
     gopd "^1.0.1"
-    has-tostringtag "^1.0.0"
+    has-tostringtag "^1.0.1"
 
 wide-align@^1.1.0:
   version "1.1.5"

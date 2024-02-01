@@ -20,16 +20,16 @@ export default class ArweaveInit {
         //   timeout: 100000,
         // },
       });
-    } else if (network === Network.Stagenet) {
-      this.arConnect = new ArweaveClient({
-        phrase: mnemonic,
-        network: network,
-        config: {
-          host: "ar.h4s.dojima.network",
-          protocol: "https",
-          timeout: 100000,
-        },
-      });
+      // } else if (network === Network.Stagenet) {
+      //   this.arConnect = new ArweaveClient({
+      //     phrase: mnemonic,
+      //     network: network,
+      //     config: {
+      //       host: "ar.h4s.dojima.network",
+      //       protocol: "https",
+      //       timeout: 100000,
+      //     },
+      //   });
     } else {
       this.arConnect = new ArweaveClient({
         phrase: mnemonic,
