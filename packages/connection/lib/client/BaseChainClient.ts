@@ -22,7 +22,7 @@ const MAINNET_HERMESNODE_API_BASE =
 const STAGENET_HERMESNODE_API_BASE =
   "https://api.h4s.dojima.network/hermeschain";
 const TESTNET_HERMESNODE_API_BASE =
-  "https://api-test.h4s.dojima.network/hermeschain";
+  "https://api-dev.h4s.dojima.network/hermeschain";
 // const DOJTESTNET_HERMESNODE_API_BASE = "http://localhost:1317/hermeschain";
 
 export abstract class BaseChainClient implements ChainClient {

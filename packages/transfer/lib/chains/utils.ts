@@ -7,7 +7,7 @@ import {
 import BigNumber from "bignumber.js";
 import axios from "axios";
 
-const HermesChainUrl = "https://api-test.h4s.dojima.network/hermeschain";
+const HermesChainUrl = "https://api-dev.h4s.dojima.network/hermeschain";
 // const HermesChainUrl = "http://localhost:1317/hermeschain";
 
 export const getUsdtTokenPriceResult = async (

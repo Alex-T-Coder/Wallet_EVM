@@ -45,7 +45,7 @@ const DENOM_DOJ_NATIVE = "doj";
 
 const DEFAULT_MAINNET_EXPLORER_URL = "https://api.h4s.dojima.network";
 const DEFAULT_STAGENET_EXPLORER_URL = "https://api.h4s.dojima.network";
-const DEFAULT_TESTNET_EXPLORER_URL = "https://api-test.h4s.dojima.network";
+const DEFAULT_TESTNET_EXPLORER_URL = "https://api-dev.h4s.dojima.network";
 // const DEFAULT_TESTNET_EXPLORER_URL = "http://localhost:1317";
 // const txUrl = `${DEFAULT_EXPLORER_URL}/tx`;
 // const addressUrl = `${DEFAULT_EXPLORER_URL}/address`;
@@ -115,10 +115,10 @@ export const getPrefix = (network: Network) => {
       return "dojima";
     case Network.Stagenet:
       return "sdojima";
-    case Network.Testnet:
-      return "dojima";
     // case Network.Testnet:
-    //   return "tdojima";
+    //   return "dojima";
+    case Network.Testnet:
+      return "tdojima";
   }
 };
 
