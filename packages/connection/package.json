@@ -1,6 +1,6 @@
 {
   "name": "@dojima-wallet/connection",
-  "version": "0.0.1-alpha.68",
+  "version": "0.0.1-alpha.69",
   "description": "Initialise and connection for layer 1&2 blockchain",
   "keywords": [
     "connection",
@@ -45,7 +45,7 @@
     "@dojima-wallet/utils": "^0.0.1-alpha.7",
     "@polkadot/api": "^9.10.2",
     "@project-serum/anchor": "0.23.0",
-    "@solana/web3.js": "^1.75.0",
+    "@solana/web3.js": "^1.91.8",
     "@types/bech32": "^1.1.2",
     "@types/big.js": "^6.0.0",
     "@types/bip39": "^3.0.0",
