@@ -19,6 +19,7 @@ export default class PolkaClient {
     } else {
       this.dotConnect = new PolkadotClient({
         phrase: mnemonic,
+        network: network,
       });
     }
   }

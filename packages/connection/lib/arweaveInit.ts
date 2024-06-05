@@ -33,6 +33,7 @@ export default class ArweaveInit {
     } else {
       this.arConnect = new ArweaveClient({
         phrase: mnemonic,
+        network: network,
       });
     }
   }

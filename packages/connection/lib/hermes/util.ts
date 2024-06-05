@@ -43,29 +43,29 @@ export const MAX_TX_COUNT = 100;
 
 const DENOM_DOJ_NATIVE = "doj";
 
-const DEFAULT_MAINNET_EXPLORER_URL = "https://api.h4s.dojima.network";
-const DEFAULT_STAGENET_EXPLORER_URL = "https://api.h4s.dojima.network";
-const DEFAULT_TESTNET_EXPLORER_URL = "https://api-dev.h4s.dojima.network";
-// const DEFAULT_TESTNET_EXPLORER_URL = "http://localhost:1317";
-// const txUrl = `${DEFAULT_EXPLORER_URL}/tx`;
-// const addressUrl = `${DEFAULT_EXPLORER_URL}/address`;
-export const defaultExplorerUrls: ExplorerUrls = {
-  root: {
-    [Network.Testnet]: `${DEFAULT_TESTNET_EXPLORER_URL}?network=testnet`,
-    [Network.Stagenet]: `${DEFAULT_STAGENET_EXPLORER_URL}?network=stagenet`,
-    [Network.Mainnet]: DEFAULT_MAINNET_EXPLORER_URL,
-  },
-  tx: {
-    [Network.Testnet]: `${DEFAULT_TESTNET_EXPLORER_URL}/tx`,
-    [Network.Stagenet]: `${DEFAULT_STAGENET_EXPLORER_URL}/tx`,
-    [Network.Mainnet]: `${DEFAULT_MAINNET_EXPLORER_URL}/tx`,
-  },
-  address: {
-    [Network.Testnet]: `${DEFAULT_TESTNET_EXPLORER_URL}/address`,
-    [Network.Stagenet]: `${DEFAULT_STAGENET_EXPLORER_URL}/address`,
-    [Network.Mainnet]: `${DEFAULT_MAINNET_EXPLORER_URL}/address`,
-  },
-};
+// const DEFAULT_MAINNET_EXPLORER_URL = "https://api.h4s.dojima.network";
+// const DEFAULT_STAGENET_EXPLORER_URL = "https://api.h4s.dojima.network";
+// const DEFAULT_TESTNET_EXPLORER_URL = "https://api-dev.h4s.dojima.network";
+// // const DEFAULT_TESTNET_EXPLORER_URL = "http://localhost:1317";
+// // const txUrl = `${DEFAULT_EXPLORER_URL}/tx`;
+// // const addressUrl = `${DEFAULT_EXPLORER_URL}/address`;
+// export const defaultExplorerUrls: ExplorerUrls = {
+//   root: {
+//     [Network.Testnet]: `${DEFAULT_TESTNET_EXPLORER_URL}?network=testnet`,
+//     [Network.Stagenet]: `${DEFAULT_STAGENET_EXPLORER_URL}?network=stagenet`,
+//     [Network.Mainnet]: DEFAULT_MAINNET_EXPLORER_URL,
+//   },
+//   tx: {
+//     [Network.Testnet]: `${DEFAULT_TESTNET_EXPLORER_URL}/tx`,
+//     [Network.Stagenet]: `${DEFAULT_STAGENET_EXPLORER_URL}/tx`,
+//     [Network.Mainnet]: `${DEFAULT_MAINNET_EXPLORER_URL}/tx`,
+//   },
+//   address: {
+//     [Network.Testnet]: `${DEFAULT_TESTNET_EXPLORER_URL}/address`,
+//     [Network.Stagenet]: `${DEFAULT_STAGENET_EXPLORER_URL}/address`,
+//     [Network.Mainnet]: `${DEFAULT_MAINNET_EXPLORER_URL}/address`,
+//   },
+// };
 
 /**
  * Get denomination from Asset

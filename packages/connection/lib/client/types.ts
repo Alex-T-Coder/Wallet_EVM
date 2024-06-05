@@ -84,8 +84,8 @@ export type FeeBounds = { lower: number; upper: number };
 export type RootDerivationPaths = Record<Network, string>;
 
 export type ChainClientParams = {
-  network?: Network;
-  phrase?: string;
+  network: Network;
+  phrase: string;
   feeBounds?: FeeBounds;
   rootDerivationPaths?: RootDerivationPaths;
 };

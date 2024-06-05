@@ -19,6 +19,7 @@ export default class EthereumInit {
     } else {
       this.ethConnect = new EthereumClient({
         phrase: mnemonic,
+        network: network,
         infuraApiKey: apiKey,
       });
     }

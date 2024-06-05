@@ -55,7 +55,6 @@ import {
   DEPOSIT_GAS_LIMIT_VALUE,
   DOJ_DECIMAL,
   MAX_TX_COUNT,
-  defaultExplorerUrls,
   getBalance,
   getDefaultFees,
   getDenom,
@@ -105,6 +104,8 @@ class HermesClient
   private explorerUrls: ExplorerUrls;
   private chainIds: ChainIds;
   private cosmosClient: CosmosSDKClient;
+  private apiUrl: string;
+  private rpcUrl: string;
 
   /**
    * Constructor
@@ -119,40 +120,20 @@ class HermesClient
   constructor({
     network = Network.Mainnet,
     phrase,
-    clientUrl = {
-      [Network.Testnet]: {
-        node: "https://api-dev.h4s.dojima.network",
-        rpc: "https://rpc-dev.h4s.dojima.network",
-        // node: "http://localhost:1317",
-        // rpc: "http://localhost:26657",
-      },
-      [Network.Stagenet]: {
-        node: "https://api.h4s.dojima.network",
-        rpc: "https://rpc.h4s.dojima.network",
-      },
-      [Network.Mainnet]: {
-        node: "https://api.h4s.dojima.network",
-        rpc: "https://rpc.h4s.dojima.network",
-      },
-    },
-    explorerUrls = defaultExplorerUrls,
+    apiUrl,
+    rpcUrl,
     rootDerivationPaths = {
-      [Network.Mainnet]: "44'/931'/0'/0/",
+      [Network.Mainnet]: "44'/1401'/0'/0/",
       [Network.Stagenet]: "44'/1401'/0'/0/",
-      // [Network.Testnet]: "44'/931'/0'/0/",
       [Network.Testnet]: "44'/1001'/0'/0/",
-    },
-    chainIds = {
-      [Network.Mainnet]: "hermeschain-mainnet",
-      [Network.Stagenet]: "hermeschain-stagenet",
-      [Network.Testnet]: "hermes-testnet-v2",
-      // [Network.Testnet]: "hermeschain",
     },
   }: ChainClientParams & HermeschainClientParams) {
     super(Chain.Cosmos, { network, rootDerivationPaths, phrase });
-    this.clientUrl = clientUrl;
-    this.explorerUrls = explorerUrls;
-    this.chainIds = chainIds;
+    this.apiUrl = apiUrl;
+    this.rpcUrl = rpcUrl;
+    this.clientUrl = this.getDefaultClientUrls();
+    this.explorerUrls = this.getDefaultExplorerUrls();
+    this.chainIds = this.getDefaultChainIds();
 
     registerSendCodecs();
     registerDepositCodecs();
@@ -165,6 +146,64 @@ class HermesClient
       chainId: this.getChainId(network),
       prefix: getPrefix(network),
     });
+  }
+
+  /**
+   * Get default chainId's
+   * */
+  getDefaultChainIds(): ChainIds {
+    return {
+      [Network.Mainnet]: "hermeschain-mainnet",
+      [Network.Stagenet]: "hermeschain-stagenet",
+      [Network.Testnet]: this.apiUrl.includes("localhost")
+        ? "hermeschain"
+        : "hermes-testnet-v2",
+    };
+  }
+
+  /**
+   * Get default client url's
+   * */
+  getDefaultClientUrls(): ClientUrl {
+    return {
+      [Network.Testnet]: {
+        node: this.apiUrl,
+        rpc: this.rpcUrl,
+      },
+      [Network.Stagenet]: {
+        node: this.apiUrl,
+        rpc: this.rpcUrl,
+      },
+      [Network.Mainnet]: {
+        node: this.apiUrl,
+        rpc: this.rpcUrl,
+      },
+    };
+  }
+
+  /**
+   * Get default Explorer Url's
+   * */
+  getDefaultExplorerUrls(): ExplorerUrls {
+    const txUrl = `${this.apiUrl}/tx`;
+    const addressUrl = `${this.apiUrl}/address`;
+    return {
+      root: {
+        [Network.Testnet]: `${this.apiUrl}?network=testnet`,
+        [Network.Stagenet]: `${this.apiUrl}?network=stagenet`,
+        [Network.Mainnet]: this.apiUrl,
+      },
+      tx: {
+        [Network.Testnet]: txUrl,
+        [Network.Stagenet]: txUrl,
+        [Network.Mainnet]: txUrl,
+      },
+      address: {
+        [Network.Testnet]: addressUrl,
+        [Network.Stagenet]: addressUrl,
+        [Network.Mainnet]: addressUrl,
+      },
+    };
   }
 
   /**

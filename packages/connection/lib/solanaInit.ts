@@ -19,6 +19,7 @@ export default class SolanaInit {
     } else {
       this.solConnect = new SolanaClient({
         phrase: mnemonic,
+        network: network,
         apiKey: apiKey,
       });
     }

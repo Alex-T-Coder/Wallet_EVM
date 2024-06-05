@@ -22,9 +22,8 @@ export type ChainId = string;
 export type ChainIds = Record<Network, ChainId>;
 
 export type HermeschainClientParams = {
-  clientUrl?: ClientUrl;
-  explorerUrls?: ExplorerUrls;
-  chainIds?: ChainIds;
+  apiUrl: string;
+  rpcUrl: string;
 };
 
 export type DepositParam = {
