@@ -3,8 +3,13 @@ import { Network } from "@dojima-wallet/types";
 import { H4sTxs, H4sTxDataType } from "./types";
 
 export default class HermesTxs extends HermesInit {
-  constructor(mnemonic: string, network: Network) {
-    super(mnemonic, network);
+  constructor(
+    mnemonic: string,
+    network: Network,
+    apiUrl: string,
+    rpcUrl: string
+  ) {
+    super(mnemonic, network, apiUrl, rpcUrl);
   }
 
   async getTransactionData(hash: string) {

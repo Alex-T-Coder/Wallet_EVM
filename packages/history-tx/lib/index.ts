@@ -4,12 +4,12 @@ import EthereumTxs from "./ethereum";
 import HermesTxs from "./hermes";
 import SolanaTxs from "./solana";
 import ArweaveTxs from "./arweave";
-import BinanceBeaconTxs from "./binanceBeacon";
+// import BinanceBeaconTxs from "./binanceBeacon";
 import {
   ArTxDataType,
   ArTxs,
-  BnbTxDataType,
-  BnbTxs,
+  // BnbTxDataType,
+  // BnbTxs,
   BtcTxDataType,
   BtcTxs,
   DojTxDataType,
@@ -22,8 +22,8 @@ import {
 export {
   ArTxDataType,
   ArTxs,
-  BnbTxDataType,
-  BnbTxs,
+  // BnbTxDataType,
+  // BnbTxs,
   BtcTxDataType,
   BtcTxs,
   DojTxDataType,
@@ -40,5 +40,5 @@ export {
   HermesTxs,
   SolanaTxs,
   ArweaveTxs,
-  BinanceBeaconTxs,
+  // BinanceBeaconTxs,
 };

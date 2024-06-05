@@ -3,8 +3,8 @@ import { Network } from "@dojima-wallet/types";
 import { DojTxDataType } from "./types";
 
 export default class DojimaTxs extends DojimaInit {
-  constructor(mnemonic: string, network: Network) {
-    super(mnemonic, network);
+  constructor(mnemonic: string, network: Network, rpcUrl: string) {
+    super(mnemonic, network, rpcUrl);
   }
 
   async getTransactionData(hash: string): Promise<DojTxDataType> {
