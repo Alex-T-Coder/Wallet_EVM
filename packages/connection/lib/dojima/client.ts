@@ -106,8 +106,15 @@ class DojimaClient {
 
   // Function to calculate the gas fee
   async calculateGasFee(
-    tx: ethers.providers.TransactionRequest
+    recipient: string,
+    amount: number,
+    memo?: string
   ): Promise<string> {
+    const tx = {
+      to: recipient,
+      value: ethers.utils.parseEther(`${amount}`),
+      data: memo ? ethers.utils.toUtf8Bytes(memo) : undefined,
+    };
     const gasLimit = await this.estimateGasLimit(tx);
     const gasPrice = await this.getCurrentGasPrice();
     return ethers.utils.formatEther(gasLimit.mul(gasPrice));
