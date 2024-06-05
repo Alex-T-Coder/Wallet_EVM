@@ -2,8 +2,8 @@ import { DojimaInit } from "@dojima-wallet/connection";
 import { Network } from "@dojima-wallet/types";
 
 export default class DojimaAccount extends DojimaInit {
-  constructor(mnemonic: string, network: Network) {
-    super(mnemonic, network);
+  constructor(mnemonic: string, network: Network, rpcUrl: string) {
+    super(mnemonic, network, rpcUrl);
   }
 
   getAddress(): string {

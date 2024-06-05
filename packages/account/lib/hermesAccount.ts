@@ -3,8 +3,13 @@ import { Network } from "@dojima-wallet/types";
 import { AssetDOJNative, baseToAsset } from "@dojima-wallet/utils";
 
 export default class HermesAccount extends HermesInit {
-  constructor(mnemonic: string, network: Network) {
-    super(mnemonic, network);
+  constructor(
+    mnemonic: string,
+    network: Network,
+    apiUrl: string,
+    rpcUrl: string
+  ) {
+    super(mnemonic, network, apiUrl, rpcUrl);
   }
 
   getAddress(): string {

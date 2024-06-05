@@ -1,5 +1,5 @@
 import ArweaveAccount from "./arweaveAccount";
-import BinanceBeaconAccount from "./binanceBeaconAccount";
+// import BinanceBeaconAccount from "./binanceBeaconAccount";
 // import BitcoinAccount from "./bitcoinAccount";
 import DojimaAccount from "./dojimaAccount";
 import HermesAccount from "./hermesAccount";
@@ -9,7 +9,7 @@ import PolkadotAccount from "./polkadotAccount";
 
 export {
   ArweaveAccount,
-  BinanceBeaconAccount,
+  // BinanceBeaconAccount,
   // BitcoinAccount,
   DojimaAccount,
   HermesAccount,
