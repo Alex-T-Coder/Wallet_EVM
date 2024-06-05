@@ -5,19 +5,25 @@ import { getUsdtTokenPriceResult } from "./utils";
 import { SwapAssetList } from "@dojima-wallet/utils";
 
 export default class DojimaChain extends DojimaInit {
-  constructor(mnemonic: string, network: Network) {
-    super(mnemonic, network);
+  constructor(mnemonic: string, network: Network, rpcUrl: string) {
+    super(mnemonic, network, rpcUrl);
   }
 
   async getGasFee(
     amount: number,
     memo?: string
   ): Promise<UsdtTokenGasFeeResult> {
-    const gasFee = await this.dojConnect.getFees(
+    const gasFee = await this.dojConnect.calculateGasFee(
+      this.dojConnect.getAddress(),
       amount,
       memo ? memo : undefined
     );
-    const result = await getUsdtTokenPriceResult(gasFee, "doj");
+    const gasFeeResult = {
+      slow: parseFloat(gasFee),
+      average: parseFloat(gasFee),
+      fast: parseFloat(gasFee),
+    };
+    const result = await getUsdtTokenPriceResult(gasFeeResult, "doj");
     return result;
   }
 

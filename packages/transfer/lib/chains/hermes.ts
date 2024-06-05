@@ -12,8 +12,13 @@ import {
 import BigNumber from "bignumber.js";
 
 export default class HermesChain extends HermesInit {
-  constructor(mnemonic: string, network: Network) {
-    super(mnemonic, network);
+  constructor(
+    mnemonic: string,
+    network: Network,
+    apiUrl: string,
+    rpcUrl: string
+  ) {
+    super(mnemonic, network, apiUrl, rpcUrl);
   }
 
   async getGasFee(): Promise<UsdtTokenGasFeeResult> {
