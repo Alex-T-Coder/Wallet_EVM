@@ -15,37 +15,36 @@ Below are the list of packages available:
 - @dojima-wallet/solana-protocols
 - @dojima-wallet/utils
 - @dojima-wallet/security
-
+</br>
 ## Description
-
+</br>
 Wallet-js is a lerna repository which allows to manage multiple npm packages. This repo contains packages to create accounts, transfer tokens, get balance from layer1, layer2 blockchains. Currently supported blockchains are Dojima, Ethereum, Solana, Polkadot, Binance, Polygon, Arweave e.t.c
-
+</br>
 ## Types package
-
+</br>
 This package contains globally required packages like network type e.t.c
-
+</br>
 ## Connection package
-
+</br>
 This package is used for creating blockchain instances which is useful for blockchain functionalities to create, transfer, balance functionalities.
-
+</br>
 ## Account package
-
+</br>
 This package is used for creating accounts to layer1 blockchains like arweave, solana, evm chains.
-
+</br>
 ## Transfer package
-
+</br>
 This package is used for quering balance, transfer tokens to blockchains.
-
+</br>
 ## Non-native package
-
+</br>
 This package is used for querying non-native token functionalities for multiple blockchains like ethereum - USDT, USDC, BNB, UNI; Arweave - ArDrive, Verto.
-
+</br>
 ## History-tx package
-
+</br>
 This package is used for retreiving history transactions for user of supported blockchains like ethereum, binance, solana, polkadot, arweave.
 
 ## Prices
-
 This package is used for retreiving current price, timeline statistics of token for layer1 blockchains.
 
 ## Eth-protocols
